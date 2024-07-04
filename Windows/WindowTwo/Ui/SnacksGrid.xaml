@@ -7,12 +7,16 @@
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
 
-    <ListBox ItemsSource="{Binding Snacks}" SelectedItem="{Binding SelectedSnack}">
+    <ListBox x:Name="SnacksDataGrid"
+             ItemsSource="{Binding Snacks}"
+             SelectedItem="{Binding SelectedSnack}">
+
         <ListBox.ItemTemplate>
             <DataTemplate>
                 <TextBlock Text="{Binding Name}" />
             </DataTemplate>
         </ListBox.ItemTemplate>
+
     </ListBox>
 
 </UserControl>

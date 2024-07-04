@@ -6,9 +6,9 @@ namespace WpfApp1.Windows.WindowTwo;
 
 public class WindowTwoViewModel : INotifyPropertyChanged
 {
-    private IEnumerable<Snack> _snacks;
+    private IEnumerable<Snack>? _snacks;
 
-    public IEnumerable<Snack> Snacks
+    public IEnumerable<Snack>? Snacks
     {
         get => _snacks;
         set
@@ -18,9 +18,9 @@ public class WindowTwoViewModel : INotifyPropertyChanged
         }
     }
 
-    private Snack _selectedSnack;
+    private Snack? _selectedSnack;
 
-    public Snack SelectedSnack
+    public Snack? SelectedSnack
     {
         get => _selectedSnack;
         set
@@ -46,9 +46,9 @@ public class WindowTwoViewModel : INotifyPropertyChanged
         };
     }
 
-    public event PropertyChangedEventHandler PropertyChanged;
+    public event PropertyChangedEventHandler? PropertyChanged;
 
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }

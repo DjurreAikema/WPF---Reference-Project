@@ -16,4 +16,10 @@
       </Page>
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Update="Windows\WindowTwo\WindowTwoViewModel.cs">
+        <DependentUpon>WindowTwo.xaml</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
 </Project>
