@@ -18,6 +18,5 @@ public partial class SnackDetails : UserControl
     public SnackDetails()
     {
         InitializeComponent();
-        DataContext = this;
     }
 }

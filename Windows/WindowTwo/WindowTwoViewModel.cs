@@ -32,7 +32,6 @@ public class WindowTwoViewModel : INotifyPropertyChanged
 
     public WindowTwoViewModel()
     {
-        // Load your snacks data here
         Snacks = new List<Snack>
         {
             new() {Name = "Chips", Price = 1.50, Quantity = 10},
