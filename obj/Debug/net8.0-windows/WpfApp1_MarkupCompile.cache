@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP
 D:\dev\Learning\WpfApp1\App.xaml
-2-534507581
+3-546242817
 
-5148614413
+6-890077875
 198915248976
-MainWindow.xaml;Windows\WindowOne\WindowOne.xaml;
+MainWindow.xaml;Windows\WindowOne\UI\Header.xaml;Windows\WindowOne\WindowOne.xaml;
 
 False
 
