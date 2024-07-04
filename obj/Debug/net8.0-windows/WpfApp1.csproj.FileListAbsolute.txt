@@ -23,3 +23,5 @@ D:\dev\Learning\WpfApp1\obj\Debug\net8.0-windows\GeneratedInternalTypeHelper.g.c
 D:\dev\Learning\WpfApp1\obj\Debug\net8.0-windows\Windows\WindowOne\WindowOne.baml
 D:\dev\Learning\WpfApp1\obj\Debug\net8.0-windows\Windows\WindowOne\UI\Header.g.cs
 D:\dev\Learning\WpfApp1\obj\Debug\net8.0-windows\Windows\WindowOne\UI\Header.baml
+D:\dev\Learning\WpfApp1\obj\Debug\net8.0-windows\Windows\WindowOne\UI\Left.g.cs
+D:\dev\Learning\WpfApp1\obj\Debug\net8.0-windows\Windows\WindowOne\UI\Left.baml
