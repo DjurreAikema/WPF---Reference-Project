@@ -6,14 +6,14 @@ namespace WpfApp1.Windows.WindowOne;
 public partial class WindowOne : Window
 {
     public string HeaderText { get; set; } = "Default Header";
-    public List<Snack> SnacksList { get; set; }
+    public List<Snack> SnacksLister { get; set; }
 
     public WindowOne()
     {
         InitializeComponent();
         DataContext = this;
 
-        SnacksList = GetListOfSnacks();
+        SnacksLister = GetListOfSnacks();
     }
 
     private static List<Snack> GetListOfSnacks()

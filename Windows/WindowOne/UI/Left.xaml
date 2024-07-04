@@ -8,8 +8,9 @@
              d:DesignHeight="300" d:DesignWidth="300">
 
     <StackPanel>
-        <DataGrid x:Name="SnacksDataGrid" AutoGenerateColumns="True" ItemsSource="{Binding SnacksList}"
-                  AutoGeneratingColumn="SnacksDataGrid_AutoGeneratingColumn"/>
+        <DataGrid x:Name="SnacksDataGrid"
+                  AutoGenerateColumns="True"
+                  AutoGeneratingColumn="SnacksDataGrid_AutoGeneratingColumn" />
     </StackPanel>
 
 </UserControl>
