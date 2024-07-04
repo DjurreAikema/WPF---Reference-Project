@@ -10,7 +10,10 @@
     <StackPanel>
         <DataGrid x:Name="SnacksDataGrid"
                   AutoGenerateColumns="True"
-                  AutoGeneratingColumn="SnacksDataGrid_AutoGeneratingColumn" />
+                  AutoGeneratingColumn="SnacksDataGrid_AutoGeneratingColumn"
+                  SelectionChanged="SnacksDataGrid_SelectionChanged" />
+
+        <Label x:Name="SelectedSnackLabel" Padding="5"/>
     </StackPanel>
 
 </UserControl>

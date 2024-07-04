@@ -30,6 +30,14 @@ public partial class Left : UserControl
     {
         e.Column.Width = new DataGridLength(1, DataGridLengthUnitType.Star);
     }
+
+    private void SnacksDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (SnacksDataGrid.SelectedItem is Snack selectedSnack)
+        {
+            SelectedSnackLabel.Content = $"Selected: {selectedSnack.Name} - Price: {selectedSnack.Price} - Quantity: {selectedSnack.Quantity}";
+        }
+    }
 }
 
 // Approach Analysis
