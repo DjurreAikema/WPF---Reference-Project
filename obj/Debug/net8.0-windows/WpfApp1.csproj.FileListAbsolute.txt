@@ -18,8 +18,6 @@ D:\dev\Learning\WpfApp1\obj\Debug\net8.0-windows\refint\WpfApp1.dll
 D:\dev\Learning\WpfApp1\obj\Debug\net8.0-windows\WpfApp1.pdb
 D:\dev\Learning\WpfApp1\obj\Debug\net8.0-windows\WpfApp1.genruntimeconfig.cache
 D:\dev\Learning\WpfApp1\obj\Debug\net8.0-windows\ref\WpfApp1.dll
-D:\dev\Learning\WpfApp1\obj\Debug\net8.0-windows\Windows\WindowOne\UI\Title.g.cs
 D:\dev\Learning\WpfApp1\obj\Debug\net8.0-windows\Windows\WindowOne\WindowOne.g.cs
 D:\dev\Learning\WpfApp1\obj\Debug\net8.0-windows\GeneratedInternalTypeHelper.g.cs
-D:\dev\Learning\WpfApp1\obj\Debug\net8.0-windows\Windows\WindowOne\UI\Title.baml
 D:\dev\Learning\WpfApp1\obj\Debug\net8.0-windows\Windows\WindowOne\WindowOne.baml

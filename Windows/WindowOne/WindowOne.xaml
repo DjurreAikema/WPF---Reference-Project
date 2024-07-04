@@ -7,6 +7,30 @@
         Title="WindowOne" Height="450" Width="800">
     <Grid>
 
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
 
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Background="Aqua">
+            <TextBlock Text="{Binding HeaderText}" HorizontalAlignment="Center" Padding="10" />
+        </StackPanel>
+
+
+        <!-- Left -->
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Left" HorizontalAlignment="Center" />
+
+        <!-- Center -->
+        <TextBlock Grid.Row="1" Grid.Column="1" Text="Center" HorizontalAlignment="Center" />
+
+        <!-- Right -->
+        <TextBlock Grid.Row="1" Grid.Column="2" Text="Right" HorizontalAlignment="Center" />
     </Grid>
 </Window>
