@@ -1,6 +1,6 @@
 ﻿using System.Windows;
-using WpfApp1.Windows;
 using WpfApp1.Windows.WindowOne;
+using WpfApp1.Windows.WindowTwo;
 
 namespace WpfApp1;
 
@@ -15,5 +15,11 @@ public partial class MainWindow : Window
     {
         var windowOne = new WindowOne();
         windowOne.Show();
+    }
+
+    private void OpenWindowTwoButton_Click(object sender, RoutedEventArgs e)
+    {
+        var windowTwo = new WindowTwo();
+        windowTwo.Show();
     }
 }

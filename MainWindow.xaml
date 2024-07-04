@@ -8,8 +8,21 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
 
-        <Button x:Name="OpenWindowOneButton" Content="Open Window One" HorizontalAlignment="Left" VerticalAlignment="Top"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <Button Grid.Row="0" Grid.Column="0" Content="Open Window One"
+                Padding="10" Margin="5"
                 Click="OpenWindowOneButton_Click"/>
+
+        <Button Grid.Row="1" Grid.Column="0" Content="Open Window Two"
+                Padding="10" Margin="5"
+                Click="OpenWindowTwoButton_Click"/>
 
     </Grid>
 </Window>

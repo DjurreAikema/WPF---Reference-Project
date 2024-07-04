@@ -25,3 +25,9 @@ D:\dev\Learning\WpfApp1\obj\Debug\net8.0-windows\Windows\WindowOne\UI\Header.g.c
 D:\dev\Learning\WpfApp1\obj\Debug\net8.0-windows\Windows\WindowOne\UI\Header.baml
 D:\dev\Learning\WpfApp1\obj\Debug\net8.0-windows\Windows\WindowOne\UI\Left.g.cs
 D:\dev\Learning\WpfApp1\obj\Debug\net8.0-windows\Windows\WindowOne\UI\Left.baml
+D:\dev\Learning\WpfApp1\obj\Debug\net8.0-windows\Windows\WindowTwo\Ui\SnackDetails.g.cs
+D:\dev\Learning\WpfApp1\obj\Debug\net8.0-windows\Windows\WindowTwo\Ui\SnacksGrid.g.cs
+D:\dev\Learning\WpfApp1\obj\Debug\net8.0-windows\Windows\WindowTwo\WindowTwo.g.cs
+D:\dev\Learning\WpfApp1\obj\Debug\net8.0-windows\Windows\WindowTwo\Ui\SnackDetails.baml
+D:\dev\Learning\WpfApp1\obj\Debug\net8.0-windows\Windows\WindowTwo\Ui\SnacksGrid.baml
+D:\dev\Learning\WpfApp1\obj\Debug\net8.0-windows\Windows\WindowTwo\WindowTwo.baml
