@@ -10,7 +10,8 @@ public partial class Left : UserControl
         nameof(SnacksList),
         typeof(List<Snack>),
         typeof(Left),
-        new PropertyMetadata(new List<Snack>()));
+        new PropertyMetadata(new List<Snack>())
+    );
 
     public List<Snack> SnacksList
     {
