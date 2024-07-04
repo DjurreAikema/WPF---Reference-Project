@@ -7,7 +7,7 @@ namespace WpfApp1.Windows.WindowTwo.Ui;
 public partial class SnackDetails : UserControl
 {
     public static readonly DependencyProperty SelectedSnackProperty =
-        DependencyProperty.Register("SelectedSnack", typeof(Snack), typeof(SnackDetails), new PropertyMetadata(null));
+        DependencyProperty.Register(nameof(SelectedSnack), typeof(Snack), typeof(SnackDetails), new PropertyMetadata(null));
 
     public Snack SelectedSnack
     {

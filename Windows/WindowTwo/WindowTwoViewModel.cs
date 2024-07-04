@@ -30,6 +30,18 @@ public class WindowTwoViewModel : INotifyPropertyChanged
         }
     }
 
+    private string? _tester;
+
+    public string? Tester
+    {
+        get => _tester;
+        set
+        {
+            _tester = value;
+            OnPropertyChanged();
+        }
+    }
+
     public WindowTwoViewModel()
     {
         Snacks = new List<Snack>
@@ -43,6 +55,8 @@ public class WindowTwoViewModel : INotifyPropertyChanged
             new() {Name = "Juice", Price = 1.25, Quantity = 10},
             new() {Name = "Cookies", Price = 1.75, Quantity = 5}
         };
+
+        Tester = "Testing me testing you";
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
