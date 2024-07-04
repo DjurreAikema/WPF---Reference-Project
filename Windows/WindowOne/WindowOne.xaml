@@ -23,7 +23,7 @@
         <ui:Header Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" />
 
         <!-- Left -->
-        <ui:Left Grid.Row="1" Grid.Column="0"/>
+        <ui:Left Grid.Row="1" Grid.Column="0" />
 
         <!-- Center -->
         <StackPanel Grid.Row="1" Grid.Column="1">
