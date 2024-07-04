@@ -25,12 +25,18 @@
 
 
         <!-- Left -->
-        <TextBlock Grid.Row="1" Grid.Column="0" Text="Left" HorizontalAlignment="Center" />
+        <StackPanel Grid.Row="1" Grid.Column="0">
+            <TextBlock Text="Left" HorizontalAlignment="Center" />
+        </StackPanel>
 
         <!-- Center -->
-        <TextBlock Grid.Row="1" Grid.Column="1" Text="Center" HorizontalAlignment="Center" />
+        <StackPanel Grid.Row="1" Grid.Column="1">
+            <TextBlock Text="Center" HorizontalAlignment="Center" />
+        </StackPanel>
 
         <!-- Right -->
-        <TextBlock Grid.Row="1" Grid.Column="2" Text="Right" HorizontalAlignment="Center" />
+        <StackPanel Grid.Row="1" Grid.Column="2">
+            <TextBlock Text="Right" HorizontalAlignment="Center" />
+        </StackPanel>
     </Grid>
 </Window>
