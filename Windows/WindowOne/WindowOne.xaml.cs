@@ -1,5 +1,7 @@
-﻿using System.Windows;
+﻿using System.Reflection.Emit;
+using System.Windows;
 using WpfApp1.Classes;
+using WpfApp1.Windows.WindowOne.UI;
 
 namespace WpfApp1.Windows.WindowOne;
 
@@ -14,6 +16,16 @@ public partial class WindowOne : Window
         DataContext = this;
 
         SnacksLister = GetListOfSnacks();
+
+        var leftControl = (Left)this.FindName("LeftControl"); // Assuming the x:Name of the Left UserControl in XAML is "LeftControl"
+        leftControl.SnackSelected += LeftControl_SnackSelected;
+    }
+
+    private void LeftControl_SnackSelected(object sender, Snack selectedSnack)
+    {
+        // Update the label in the center section with the selected snack's details
+        Label centerLabel = (Label)FindName("CenterLabel");
+        // centerLabel.Content = $"Selected: {selectedSnack.Name} - Price: {selectedSnack.Price} - Quantity: {selectedSnack.Quantity}";
     }
 
     private static List<Snack> GetListOfSnacks()

@@ -19,6 +19,8 @@ public partial class Left : UserControl
         set => SetValue(SnacksListProperty, value);
     }
 
+    public event EventHandler<Snack> SnackSelected = null!;
+
     public Left()
     {
         InitializeComponent();
@@ -35,7 +37,7 @@ public partial class Left : UserControl
     {
         if (SnacksDataGrid.SelectedItem is Snack selectedSnack)
         {
-            SelectedSnackLabel.Content = $"Selected: {selectedSnack.Name} - Price: {selectedSnack.Price} - Quantity: {selectedSnack.Quantity}";
+            SnackSelected?.Invoke(this, selectedSnack);
         }
     }
 }
