@@ -3,9 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:local="clr-namespace:WpfApp1.Windows.WindowTwo"
         xmlns:ui="clr-namespace:WpfApp1.Windows.WindowTwo.Ui"
-        xmlns:ui1="clr-namespace:WpfApp1.Windows.WindowThree.Ui"
         mc:Ignorable="d"
         Title="WindowTwo" Height="450" Width="800"
         DataContext="{Binding ViewModel, RelativeSource={RelativeSource Self}}">
@@ -15,11 +13,11 @@
             <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
 
-        <ui1:SnacksGrid Grid.Column="0"
+        <ui:SnacksGrid Grid.Column="0"
                        Snacks="{Binding Snacks}"
                        SelectedSnack="{Binding SelectedSnack}" />
 
-        <ui1:SnackDetails Grid.Column="1"
+        <ui:SnackDetails Grid.Column="1"
                          SelectedSnack="{Binding SelectedSnack}" />
 
         <!-- <CheckBox Checked="ToggleButton_OnChecked"/> -->
