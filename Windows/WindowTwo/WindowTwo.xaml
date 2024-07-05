@@ -15,10 +15,10 @@
 
         <ui:SnacksGrid Grid.Column="0"
                        Snacks="{Binding Snacks}"
-                       SelectedSnack="{Binding SelectedSnack}" />
+                       SelectedSnack="{Binding SelectedSnack, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <ui:SnackDetails Grid.Column="1"
-                         SelectedSnack="{Binding SelectedSnack}" />
+                         SelectedSnack="{Binding SelectedSnack, UpdateSourceTrigger=PropertyChanged}" />
 
         <!-- <CheckBox Checked="ToggleButton_OnChecked"/> -->
     </Grid>
