@@ -21,6 +21,7 @@ public class WindowThreeViewModel
     // --- Selectors
     public IObservable<List<Snack>> Snacks => State.Select(state => state.Snacks);
     public IObservable<Snack> SelectedSnack => State.Select(state => state.SelectedSnack);
+    public IObservable<bool> Loading => State.Select(state => state.Loading);
 
 
     // --- Sources

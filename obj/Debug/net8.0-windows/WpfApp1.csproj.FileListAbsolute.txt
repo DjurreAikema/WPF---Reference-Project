@@ -31,3 +31,13 @@ D:\dev\Learning\WpfApp1\obj\Debug\net8.0-windows\Windows\WindowTwo\WindowTwo.g.c
 D:\dev\Learning\WpfApp1\obj\Debug\net8.0-windows\Windows\WindowTwo\Ui\SnackDetails.baml
 D:\dev\Learning\WpfApp1\obj\Debug\net8.0-windows\Windows\WindowTwo\Ui\SnacksGrid.baml
 D:\dev\Learning\WpfApp1\obj\Debug\net8.0-windows\Windows\WindowTwo\WindowTwo.baml
+D:\dev\Learning\WpfApp1\bin\Debug\net8.0-windows\System.Reactive.dll
+D:\dev\Learning\WpfApp1\bin\Debug\net8.0-windows\System.Reactive.Linq.dll
+D:\dev\Learning\WpfApp1\obj\Debug\net8.0-windows\WpfApp1.csproj.AssemblyReference.cache
+D:\dev\Learning\WpfApp1\obj\Debug\net8.0-windows\Windows\WindowThree\Ui\SnackDetails.g.cs
+D:\dev\Learning\WpfApp1\obj\Debug\net8.0-windows\Windows\WindowThree\Ui\SnacksGrid.g.cs
+D:\dev\Learning\WpfApp1\obj\Debug\net8.0-windows\Windows\WindowThree\WindowThree.g.cs
+D:\dev\Learning\WpfApp1\obj\Debug\net8.0-windows\Windows\WindowThree\Ui\SnackDetails.baml
+D:\dev\Learning\WpfApp1\obj\Debug\net8.0-windows\Windows\WindowThree\Ui\SnacksGrid.baml
+D:\dev\Learning\WpfApp1\obj\Debug\net8.0-windows\Windows\WindowThree\WindowThree.baml
+D:\dev\Learning\WpfApp1\obj\Debug\net8.0-windows\WpfApp1.csproj.Up2Date

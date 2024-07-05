@@ -4,9 +4,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:WpfApp1.Windows.WindowThree"
+        xmlns:ui="clr-namespace:WpfApp1.Windows.WindowThree.Ui"
         mc:Ignorable="d"
-        Title="WindowThree" Height="450" Width="800">
+        Title="WindowThree" Height="450" Width="800"
+        DataContext="{Binding  RelativeSource={RelativeSource Self}}">
+
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+
+        <ui:SnacksGrid Grid.Column="0"
+                       Snacks="{Binding Snacks}"
+                       SelectedSnack="{Binding SelectedSnack}" />
+
     </Grid>
+
 </Window>
