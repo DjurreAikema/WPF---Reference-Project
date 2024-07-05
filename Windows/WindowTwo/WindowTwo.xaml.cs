@@ -10,4 +10,9 @@ public partial class WindowTwo : Window
     {
         InitializeComponent();
     }
+
+    private void ToggleButton_OnChecked(object sender, RoutedEventArgs e)
+    {
+        // ViewModel.gaietsdoen();
+    }
 }

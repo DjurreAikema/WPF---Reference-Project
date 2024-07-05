@@ -20,5 +20,7 @@
 
         <ui:SnackDetails Grid.Column="1"
                          SelectedSnack="{Binding SelectedSnack}" />
+
+        <CheckBox Checked="ToggleButton_OnChecked"/>
     </Grid>
 </Window>
