@@ -7,10 +7,10 @@ namespace WpfApp1.Windows.WindowThree.Ui;
 public partial class SnacksGrid : UserControl
 {
     public static readonly DependencyProperty SnacksProperty =
-        DependencyProperty.Register("Snacks", typeof(IEnumerable<Snack>), typeof(SnacksGrid), new PropertyMetadata(null));
+        DependencyProperty.Register(nameof(Snacks), typeof(IEnumerable<Snack>), typeof(SnacksGrid), new PropertyMetadata(null));
 
     public static readonly DependencyProperty SelectedSnackProperty =
-        DependencyProperty.Register("SelectedSnack", typeof(Snack), typeof(SnacksGrid), new PropertyMetadata(null));
+        DependencyProperty.Register(nameof(SelectedSnack), typeof(Snack), typeof(SnacksGrid), new PropertyMetadata(null));
 
     public IEnumerable<Snack> Snacks
     {

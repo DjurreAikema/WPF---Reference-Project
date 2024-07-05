@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows;
 using WpfApp1.Classes;
 
 namespace WpfApp1.Windows.WindowThree;
@@ -15,7 +17,7 @@ public partial class WindowThree : Window
         set
         {
             _snacks = value;
-            OnPropertyChanged(default);
+            OnPropertyChanged();
         }
     }
 
@@ -27,7 +29,7 @@ public partial class WindowThree : Window
         set
         {
             _selectedSnack = value;
-            OnPropertyChanged(default);
+            OnPropertyChanged();
         }
     }
 
@@ -37,5 +39,12 @@ public partial class WindowThree : Window
         DataContext = this;
 
         ViewModel.Snacks.Subscribe(snacks => { Snacks = snacks; });
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }
