@@ -4,9 +4,10 @@ namespace WpfApp1.Windows.WindowTwo;
 
 public partial class WindowTwo : Window
 {
+    public WindowTwoViewModel ViewModel { get; } = new();
+
     public WindowTwo()
     {
         InitializeComponent();
-        DataContext = new WindowTwoViewModel();
     }
 }
