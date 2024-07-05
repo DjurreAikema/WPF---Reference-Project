@@ -2,15 +2,15 @@
 using System.Windows.Controls;
 using WpfApp1.Classes;
 
-namespace WpfApp1.Windows.WindowTwo.Ui;
+namespace WpfApp1.Windows.WindowThree.Ui;
 
 public partial class SnacksGrid : UserControl
 {
     public static readonly DependencyProperty SnacksProperty =
-        DependencyProperty.Register("Snacks", typeof(IEnumerable<Snack>), typeof(WindowThree.Ui.SnacksGrid), new PropertyMetadata(null));
+        DependencyProperty.Register("Snacks", typeof(IEnumerable<Snack>), typeof(SnacksGrid), new PropertyMetadata(null));
 
     public static readonly DependencyProperty SelectedSnackProperty =
-        DependencyProperty.Register("SelectedSnack", typeof(Snack), typeof(WindowThree.Ui.SnacksGrid), new PropertyMetadata(null));
+        DependencyProperty.Register("SelectedSnack", typeof(Snack), typeof(SnacksGrid), new PropertyMetadata(null));
 
     public IEnumerable<Snack> Snacks
     {

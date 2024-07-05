@@ -1,9 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "1nisNlPNnvPmDKf3VRntItebZ3TzjNUPm4heeaDA+ezZviJnMuTHyQX+xAbL//bZBVBbWVIDf2aVclAzMtg2Rw==",
+  "dgSpecHash": "mFgWCFukMJ9spUvmt230mro+bwDTYfW8cpGcgVqCcwcIzsCwZQ9VSmPIx0ptikCIIqP7tXncFnUvJm/z20uTmg==",
   "success": true,
   "projectFilePath": "D:\\dev\\Learning\\WpfApp1\\WpfApp1.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\d.aikema\\.nuget\\packages\\system.reactive\\6.0.1\\system.reactive.6.0.1.nupkg.sha512",
+    "C:\\Users\\d.aikema\\.nuget\\packages\\system.reactive.linq\\6.0.1\\system.reactive.linq.6.0.1.nupkg.sha512",
+    "C:\\Users\\d.aikema\\.nuget\\packages\\system.threading.tasks.extensions\\4.5.4\\system.threading.tasks.extensions.4.5.4.nupkg.sha512"
+  ],
   "logs": [
     {
       "code": "NU1803",

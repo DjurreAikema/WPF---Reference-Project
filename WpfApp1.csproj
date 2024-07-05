@@ -14,12 +14,30 @@
         <XamlRuntime>Wpf</XamlRuntime>
         <SubType>Designer</SubType>
       </Page>
+      <Page Update="Windows\WindowThree\Ui\SnacksGrid.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
+      <Page Update="Windows\WindowThree\Ui\SnackDetails.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
     </ItemGroup>
 
     <ItemGroup>
       <Compile Update="Windows\WindowTwo\WindowTwoViewModel.cs">
         <DependentUpon>WindowTwo.xaml</DependentUpon>
       </Compile>
+      <Compile Update="Windows\WindowThree\WindowThreeViewModel.cs">
+        <DependentUpon>WindowThree.xaml</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="System.Reactive" Version="6.0.1" />
+      <PackageReference Include="System.Reactive.Linq" Version="6.0.1" />
     </ItemGroup>
 
 </Project>
