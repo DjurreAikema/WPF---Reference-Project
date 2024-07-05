@@ -5,7 +5,7 @@ using WpfApp1.Classes;
 
 namespace WpfApp1.Windows.WindowThree;
 
-public partial class WindowThree : Window
+public partial class WindowThree : Window, INotifyPropertyChanged
 {
     private WindowThreeViewModel ViewModel { get; } = new();
 
@@ -38,7 +38,11 @@ public partial class WindowThree : Window
         InitializeComponent();
         DataContext = this;
 
-        ViewModel.Snacks.Subscribe(snacks => { Snacks = snacks; });
+        ViewModel.Snacks.Subscribe(snacks =>
+        {
+            Snacks = snacks;
+            OnPropertyChanged(nameof(Snacks));
+        });
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;

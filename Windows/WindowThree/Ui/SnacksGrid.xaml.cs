@@ -27,6 +27,6 @@ public partial class SnacksGrid : UserControl
     public SnacksGrid()
     {
         InitializeComponent();
-        Loaded += (s, e) => { SnacksDataGrid.ItemsSource = Snacks; };
+        // Loaded += (s, e) => { SnacksDataGrid.ItemsSource = Snacks; };
     }
 }
