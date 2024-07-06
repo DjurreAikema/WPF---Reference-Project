@@ -3,17 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:WpfApp1.Windows.WindowTwo.Ui"
-             xmlns:shared="clr-namespace:WpfApp1.Shared"
              xmlns:ui="clr-namespace:WpfApp1.Windows.WindowThree.Ui"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
 
-    <StackPanel DataContext="{Binding RelativeSource={RelativeSource AncestorType=ui:SnackDetails}}">
+    <StackPanel DataContext="{Binding RelativeSource={RelativeSource AncestorType=ui:SnackDetails}}" Margin="10" >
+        <Label Content="Snack details" />
         <TextBlock Text="{Binding SelectedSnack.Name}"/>
         <TextBlock Text="{Binding SelectedSnack.Price}"/>
         <TextBlock Text="{Binding SelectedSnack.Quantity}"/>
-        <TextBlock Text="{Binding Tester}"/>
     </StackPanel>
 
 </UserControl>

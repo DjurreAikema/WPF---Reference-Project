@@ -8,16 +8,14 @@
              d:DesignHeight="300" d:DesignWidth="300">
 
     <Grid DataContext="{Binding  RelativeSource={RelativeSource AncestorType=ui:SnacksGrid}}">
-        <ListBox x:Name="SnacksDataGrid"
-                 ItemsSource="{Binding Snacks}">
 
+        <ListBox x:Name="SnacksDataGrid" ItemsSource="{Binding Snacks}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Name}" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
-
         </ListBox>
-    </Grid>
 
+    </Grid>
 </UserControl>

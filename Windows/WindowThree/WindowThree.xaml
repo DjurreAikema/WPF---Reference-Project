@@ -18,6 +18,9 @@
                        Snacks="{Binding Snacks}"
                        SnackSelected="SnacksGrid_SnackSelected" />
 
+        <ui:SnackDetails Grid.Column="1"
+                         SelectedSnack="{Binding SelectedSnack}" />
+
     </Grid>
 
 </Window>
