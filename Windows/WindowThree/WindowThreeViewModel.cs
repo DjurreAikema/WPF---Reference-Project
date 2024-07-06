@@ -7,7 +7,7 @@ namespace WpfApp1.Windows.WindowThree;
 public record WindowThreeState
 {
     public List<Snack> Snacks { get; set; } = [];
-    public Snack SelectedSnack { get; set; } = new();
+    public Snack? SelectedSnack { get; set; } = new();
     public bool Loading { get; set; } = true;
 }
 
@@ -20,12 +20,12 @@ public class WindowThreeViewModel
 
     // --- Selectors
     public IObservable<List<Snack>> Snacks => State.Select(state => state.Snacks);
-    public IObservable<Snack> SelectedSnack => State.Select(state => state.SelectedSnack);
+    public IObservable<Snack?> SelectedSnack => State.Select(state => state.SelectedSnack);
     public IObservable<bool> Loading => State.Select(state => state.Loading);
 
 
     // --- Sources
-    public Subject<Snack> SelectedSnackChanged = new();
+    public readonly Subject<Snack> SelectedSnackChanged = new();
     private IObservable<List<Snack>> SnacksLoaded => GetSnacks();
 
     // --- Reducers
@@ -46,7 +46,7 @@ public class WindowThreeViewModel
     }
 
     // --- Functions
-    private IObservable<List<Snack>> GetSnacks()
+    private static IObservable<List<Snack>> GetSnacks()
     {
         return Observable.Return(new List<Snack>
         {
