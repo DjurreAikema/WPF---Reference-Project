@@ -9,8 +9,7 @@
 
     <Grid DataContext="{Binding  RelativeSource={RelativeSource AncestorType=ui:SnacksGrid}}">
         <ListBox x:Name="SnacksDataGrid"
-                 ItemsSource="{Binding Snacks}"
-                 SelectedItem="{Binding SelectedSnack}">
+                 ItemsSource="{Binding Snacks}">
 
             <ListBox.ItemTemplate>
                 <DataTemplate>

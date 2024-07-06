@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:local="clr-namespace:WpfApp1.Windows.WindowThree"
         xmlns:ui="clr-namespace:WpfApp1.Windows.WindowThree.Ui"
         mc:Ignorable="d"
         Title="WindowThree" Height="450" Width="800"
@@ -17,7 +16,7 @@
 
         <ui:SnacksGrid Grid.Column="0"
                        Snacks="{Binding Snacks}"
-                       SelectedSnack="{Binding SelectedSnack}" />
+                       SnackSelected="SnacksGrid_SnackSelected" />
 
     </Grid>
 

@@ -43,6 +43,17 @@ public partial class WindowThree : Window, INotifyPropertyChanged
             Snacks = snacks;
             OnPropertyChanged(nameof(Snacks));
         });
+
+        ViewModel.SelectedSnack.Subscribe(snack =>
+        {
+            SelectedSnack = snack;
+            OnPropertyChanged(nameof(SelectedSnack));
+        });
+    }
+
+    private void SnacksGrid_SnackSelected(Snack snack)
+    {
+        ViewModel.SelectedSnackChanged.OnNext(snack);
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
