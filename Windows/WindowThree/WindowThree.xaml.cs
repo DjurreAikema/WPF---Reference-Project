@@ -33,6 +33,18 @@ public partial class WindowThree : Window, INotifyPropertyChanged
         }
     }
 
+    private bool _loading;
+
+    public bool Loading
+    {
+        get => _loading;
+        set
+        {
+            _loading = value;
+            OnPropertyChanged();
+        }
+    }
+
     public WindowThree()
     {
         InitializeComponent();
@@ -48,6 +60,12 @@ public partial class WindowThree : Window, INotifyPropertyChanged
         {
             SelectedSnack = snack;
             OnPropertyChanged(nameof(SelectedSnack));
+        });
+
+        ViewModel.Loading.Subscribe(loading =>
+        {
+            Loading = loading;
+            OnPropertyChanged(nameof(Loading));
         });
     }
 
