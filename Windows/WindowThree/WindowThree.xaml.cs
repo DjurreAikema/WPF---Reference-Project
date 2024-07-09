@@ -1,13 +1,14 @@
 ﻿using System.ComponentModel;
+using System.Reactive.Disposables;
 using System.Runtime.CompilerServices;
-using System.Windows;
 using WpfApp1.Classes;
 
 namespace WpfApp1.Windows.WindowThree;
 
-public partial class WindowThree : Window, INotifyPropertyChanged
+public partial class WindowThree : INotifyPropertyChanged
 {
     private WindowThreeViewModel ViewModel { get; } = new();
+    private CompositeDisposable _disposables = new();
 
     private IEnumerable<Snack>? _snacks;
 
@@ -50,23 +51,29 @@ public partial class WindowThree : Window, INotifyPropertyChanged
         InitializeComponent();
         DataContext = this;
 
-        ViewModel.Snacks.Subscribe(snacks =>
+        _disposables.Add(ViewModel.Snacks.Subscribe(snacks =>
         {
             Snacks = snacks;
             OnPropertyChanged(nameof(Snacks));
-        });
+        }));
 
-        ViewModel.SelectedSnack.Subscribe(snack =>
+        _disposables.Add(ViewModel.SelectedSnack.Subscribe(snack =>
         {
             SelectedSnack = snack;
             OnPropertyChanged(nameof(SelectedSnack));
-        });
+        }));
 
-        ViewModel.Loading.Subscribe(loading =>
+        _disposables.Add(ViewModel.Loading.Subscribe(loading =>
         {
             Loading = loading;
             OnPropertyChanged(nameof(Loading));
-        });
+        }));
+
+        Closing += (_, _) =>
+        {
+            ViewModel.Dispose();
+            _disposables.Dispose();
+        };
     }
 
     private void SnacksGrid_SnackSelected(Snack snack)

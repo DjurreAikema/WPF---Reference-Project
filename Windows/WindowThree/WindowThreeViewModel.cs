@@ -1,4 +1,5 @@
-﻿using System.Reactive.Linq;
+﻿using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using WpfApp1.Classes;
 
@@ -13,6 +14,8 @@ public record WindowThreeState
 
 public class WindowThreeViewModel
 {
+    private readonly CompositeDisposable _disposables = new();
+
     // --- State
     private readonly BehaviorSubject<WindowThreeState> _stateSubject = new(new WindowThreeState());
     private IObservable<WindowThreeState> State => _stateSubject.AsObservable();
@@ -35,14 +38,14 @@ public class WindowThreeViewModel
         SelectedSnackChanged.Subscribe(snack => { _stateSubject.OnNext(_stateSubject.Value with {SelectedSnack = snack}); });
 
         // SnacksLoaded reducer
-        SnacksLoaded.Subscribe(snacks =>
+        _disposables.Add(SnacksLoaded.Subscribe(snacks =>
         {
             _stateSubject.OnNext(_stateSubject.Value with
             {
                 Snacks = snacks,
                 Loading = false
             });
-        });
+        }));
     }
 
     // --- Functions
@@ -52,8 +55,8 @@ public class WindowThreeViewModel
         {
             // Simulate API delay
             var random = new Random();
-            var delay = random.Next(3000, 6000);
-            await Task.Delay(delay);
+            // var delay = random.Next(1000, 3000);
+            // await Task.Delay(delay);
 
             // Return the data
             return new List<Snack>
@@ -67,5 +70,12 @@ public class WindowThreeViewModel
                 new() {Name = "Sun Chips", Price = 1.25, Quantity = 7},
             };
         });
+    }
+
+
+    // --- Dispose
+    public void Dispose()
+    {
+        _disposables.Dispose();
     }
 }
