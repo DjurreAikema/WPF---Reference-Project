@@ -30,7 +30,7 @@
         </Grid>
 
 
-        <uiShared:LoadingSpinner IsLoading="{Binding Loading}" />
+        <uiShared:LoadingSpinner IsLoading="{Binding Loading, UpdateSourceTrigger=PropertyChanged}" />
     </Grid>
 
 </Window>

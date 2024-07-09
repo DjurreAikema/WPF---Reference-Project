@@ -55,8 +55,8 @@ public class WindowThreeViewModel
         {
             // Simulate API delay
             var random = new Random();
-            // var delay = random.Next(1000, 3000);
-            // await Task.Delay(delay);
+            var delay = random.Next(1000, 3000);
+            await Task.Delay(delay);
 
             // Return the data
             return new List<Snack>

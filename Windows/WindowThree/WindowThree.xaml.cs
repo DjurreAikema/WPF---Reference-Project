@@ -8,7 +8,7 @@ namespace WpfApp1.Windows.WindowThree;
 public partial class WindowThree : INotifyPropertyChanged
 {
     private WindowThreeViewModel ViewModel { get; } = new();
-    private CompositeDisposable _disposables = new();
+    private readonly CompositeDisposable _disposables = new();
 
     private IEnumerable<Snack>? _snacks;
 

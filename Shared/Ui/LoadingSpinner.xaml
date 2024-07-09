@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:ui="clr-namespace:WpfApp1.Shared.Ui"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
 
@@ -35,7 +36,8 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+    <Grid DataContext="{Binding  RelativeSource={RelativeSource AncestorType=ui:LoadingSpinner}}"
+          Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
         <Grid.Background>
             <SolidColorBrush Color="Black" Opacity="0.5" />
         </Grid.Background>
