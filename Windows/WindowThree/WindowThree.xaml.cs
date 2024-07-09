@@ -69,6 +69,8 @@ public partial class WindowThree : INotifyPropertyChanged
             OnPropertyChanged(nameof(Loading));
         }));
 
+
+        // Dispose of all subscriptions when the window is closed
         Closing += (_, _) =>
         {
             ViewModel.Dispose();
