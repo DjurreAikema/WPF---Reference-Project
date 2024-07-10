@@ -52,9 +52,9 @@ public class WindowFourViewModel
         return Observable.FromAsync(async () =>
         {
             // Simulate API delay
-            // var random = new Random();
-            // var delay = random.Next(1000, 3000);
-            // await Task.Delay(delay);
+            var random = new Random();
+            var delay = random.Next(500, 2000);
+            await Task.Delay(delay);
 
             // Return the data
             return new List<Snack>

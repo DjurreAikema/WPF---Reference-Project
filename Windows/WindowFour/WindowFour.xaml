@@ -17,7 +17,6 @@
             </Grid.ColumnDefinitions>
 
             <ui:SnacksGridFour Grid.Column="0"
-                               Disposables="{Binding ViewModel.Disposables, Mode=TwoWay}"
                                SnacksObs="{Binding ViewModel.SnacksO}"
                                SnackSelected="SnacksGrid_SnackSelected" />
 

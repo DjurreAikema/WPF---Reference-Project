@@ -8,19 +8,19 @@ namespace WpfApp1.Windows.WindowFour.Ui;
 
 public partial class SnacksGridFour : INotifyPropertyChanged
 {
-    public static readonly DependencyProperty DisposablesProperty = DependencyProperty.Register(
-        nameof(Disposables), typeof(CompositeDisposable), typeof(SnacksGridFour),
-        new PropertyMetadata(null));
-
-    public CompositeDisposable Disposables
-    {
-        get => (CompositeDisposable) GetValue(DisposablesProperty);
-        set => SetValue(DisposablesProperty, value);
-    }
+    private readonly CompositeDisposable _disposables = new();
 
     public static readonly DependencyProperty SnacksObsProperty = DependencyProperty.Register(
         nameof(SnacksObs), typeof(IObservable<IEnumerable<Snack>>), typeof(SnacksGridFour),
-        new PropertyMetadata(null, OnSnacksObsChanged));
+        new PropertyMetadata(null, (d, e) =>
+        {
+            if (d is not SnacksGridFour component) return;
+            component._disposables.Add(component.SnacksObs.Subscribe(snacks =>
+            {
+                component.Snacks = snacks;
+                component.OnPropertyChanged(nameof(Snacks));
+            }));
+        }));
 
     public IObservable<IEnumerable<Snack>> SnacksObs
     {
@@ -46,16 +46,7 @@ public partial class SnacksGridFour : INotifyPropertyChanged
     {
         InitializeComponent();
 
-        // if (SnacksObs != null)
-        // {
-        // Disposables.Add(SnacksObs.Subscribe(snacks =>
-        // {
-        //     Snacks = snacks;
-        //     OnPropertyChanged(nameof(Snacks));
-        // }));
-        // }
-
-        SnacksDataGrid.SelectionChanged += (s, e) =>
+        SnacksDataGrid.SelectionChanged += (_, _) =>
         {
             if (SnacksDataGrid.SelectedItem is Snack selectedSnack)
             {
@@ -71,27 +62,23 @@ public partial class SnacksGridFour : INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    private static void OnSnacksObsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        if (d is SnacksGridFour component)
-        {
-            component.SubscribeToSnacksObservable(e.NewValue as IObservable<IEnumerable<Snack>>);
-        }
-    }
-
-    private void SubscribeToSnacksObservable(IObservable<IEnumerable<Snack>>? snacksObs)
-    {
-        // Disposables.Clear();
-
-        if (snacksObs != null)
-        {
-            var subscription = snacksObs.Subscribe(snacks =>
-            {
-                Snacks = snacks;
-                OnPropertyChanged(nameof(Snacks));
-            });
-
-            // Disposables.Add(subscription);
-        }
-    }
+    // private static void OnSnacksObsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    // {
+    //     if (d is SnacksGridFour component)
+    //     {
+    //         component.SubscribeToSnacksObservable(e.NewValue as IObservable<IEnumerable<Snack>>);
+    //     }
+    // }
+    //
+    // private void SubscribeToSnacksObservable(IObservable<IEnumerable<Snack>>? snacksObs)
+    // {
+    //     if (snacksObs != null)
+    //     {
+    //         var subscription = snacksObs.Subscribe(snacks =>
+    //         {
+    //             Snacks = snacks;
+    //             OnPropertyChanged(nameof(Snacks));
+    //         });
+    //     }
+    // }
 }
