@@ -7,7 +7,12 @@ namespace WpfApp1.Abstract;
 
 public abstract class ADumbComponent : UserControl, INotifyPropertyChanged
 {
-    protected readonly CompositeDisposable _disposables = new();
+    protected readonly CompositeDisposable Disposables = new();
+
+    protected void Dispose()
+    {
+        Disposables.Dispose();
+    }
 
     public event PropertyChangedEventHandler? PropertyChanged;
 

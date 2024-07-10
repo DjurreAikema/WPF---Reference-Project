@@ -1,20 +1,20 @@
 ﻿using System.Windows;
-using WpfApp1.Abstract;
 using WpfApp1.Classes;
 
 namespace WpfApp1.Windows.WindowFour.Ui;
 
-public partial class SnacksGridFour : ADumbComponent
+public partial class SnacksGridFour
 {
+    // --- Dependency Properties
     public static readonly DependencyProperty SnacksObsProperty = DependencyProperty.Register(
         nameof(SnacksObs), typeof(IObservable<IEnumerable<Snack>>), typeof(SnacksGridFour),
-        new PropertyMetadata(null, (d, e) =>
+        new PropertyMetadata(null, (d, _) =>
         {
-            if (d is not SnacksGridFour component) return;
-            component._disposables.Add(component.SnacksObs.Subscribe(snacks =>
+            if (d is not SnacksGridFour c) return;
+            c.Disposables.Add(c.SnacksObs.Subscribe(snacks =>
             {
-                component.Snacks = snacks;
-                component.OnPropertyChanged(nameof(Snacks));
+                c.Snacks = snacks;
+                c.OnPropertyChanged(nameof(Snacks));
             }));
         }));
 
@@ -24,6 +24,7 @@ public partial class SnacksGridFour : ADumbComponent
         set => SetValue(SnacksObsProperty, value);
     }
 
+    // --- Internal Properties
     private IEnumerable<Snack>? _snacks;
 
     public IEnumerable<Snack>? Snacks
