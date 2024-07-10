@@ -24,6 +24,9 @@ public partial class SnacksGridFour
         set => SetValue(SnacksObsProperty, value);
     }
 
+    // --- Events
+    public event Action<Snack>? SnackSelected;
+
     // --- Internal Properties
     private IEnumerable<Snack>? _snacks;
 
@@ -37,18 +40,14 @@ public partial class SnacksGridFour
         }
     }
 
-    public event Action<Snack>? SnackSelected;
-
+    // --- Constructor
     public SnacksGridFour()
     {
         InitializeComponent();
 
         SnacksDataGrid.SelectionChanged += (_, _) =>
         {
-            if (SnacksDataGrid.SelectedItem is Snack selectedSnack)
-            {
-                SnackSelected?.Invoke(selectedSnack);
-            }
+            if (SnacksDataGrid.SelectedItem is Snack selectedSnack) SnackSelected?.Invoke(selectedSnack);
         };
     }
 }

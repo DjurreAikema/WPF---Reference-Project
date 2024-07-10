@@ -14,29 +14,29 @@ public record WindowFourState
 
 public class WindowFourViewModel
 {
-    public CompositeDisposable Disposables = new();
+    private readonly CompositeDisposable _disposables = new();
 
     // --- State
     private readonly BehaviorSubject<WindowFourState> _stateSubject = new(new WindowFourState());
-    private IObservable<WindowFourState> StateO => _stateSubject.AsObservable();
+    private IObservable<WindowFourState> StateObs => _stateSubject.AsObservable();
 
     // --- Selectors
-    public IObservable<List<Snack>> SnacksO => StateO.Select(state => state.Snacks);
-    public IObservable<Snack?> SelectedSnackO => StateO.Select(state => state.SelectedSnack);
-    public IObservable<bool> LoadingO => StateO.Select(state => state.Loading);
+    public IObservable<List<Snack>> SnacksObs => StateObs.Select(state => state.Snacks);
+    public IObservable<Snack?> SelectedSnackObs => StateObs.Select(state => state.SelectedSnack);
+    public IObservable<bool> LoadingOb => StateObs.Select(state => state.Loading);
 
     // --- Sources
-    public readonly Subject<Snack> SelectedSnackChangedS = new();
-    private IObservable<List<Snack>> SnacksLoadedO => GetSnacks();
+    public readonly Subject<Snack> SelectedSnackChanged = new();
+    private IObservable<List<Snack>> SnacksLoadedObs => GetSnacks();
 
     // --- Reducers
     public WindowFourViewModel()
     {
         // SelectedSnackChanged reducer
-        Disposables.Add(SelectedSnackChangedS.Subscribe(snack => { _stateSubject.OnNext(_stateSubject.Value with {SelectedSnack = snack}); }));
+        _disposables.Add(SelectedSnackChanged.Subscribe(snack => { _stateSubject.OnNext(_stateSubject.Value with {SelectedSnack = snack}); }));
 
         // SnacksLoaded reducer
-        Disposables.Add(SnacksLoadedO.Subscribe(snacks =>
+        _disposables.Add(SnacksLoadedObs.Subscribe(snacks =>
         {
             _stateSubject.OnNext(_stateSubject.Value with
             {
@@ -73,6 +73,6 @@ public class WindowFourViewModel
     // --- Dispose
     public void Dispose()
     {
-        Disposables.Dispose();
+        _disposables.Dispose();
     }
 }

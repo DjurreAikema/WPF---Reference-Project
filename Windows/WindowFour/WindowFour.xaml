@@ -17,7 +17,8 @@
             </Grid.ColumnDefinitions>
 
             <ui:SnacksGridFour Grid.Column="0"
-                               SnacksObs="{Binding ViewModel.SnacksO}"
+                               TriggerDispose="{Binding TriggerDispose}"
+                               SnacksObs="{Binding ViewModel.SnacksObs}"
                                SnackSelected="SnacksGrid_SnackSelected" />
 
             <!-- <ui:SnackDetailsFour Grid.Column="1" -->
