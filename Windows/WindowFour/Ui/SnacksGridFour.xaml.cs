@@ -1,15 +1,11 @@
-﻿using System.ComponentModel;
-using System.Reactive.Disposables;
-using System.Runtime.CompilerServices;
-using System.Windows;
+﻿using System.Windows;
+using WpfApp1.Abstract;
 using WpfApp1.Classes;
 
 namespace WpfApp1.Windows.WindowFour.Ui;
 
-public partial class SnacksGridFour : INotifyPropertyChanged
+public partial class SnacksGridFour : ADumbComponent
 {
-    private readonly CompositeDisposable _disposables = new();
-
     public static readonly DependencyProperty SnacksObsProperty = DependencyProperty.Register(
         nameof(SnacksObs), typeof(IObservable<IEnumerable<Snack>>), typeof(SnacksGridFour),
         new PropertyMetadata(null, (d, e) =>
@@ -54,31 +50,4 @@ public partial class SnacksGridFour : INotifyPropertyChanged
             }
         };
     }
-
-    public event PropertyChangedEventHandler? PropertyChanged;
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
-    // private static void OnSnacksObsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    // {
-    //     if (d is SnacksGridFour component)
-    //     {
-    //         component.SubscribeToSnacksObservable(e.NewValue as IObservable<IEnumerable<Snack>>);
-    //     }
-    // }
-    //
-    // private void SubscribeToSnacksObservable(IObservable<IEnumerable<Snack>>? snacksObs)
-    // {
-    //     if (snacksObs != null)
-    //     {
-    //         var subscription = snacksObs.Subscribe(snacks =>
-    //         {
-    //             Snacks = snacks;
-    //             OnPropertyChanged(nameof(Snacks));
-    //         });
-    //     }
-    // }
 }
