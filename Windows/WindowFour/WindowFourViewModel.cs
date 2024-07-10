@@ -14,29 +14,29 @@ public record WindowFourState
 
 public class WindowFourViewModel
 {
-    private readonly CompositeDisposable _disposables = new();
+    public CompositeDisposable Disposables = new();
 
     // --- State
     private readonly BehaviorSubject<WindowFourState> _stateSubject = new(new WindowFourState());
-    private IObservable<WindowFourState> State => _stateSubject.AsObservable();
+    private IObservable<WindowFourState> StateO => _stateSubject.AsObservable();
 
     // --- Selectors
-    public IObservable<List<Snack>> Snacks => State.Select(state => state.Snacks);
-    public IObservable<Snack?> SelectedSnack => State.Select(state => state.SelectedSnack);
-    public IObservable<bool> Loading => State.Select(state => state.Loading);
+    public IObservable<List<Snack>> SnacksO => StateO.Select(state => state.Snacks);
+    public IObservable<Snack?> SelectedSnackO => StateO.Select(state => state.SelectedSnack);
+    public IObservable<bool> LoadingO => StateO.Select(state => state.Loading);
 
     // --- Sources
-    public readonly Subject<Snack> SelectedSnackChanged = new();
-    private IObservable<List<Snack>> SnacksLoaded => GetSnacks();
+    public readonly Subject<Snack> SelectedSnackChangedS = new();
+    private IObservable<List<Snack>> SnacksLoadedO => GetSnacks();
 
     // --- Reducers
     public WindowFourViewModel()
     {
         // SelectedSnackChanged reducer
-        SelectedSnackChanged.Subscribe(snack => { _stateSubject.OnNext(_stateSubject.Value with {SelectedSnack = snack}); });
+        Disposables.Add(SelectedSnackChangedS.Subscribe(snack => { _stateSubject.OnNext(_stateSubject.Value with {SelectedSnack = snack}); }));
 
         // SnacksLoaded reducer
-        _disposables.Add(SnacksLoaded.Subscribe(snacks =>
+        Disposables.Add(SnacksLoadedO.Subscribe(snacks =>
         {
             _stateSubject.OnNext(_stateSubject.Value with
             {
@@ -52,9 +52,9 @@ public class WindowFourViewModel
         return Observable.FromAsync(async () =>
         {
             // Simulate API delay
-            var random = new Random();
-            var delay = random.Next(1000, 3000);
-            await Task.Delay(delay);
+            // var random = new Random();
+            // var delay = random.Next(1000, 3000);
+            // await Task.Delay(delay);
 
             // Return the data
             return new List<Snack>
@@ -73,6 +73,6 @@ public class WindowFourViewModel
     // --- Dispose
     public void Dispose()
     {
-        _disposables.Dispose();
+        Disposables.Dispose();
     }
 }
