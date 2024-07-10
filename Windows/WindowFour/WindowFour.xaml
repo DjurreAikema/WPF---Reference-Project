@@ -21,8 +21,9 @@
                                SnacksObs="{Binding ViewModel.SnacksObs}"
                                SnackSelected="SnacksGrid_SnackSelected" />
 
-            <!-- <ui:SnackDetailsFour Grid.Column="1" -->
-            <!--                      SelectedSnack="{Binding SelectedSnack}" /> -->
+            <ui:SnackDetailsFour Grid.Column="1"
+                                 TriggerDispose="{Binding TriggerDispose}"
+                                 SelectedSnackObs="{Binding ViewModel.SelectedSnackObs}" />
 
         </Grid>
 
