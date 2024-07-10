@@ -1,12 +1,12 @@
 ﻿using System.Windows;
 using WpfApp1.Classes;
 
-namespace WpfApp1.Windows.WindowThree.Ui;
+namespace WpfApp1.Windows.WindowFour.Ui;
 
-public partial class SnackDetails
+public partial class SnackDetailsFour
 {
     public static readonly DependencyProperty SelectedSnackProperty = DependencyProperty.Register(
-        nameof(SelectedSnack), typeof(Snack), typeof(SnackDetails),
+        nameof(SelectedSnack), typeof(Snack), typeof(SnackDetailsFour),
         new PropertyMetadata(null));
 
     public Snack SelectedSnack
@@ -15,7 +15,7 @@ public partial class SnackDetails
         set => SetValue(SelectedSnackProperty, value);
     }
 
-    public SnackDetails()
+    public SnackDetailsFour()
     {
         InitializeComponent();
     }

@@ -3,9 +3,30 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:ui="clr-namespace:WpfApp1.Windows.WindowFour.Ui"
+        xmlns:ui1="clr-namespace:WpfApp1.Shared.Ui"
         mc:Ignorable="d"
-        Title="WindowFour" Height="450" Width="800">
-    <Grid>
+        Title="WindowFour" Height="450" Width="800"
+        DataContext="{Binding  RelativeSource={RelativeSource Self}}">
 
+    <Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="2*" />
+            </Grid.ColumnDefinitions>
+
+            <ui:SnacksGridFour Grid.Column="0"
+                               Snacks="{Binding Snacks}"
+                               SnackSelected="SnacksGrid_SnackSelected" />
+
+            <ui:SnackDetailsFour Grid.Column="1"
+                                 SelectedSnack="{Binding SelectedSnack}" />
+
+        </Grid>
+
+
+        <ui1:LoadingSpinner IsLoading="{Binding Loading, UpdateSourceTrigger=PropertyChanged}" />
     </Grid>
+
 </Window>

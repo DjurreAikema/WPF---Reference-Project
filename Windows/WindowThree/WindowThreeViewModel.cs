@@ -72,7 +72,6 @@ public class WindowThreeViewModel
         });
     }
 
-
     // --- Dispose
     public void Dispose()
     {
