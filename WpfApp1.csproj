@@ -33,11 +33,18 @@
       <Compile Update="Windows\WindowThree\WindowThreeViewModel.cs">
         <DependentUpon>WindowThree.xaml</DependentUpon>
       </Compile>
+      <Compile Update="Windows\WindowFour\WindowFourViewModel.cs">
+        <DependentUpon>WindowFour.xaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="System.Reactive" Version="6.0.1" />
       <PackageReference Include="System.Reactive.Linq" Version="6.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Windows\WindowFour\Ui\" />
     </ItemGroup>
 
 </Project>
