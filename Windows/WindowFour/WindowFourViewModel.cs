@@ -23,7 +23,7 @@ public class WindowFourViewModel
     // --- Selectors
     public IObservable<List<Snack>> SnacksObs => StateObs.Select(state => state.Snacks);
     public IObservable<Snack?> SelectedSnackObs => StateObs.Select(state => state.SelectedSnack);
-    public IObservable<bool> LoadingOb => StateObs.Select(state => state.Loading);
+    public IObservable<bool> LoadingObs => StateObs.Select(state => state.Loading);
 
     // --- Sources
     public readonly Subject<Snack> SelectedSnackChanged = new();
