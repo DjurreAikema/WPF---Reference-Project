@@ -28,7 +28,6 @@
         </Grid>
 
         <shared:ObsLoadingSpinner IsLoadingObs="{Binding ViewModel.LoadingObs}"/>
-        <!-- <ui1:LoadingSpinner IsLoading="{Binding Loading, UpdateSourceTrigger=PropertyChanged}" /> -->
     </Grid>
 
 </Window>
