@@ -27,6 +27,7 @@ public partial class SnacksGridFour
     // --- Events
     public event Action<Snack>? SnackSelected;
 
+
     // --- Internal Properties
     private IEnumerable<Snack>? _snacks;
 
