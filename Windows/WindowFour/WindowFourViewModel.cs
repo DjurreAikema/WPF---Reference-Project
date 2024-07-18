@@ -7,9 +7,9 @@ namespace WpfApp1.Windows.WindowFour;
 
 public record WindowFourState
 {
-    public List<Snack> Snacks { get; set; } = [];
-    public Snack? SelectedSnack { get; set; } = new();
-    public bool Loading { get; set; } = true;
+    public List<Snack> Snacks { get; init; } = [];
+    public Snack? SelectedSnack { get; init; } = new();
+    public bool Loading { get; init; } = true;
 }
 
 public class WindowFourViewModel
