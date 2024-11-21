@@ -4,9 +4,31 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:WpfApp1.Windows.WindowFive"
+        xmlns:ui="clr-namespace:WpfApp1.Windows.WindowFive.UI"
+        xmlns:ui1="clr-namespace:WpfApp1.Shared.Ui"
         mc:Ignorable="d"
-        Title="WindowFive" Height="450" Width="800">
+        Title="WindowFive" Height="450" Width="800"
+        DataContext="{Binding  RelativeSource={RelativeSource Self}}">
+
     <Grid>
-        
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="2*" />
+            </Grid.ColumnDefinitions>
+
+            <ui:SnacksGridFive Grid.Column="0"
+                               TriggerDispose="{Binding TriggerDispose}"
+                               SnacksObs="{Binding ViewModel.SnacksObs}"
+                               SnackSelected="SnacksGrid_SnackSelected" />
+
+            <ui:SnackDetailsFive Grid.Column="1"
+                                 TriggerDispose="{Binding TriggerDispose}"
+                                 SelectedSnackObs="{Binding ViewModel.SelectedSnackObs}" />
+
+        </Grid>
+
+        <ui1:ObsLoadingSpinner IsLoadingObs="{Binding ViewModel.LoadingObs}" />
     </Grid>
+
 </Window>
