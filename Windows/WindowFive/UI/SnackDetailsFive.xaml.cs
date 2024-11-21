@@ -5,17 +5,21 @@ namespace WpfApp1.Windows.WindowFive.UI;
 
 public partial class SnackDetailsFive
 {
+    private IDisposable? _selectedSnackSubscription;
+
     // --- Dependency Properties
     public static readonly DependencyProperty SelectedSnackObsProperty = DependencyProperty.Register(
         nameof(SelectedSnackObs), typeof(IObservable<Snack>), typeof(SnackDetailsFive),
-        new PropertyMetadata(null, (d, _) =>
+        new PropertyMetadata(null, (d, e) =>
         {
             if (d is not SnackDetailsFive c) return;
-            c.Disposables.Add(c.SelectedSnackObs.Subscribe(snack =>
-            {
-                c.SelectedSnack = snack;
-                c.OnPropertyChanged(nameof(SelectedSnack));
-            }));
+            c._selectedSnackSubscription?.Dispose();
+
+            if (e.NewValue is IObservable<Snack> newObs)
+                c._selectedSnackSubscription = newObs.Subscribe(snack =>
+                {
+                    c.SelectedSnack = snack;
+                });
         }));
 
     public IObservable<Snack> SelectedSnackObs
