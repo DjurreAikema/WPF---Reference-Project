@@ -7,7 +7,7 @@ namespace WpfApp1.Windows.WindowSix.Services;
 
 public class SnackService(SnackDbContext context) : ISnackService
 {
-    public async Task<IEnumerable<Snack>> GetAllSnacksAsync()
+    public async Task<List<Snack>> GetAllSnacksAsync()
     {
         return await context.Snacks.ToListAsync();
     }

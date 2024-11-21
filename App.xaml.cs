@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using WpfApp1.Data;
-using SQLitePCL;
 using WpfApp1.Windows.WindowSix.Interfaces;
 using WpfApp1.Windows.WindowSix.Services;
 
