@@ -35,6 +35,14 @@ public class WindowSixViewModel : IDisposable
     public readonly Subject<Snack> Update = new();
     public readonly Subject<int> Delete = new();
 
+    private IObservable<Snack> SnackUpdatedObs => Update.SelectMany(obj =>
+        Observable.FromAsync(async () => await _snackService.UpdateSnackAsync(obj))
+            .Catch((Exception e) =>
+            {
+                Console.WriteLine($"Error updating snack: {e.Message}");
+                return Observable.Return(new Snack());
+            }));
+
     private IObservable<List<Snack>> SnacksLoadedObs => Observable.FromAsync(_snackService.GetAllSnacksAsync);
 
     // --- Reducers
@@ -59,6 +67,16 @@ public class WindowSixViewModel : IDisposable
                 // Handle or log the exception
                 Console.WriteLine($"Error loading snacks: {ex.Message}");
             }));
+
+        // SnackUpdated reducer
+        _disposables.Add(SnackUpdatedObs.Subscribe(snack =>
+        {
+            var snacks = _stateSubject.Value.Snacks;
+            var index = snacks.FindIndex(s => s.Id == snack.Id);
+            if (index == -1) return;
+            snacks[index] = snack;
+            _stateSubject.OnNext(_stateSubject.Value with {Snacks = snacks});
+        }));
     }
 
     // --- Dispose

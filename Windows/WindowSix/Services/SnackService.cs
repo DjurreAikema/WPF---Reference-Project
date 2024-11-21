@@ -31,11 +31,19 @@ public class SnackService : ISnackService
         await context.SaveChangesAsync();
     }
 
-    public async Task UpdateSnackAsync(Snack snack)
+    // public async Task UpdateSnackAsync(Snack snack)
+    // {
+    //     await using var context = CreateDbContext();
+    //     context.Snacks.Update(snack);
+    //     await context.SaveChangesAsync();
+    // }
+
+    public async Task<Snack> UpdateSnackAsync(Snack snack)
     {
         await using var context = CreateDbContext();
         context.Snacks.Update(snack);
         await context.SaveChangesAsync();
+        return snack; // Return the updated snack
     }
 
     public async Task DeleteSnackAsync(int id)
