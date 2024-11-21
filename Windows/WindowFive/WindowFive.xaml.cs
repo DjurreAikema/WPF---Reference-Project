@@ -1,6 +1,7 @@
 using System.Reactive.Subjects;
 using System.Windows;
 using WpfApp1.Classes;
+using WpfApp1.Windows.WindowFive.Events;
 
 namespace WpfApp1.Windows.WindowFive;
 
@@ -22,8 +23,8 @@ public partial class WindowFive : Window
         };
     }
 
-    private void SnacksGrid_SnackSelected(Snack snack)
+    private void SnacksGrid_SnackSelected(object? sender, SnackSelectedEventArgs snackSelectedEventArgs)
     {
-        ViewModel.SelectedSnackChanged.OnNext(snack);
+        ViewModel.SelectedSnackChanged.OnNext(snackSelectedEventArgs.SelectedSnack);
     }
 }

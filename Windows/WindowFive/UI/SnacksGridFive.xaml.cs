@@ -1,5 +1,6 @@
 using System.Windows;
 using WpfApp1.Classes;
+using WpfApp1.Windows.WindowFive.Events;
 
 namespace WpfApp1.Windows.WindowFive.UI;
 
@@ -25,8 +26,7 @@ public partial class SnacksGridFive
     }
 
     // --- Events
-    public event Action<Snack>? SnackSelected;
-
+    public event EventHandler<SnackSelectedEventArgs>? SnackSelected;
 
     // --- Internal Properties
     private IEnumerable<Snack>? _snacks;
@@ -48,7 +48,7 @@ public partial class SnacksGridFive
 
         SnacksDataGrid.SelectionChanged += (_, _) =>
         {
-            if (SnacksDataGrid.SelectedItem is Snack selectedSnack) SnackSelected?.Invoke(selectedSnack);
+            if (SnacksDataGrid.SelectedItem is Snack selectedSnack) SnackSelected?.Invoke(this, new SnackSelectedEventArgs(selectedSnack));
         };
     }
 }
