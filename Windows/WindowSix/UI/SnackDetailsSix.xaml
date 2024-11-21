@@ -1,12 +1,18 @@
-<UserControl x:Class="WpfApp1.Windows.WindowSix.UI.SnackDetailsSix"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:WpfApp1.Windows.WindowSix.UI"
-             mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-        
-    </Grid>
-</UserControl>
+<abstract:ADumbComponent x:Class="WpfApp1.Windows.WindowSix.UI.SnackDetailsSix"
+                         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                         xmlns:local="clr-namespace:WpfApp1.Windows.WindowSix.UI"
+                         xmlns:abstract="clr-namespace:WpfApp1.Abstract"
+                         mc:Ignorable="d"
+                         d:DesignHeight="300" d:DesignWidth="300">
+
+    <StackPanel DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:SnackDetailsSix}}" Margin="10">
+        <Label Content="Snack details" />
+        <TextBlock Text="{Binding SelectedSnack.Name}" />
+        <TextBlock Text="{Binding SelectedSnack.Price}" />
+        <TextBlock Text="{Binding SelectedSnack.Quantity}" />
+    </StackPanel>
+
+</abstract:ADumbComponent>
