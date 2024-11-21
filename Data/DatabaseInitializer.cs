@@ -1,5 +1,5 @@
-using Dapper;
 using Microsoft.Data.Sqlite;
+using WpfApp1.Classes;
 
 namespace WpfApp1.Data;
 
@@ -25,26 +25,20 @@ public static class DatabaseInitializer
         createTable.ExecuteNonQuery();
     }
 
-    public static void SeedData()
+    public static void SeedData(SnackDbContext context)
     {
-        using var connection = new SqliteConnection(ConnectionString);
-        connection.Open();
-
-        var count = connection.ExecuteScalar<int>("SELECT COUNT(1) FROM Snacks");
-        if (count == 0)
+        if (context.Snacks.Any()) return;
+        context.Snacks.AddRange(new List<Snack>
         {
-            var insertCommand = @"
-            INSERT INTO Snacks (Name, Price, Quantity) VALUES
-            ('Doritos', 1.50, 4),
-            ('Lays', 1.00, 3),
-            ('Pringles', 2.00, 2),
-            ('Cheetos', 1.25, 5),
-            ('Ruffles', 1.75, 1),
-            ('Tostitos', 1.50, 6),
-            ('Sun Chips', 1.25, 7);
-        ";
-            using var insert = new SqliteCommand(insertCommand, connection);
-            insert.ExecuteNonQuery();
-        }
+            new Snack {Name = "Doritos", Price = 1.50, Quantity = 4},
+            new Snack {Name = "Lays", Price = 1.00, Quantity = 3},
+            new Snack {Name = "Pringles", Price = 2.00, Quantity = 2},
+            new Snack {Name = "Cheetos", Price = 1.25, Quantity = 5},
+            new Snack {Name = "Ruffles", Price = 1.75, Quantity = 1},
+            new Snack {Name = "Tostitos", Price = 1.50, Quantity = 6},
+            new Snack {Name = "Sun Chips", Price = 1.25, Quantity = 7},
+        });
+
+        context.SaveChanges();
     }
 }

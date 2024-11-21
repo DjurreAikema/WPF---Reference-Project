@@ -1,8 +1,11 @@
-﻿namespace WpfApp1.Classes;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace WpfApp1.Classes;
 
 public class Snack
 {
-    public string Name { get; set; } = string.Empty;
-    public double Price { get; set; }
-    public int Quantity { get; set; }
+    [Key] public int Id { get; set; }
+    [Required] public string Name { get; set; } = string.Empty;
+    [Required] public double Price { get; set; }
+    [Required] public int Quantity { get; set; }
 }
