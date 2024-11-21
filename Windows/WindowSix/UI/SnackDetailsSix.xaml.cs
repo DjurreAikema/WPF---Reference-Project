@@ -24,6 +24,10 @@ public partial class SnackDetailsSix
         set => SetValue(SelectedSnackObsProperty, value);
     }
 
+    // --- Events
+    public event Action<Snack>? SnackSaved;
+    public event Action<Snack>? SnackDeleted;
+
     // --- Internal Properties
     private Snack _selectedSnack = new();
 
@@ -41,5 +45,15 @@ public partial class SnackDetailsSix
     public SnackDetailsSix()
     {
         InitializeComponent();
+    }
+
+    private void Save_OnClick(object sender, RoutedEventArgs e)
+    {
+        SnackSaved?.Invoke(SelectedSnack);
+    }
+
+    private void Delete_OnClick(object sender, RoutedEventArgs e)
+    {
+        SnackDeleted?.Invoke(SelectedSnack);
     }
 }
