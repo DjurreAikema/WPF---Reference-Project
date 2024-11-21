@@ -3,6 +3,7 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using WpfApp1.Classes;
 using WpfApp1.Windows.WindowSix.Interfaces;
+using WpfApp1.Windows.WindowSix.Services;
 
 namespace WpfApp1.Windows.WindowSix;
 
@@ -32,22 +33,27 @@ public class WindowSixViewModel : IDisposable
     private IObservable<List<Snack>> SnacksLoadedObs => Observable.FromAsync(_snackService.GetAllSnacksAsync);
 
     // --- Reducers
-    public WindowSixViewModel(ISnackService snackService)
+    public WindowSixViewModel()
     {
-        _snackService = snackService;
+        _snackService = new SnackService();
 
         // SelectedSnackChanged reducer
         _disposables.Add(SelectedSnackChanged.Subscribe(snack => { _stateSubject.OnNext(_stateSubject.Value with {SelectedSnack = snack}); }));
 
         // SnacksLoaded reducer
         _disposables.Add(SnacksLoadedObs.Subscribe(snacks =>
-        {
-            _stateSubject.OnNext(_stateSubject.Value with
             {
-                Snacks = snacks,
-                Loading = false
-            });
-        }));
+                _stateSubject.OnNext(_stateSubject.Value with
+                {
+                    Snacks = snacks,
+                    Loading = false
+                });
+            },
+            ex =>
+            {
+                // Handle or log the exception
+                Console.WriteLine($"Error loading snacks: {ex.Message}");
+            }));
     }
 
     // --- Dispose

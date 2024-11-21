@@ -5,27 +5,42 @@ using WpfApp1.Windows.WindowSix.Interfaces;
 
 namespace WpfApp1.Windows.WindowSix.Services;
 
-public class SnackService(SnackDbContext context) : ISnackService
+public class SnackService : ISnackService
 {
+    public SnackService()
+    {
+    }
+
+    private SnackDbContext CreateDbContext()
+    {
+        var optionsBuilder = new DbContextOptionsBuilder<SnackDbContext>();
+        optionsBuilder.UseSqlite("Data Source=snacks.db");
+        return new SnackDbContext(optionsBuilder.Options);
+    }
+
     public async Task<List<Snack>> GetAllSnacksAsync()
     {
+        await using var context = CreateDbContext();
         return await context.Snacks.ToListAsync();
     }
 
     public async Task AddSnackAsync(Snack snack)
     {
+        await using var context = CreateDbContext();
         context.Snacks.Add(snack);
         await context.SaveChangesAsync();
     }
 
     public async Task UpdateSnackAsync(Snack snack)
     {
+        await using var context = CreateDbContext();
         context.Snacks.Update(snack);
         await context.SaveChangesAsync();
     }
 
     public async Task DeleteSnackAsync(int id)
     {
+        await using var context = CreateDbContext();
         var snack = await context.Snacks.FindAsync(id);
         if (snack != null)
         {
