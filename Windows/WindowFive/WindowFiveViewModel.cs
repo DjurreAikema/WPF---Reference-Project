@@ -8,7 +8,7 @@ namespace WpfApp1.Windows.WindowFive;
 public record WindowFiveState
 {
     public List<Snack> Snacks { get; init; } = [];
-    public Snack? SelectedSnack { get; init; } = new();
+    public Snack? SelectedSnack { get; init; }
     public bool Loading { get; init; } = true;
 }
 
