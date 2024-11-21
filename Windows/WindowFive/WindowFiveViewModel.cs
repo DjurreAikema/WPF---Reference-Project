@@ -67,6 +67,11 @@ public class WindowFiveViewModel
                 new() {Name = "Tostitos", Price = 1.50, Quantity = 6},
                 new() {Name = "Sun Chips", Price = 1.25, Quantity = 7},
             };
+        })
+        .Catch<List<Snack>, Exception>(ex =>
+        {
+            // Handle exception, log error, and provide fallback
+            return Observable.Return(new List<Snack>());
         });
     }
 
