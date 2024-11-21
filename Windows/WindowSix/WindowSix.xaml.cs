@@ -29,4 +29,14 @@ public partial class WindowSix
     {
         ViewModel.Create.OnNext(default);
     }
+
+    private void SnackDetailsSix_OnSnackSaved(Snack snack)
+    {
+        ViewModel.Update.OnNext(snack);
+    }
+
+    private void SnackDetailsSix_OnSnackDeleted(Snack snack)
+    {
+        ViewModel.Delete.OnNext(snack.Id);
+    }
 }

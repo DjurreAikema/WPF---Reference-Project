@@ -21,7 +21,9 @@
 
             <ui:SnackDetailsSix Grid.Column="1"
                                 TriggerDispose="{Binding TriggerDispose}"
-                                SelectedSnackObs="{Binding ViewModel.SelectedSnackObs}" />
+                                SelectedSnackObs="{Binding ViewModel.SelectedSnackObs}"
+                                SnackSaved="SnackDetailsSix_OnSnackSaved"
+                                SnackDeleted="SnackDetailsSix_OnSnackDeleted"/>
         </Grid>
 
         <ui1:ObsLoadingSpinner IsLoadingObs="{Binding ViewModel.LoadingObs}"/>
