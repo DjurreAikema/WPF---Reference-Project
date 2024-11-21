@@ -24,4 +24,9 @@ public partial class WindowSix
     {
         ViewModel.SelectedSnackChanged.OnNext(snack);
     }
+
+    private void SnacksGridSix_OnAddSnack()
+    {
+        ViewModel.Create.OnNext(default);
+    }
 }

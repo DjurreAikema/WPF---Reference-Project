@@ -16,7 +16,8 @@
             <ui:SnacksGridSix Grid.Column="0"
                               TriggerDispose="{Binding TriggerDispose}"
                               SnacksObs="{Binding ViewModel.SnacksObs}"
-                              SnackSelected="SnacksGrid_SnackSelected" />
+                              SnackSelected="SnacksGrid_SnackSelected"
+                              AddSnack="SnacksGridSix_OnAddSnack"/>
 
             <ui:SnackDetailsSix Grid.Column="1"
                                 TriggerDispose="{Binding TriggerDispose}"

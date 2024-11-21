@@ -26,6 +26,7 @@ public partial class SnacksGridSix
 
     // --- Events
     public event Action<Snack>? SnackSelected;
+    public event Action? AddSnack;
 
 
     // --- Internal Properties
@@ -50,5 +51,10 @@ public partial class SnacksGridSix
         {
             if (SnacksDataGrid.SelectedItem is Snack selectedSnack) SnackSelected?.Invoke(selectedSnack);
         };
+    }
+
+    private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+    {
+        AddSnack?.Invoke();
     }
 }

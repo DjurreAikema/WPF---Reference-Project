@@ -10,7 +10,14 @@
 
     <Grid DataContext="{Binding  RelativeSource={RelativeSource AncestorType=local:SnacksGridSix}}">
 
-        <ListBox x:Name="SnacksDataGrid" ItemsSource="{Binding Snacks}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Button Grid.Row="0" Content="New Snack" Click="ButtonBase_OnClick" />
+
+        <ListBox Grid.Row="1" x:Name="SnacksDataGrid" ItemsSource="{Binding Snacks}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Name}" />

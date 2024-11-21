@@ -1,3 +1,4 @@
+using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
@@ -30,6 +31,10 @@ public class WindowSixViewModel : IDisposable
 
     // --- Sources
     public readonly Subject<Snack> SelectedSnackChanged = new();
+    public readonly Subject<Unit> Create = new();
+    public readonly Subject<Snack> Update = new();
+    public readonly Subject<int> Delete = new();
+
     private IObservable<List<Snack>> SnacksLoadedObs => Observable.FromAsync(_snackService.GetAllSnacksAsync);
 
     // --- Reducers
