@@ -13,6 +13,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -37,6 +38,10 @@
         <Button Grid.Row="4" Grid.Column="0" Content="Open Window Five"
                 Padding="10" Margin="5"
                 Click="OpenWindowFiveButton_Click"/>
+
+        <Button Grid.Row="5" Grid.Column="0" Content="Open Window Six"
+                Padding="10" Margin="5"
+                Click="OpenWindowSixButton_Click"/>
 
     </Grid>
 </Window>

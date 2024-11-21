@@ -2,6 +2,7 @@
 using WpfApp1.Windows.WindowFive;
 using WpfApp1.Windows.WindowFour;
 using WpfApp1.Windows.WindowOne;
+using WpfApp1.Windows.WindowSix;
 using WpfApp1.Windows.WindowThree;
 using WpfApp1.Windows.WindowTwo;
 
@@ -42,5 +43,11 @@ public partial class MainWindow : Window
     {
         var windowFive = new WindowFive();
         windowFive.Show();
+    }
+
+    private void OpenWindowSixButton_Click(object sender, RoutedEventArgs e)
+    {
+        var windowSix = new WindowSix();
+        windowSix.Show();
     }
 }
