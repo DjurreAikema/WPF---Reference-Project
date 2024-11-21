@@ -39,6 +39,9 @@
       <Compile Update="Windows\WindowFive\WindowFiveViewModel.cs">
         <DependentUpon>WindowFive.xaml</DependentUpon>
       </Compile>
+      <Compile Update="Windows\WindowSix\WindowSixViewModel.cs">
+        <DependentUpon>WindowSix.xaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
