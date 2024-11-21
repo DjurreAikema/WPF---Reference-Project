@@ -1,0 +1,11 @@
+using WpfApp1.Classes;
+
+namespace WpfApp1.Windows.WindowSix.Interfaces;
+
+public interface ISnackService
+{
+    Task<IEnumerable<Snack>> GetAllSnacksAsync();
+    Task AddSnackAsync(Snack snack);
+    Task UpdateSnackAsync(Snack snack);
+    Task DeleteSnackAsync(int id);
+}
