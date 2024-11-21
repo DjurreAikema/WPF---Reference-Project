@@ -10,7 +10,7 @@
 
     <Grid DataContext="{Binding  RelativeSource={RelativeSource AncestorType=local:SnacksGridFive}}">
 
-        <ListBox x:Name="SnacksDataGrid" ItemsSource="{Binding Snacks, UpdateSourceTrigger=PropertyChanged}">
+        <ListBox x:Name="SnacksDataGrid" ItemsSource="{Binding Snacks}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Name}" />
