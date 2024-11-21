@@ -27,7 +27,7 @@ public partial class WindowSix
 
     private void SnacksGridSix_OnAddSnack()
     {
-        ViewModel.Create.OnNext(default);
+        ViewModel.SelectedSnackChanged.OnNext(new Snack());
     }
 
     private void SnackDetailsSix_OnSnackSaved(Snack snack)
@@ -35,8 +35,8 @@ public partial class WindowSix
         ViewModel.Update.OnNext(snack);
     }
 
-    private void SnackDetailsSix_OnSnackDeleted(Snack snack)
+    private void SnackDetailsSix_OnSnackDeleted(int snackId)
     {
-        ViewModel.Delete.OnNext(snack.Id);
+        ViewModel.Delete.OnNext(snackId);
     }
 }

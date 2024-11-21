@@ -7,5 +7,5 @@ public interface ISnackService
     Task<List<Snack>> GetAllSnacksAsync();
     Task AddSnackAsync(Snack snack);
     Task<Snack> UpdateSnackAsync(Snack snack);
-    Task DeleteSnackAsync(int id);
+    Task<Snack> DeleteSnackAsync(int id);
 }

@@ -43,6 +43,14 @@ public class WindowSixViewModel : IDisposable
                 return Observable.Return(new Snack());
             }));
 
+    private IObservable<Snack> SnackDeletedObs => Delete.SelectMany(id =>
+        Observable.FromAsync(async () => await _snackService.DeleteSnackAsync(id))
+            .Catch((Exception e) =>
+            {
+                Console.WriteLine($"Error deleting snack: {e.Message}");
+                return Observable.Return(new Snack());
+            }));
+
     private IObservable<List<Snack>> SnacksLoadedObs => Observable.FromAsync(_snackService.GetAllSnacksAsync);
 
     // --- Reducers
@@ -75,6 +83,16 @@ public class WindowSixViewModel : IDisposable
             var index = snacks.FindIndex(s => s.Id == snack.Id);
             if (index == -1) return;
             snacks[index] = snack;
+            _stateSubject.OnNext(_stateSubject.Value with {Snacks = snacks});
+        }));
+
+        // SnackDeleted reducer
+        _disposables.Add(SnackDeletedObs.Subscribe(snack =>
+        {
+            var snacks = _stateSubject.Value.Snacks;
+            var index = snacks.FindIndex(s => s.Id == snack.Id);
+            if (index == -1) return;
+            snacks.RemoveAt(index);
             _stateSubject.OnNext(_stateSubject.Value with {Snacks = snacks});
         }));
     }

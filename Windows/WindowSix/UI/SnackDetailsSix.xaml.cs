@@ -26,7 +26,7 @@ public partial class SnackDetailsSix
 
     // --- Events
     public event Action<Snack>? SnackSaved;
-    public event Action<Snack>? SnackDeleted;
+    public event Action<int>? SnackDeleted;
 
     // --- Internal Properties
     private Snack _selectedSnack = new();
@@ -54,6 +54,6 @@ public partial class SnackDetailsSix
 
     private void Delete_OnClick(object sender, RoutedEventArgs e)
     {
-        SnackDeleted?.Invoke(SelectedSnack);
+        SnackDeleted?.Invoke(SelectedSnack.Id);
     }
 }

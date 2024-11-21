@@ -46,14 +46,13 @@ public class SnackService : ISnackService
         return snack; // Return the updated snack
     }
 
-    public async Task DeleteSnackAsync(int id)
+    public async Task<Snack> DeleteSnackAsync(int id)
     {
         await using var context = CreateDbContext();
         var snack = await context.Snacks.FindAsync(id);
-        if (snack != null)
-        {
-            context.Snacks.Remove(snack);
-            await context.SaveChangesAsync();
-        }
+        if (snack == null) return snack;
+        context.Snacks.Remove(snack);
+        await context.SaveChangesAsync();
+        return snack;
     }
 }
