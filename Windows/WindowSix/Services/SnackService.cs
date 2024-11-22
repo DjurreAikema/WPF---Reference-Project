@@ -24,11 +24,12 @@ public class SnackService : ISnackService
         return await context.Snacks.ToListAsync();
     }
 
-    public async Task AddSnackAsync(Snack snack)
+    public async Task<Snack> AddSnackAsync(Snack snack)
     {
         await using var context = CreateDbContext();
         context.Snacks.Add(snack);
         await context.SaveChangesAsync();
+        return snack;
     }
 
     // public async Task UpdateSnackAsync(Snack snack)

@@ -17,7 +17,7 @@
 
         <Button Grid.Row="0" Content="New Snack" Click="ButtonBase_OnClick" />
 
-        <ListBox Grid.Row="1" x:Name="SnacksDataGrid" ItemsSource="{Binding Snacks}">
+        <ListBox Grid.Row="1" x:Name="SnacksDataGrid" ItemsSource="{Binding Snacks, UpdateSourceTrigger=PropertyChanged}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Name}" />

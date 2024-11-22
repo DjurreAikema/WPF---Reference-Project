@@ -54,6 +54,7 @@ public partial class SnackDetailsSix
 
     private void Delete_OnClick(object sender, RoutedEventArgs e)
     {
-        SnackDeleted?.Invoke(SelectedSnack.Id);
+        if (SelectedSnack.Id is 0 or null) return;
+        SnackDeleted?.Invoke(SelectedSnack.Id.Value);
     }
 }

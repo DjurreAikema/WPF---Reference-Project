@@ -32,7 +32,10 @@ public partial class WindowSix
 
     private void SnackDetailsSix_OnSnackSaved(Snack snack)
     {
-        ViewModel.Update.OnNext(snack);
+        if (snack.Id is 0 or null)
+            ViewModel.Create.OnNext(snack);
+        else
+            ViewModel.Update.OnNext(snack);
     }
 
     private void SnackDetailsSix_OnSnackDeleted(int snackId)
