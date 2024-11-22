@@ -28,6 +28,10 @@ public class WindowSixViewModel : IDisposable
     public IObservable<Snack?> SelectedSnackObs => StateObs.Select(state => state.SelectedSnack);
     public IObservable<bool> LoadingObs => StateObs.Select(state => state.Loading);
 
+    // --- Notifications
+    private readonly Subject<string> _notifications = new();
+    public IObservable<string> NotificationsObs => _notifications.AsObservable();
+
     // --- Sources
     public readonly Subject<Snack> SelectedSnackChanged = new();
     public readonly Subject<Snack> Create = new();
@@ -36,25 +40,28 @@ public class WindowSixViewModel : IDisposable
 
     private IObservable<Snack> SnackCreatedObs => Create.SelectMany(obj =>
         Observable.FromAsync(async () => await _snackService.AddSnackAsync(obj))
+            .Do(_ => _notifications.OnNext("Snack added successfully."))
             .Catch((Exception e) =>
             {
-                Console.WriteLine($"Error creating snack: {e.Message}");
+                _notifications.OnNext($"Error creating snack: {e.Message}");
                 return Observable.Return(new Snack());
             }));
 
     private IObservable<Snack> SnackUpdatedObs => Update.SelectMany(obj =>
         Observable.FromAsync(async () => await _snackService.UpdateSnackAsync(obj))
+            .Do(_ => _notifications.OnNext("Snack updated successfully."))
             .Catch((Exception e) =>
             {
-                Console.WriteLine($"Error updating snack: {e.Message}");
+                _notifications.OnNext($"Error updating snack: {e.Message}");
                 return Observable.Return(new Snack());
             }));
 
     private IObservable<Snack> SnackDeletedObs => Delete.SelectMany(id =>
         Observable.FromAsync(async () => await _snackService.DeleteSnackAsync(id))
+            .Do(_ => _notifications.OnNext("Snack deleted successfully."))
             .Catch((Exception e) =>
             {
-                Console.WriteLine($"Error deleting snack: {e.Message}");
+                _notifications.OnNext($"Error deleting snack: {e.Message}");
                 return Observable.Return(new Snack());
             }));
 

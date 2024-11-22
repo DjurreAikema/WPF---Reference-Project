@@ -26,6 +26,11 @@
                                 SnackDeleted="SnackDetailsSix_OnSnackDeleted"/>
         </Grid>
 
+        <!-- Loading Spinner -->
         <ui1:ObsLoadingSpinner IsLoadingObs="{Binding ViewModel.LoadingObs}"/>
+
+        <!-- Notification Control -->
+        <ui:NotificationControl NotificationsObs="{Binding ViewModel.NotificationsObs}" />
+
     </Grid>
 </Window>

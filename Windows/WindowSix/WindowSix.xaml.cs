@@ -30,8 +30,9 @@ public partial class WindowSix
         ViewModel.SelectedSnackChanged.OnNext(new Snack());
     }
 
-    private void SnackDetailsSix_OnSnackSaved(Snack snack)
+    private void SnackDetailsSix_OnSnackSaved(Snack? snack)
     {
+        if (snack is null) return;
         if (snack.Id is 0 or null)
             ViewModel.Create.OnNext(snack);
         else
