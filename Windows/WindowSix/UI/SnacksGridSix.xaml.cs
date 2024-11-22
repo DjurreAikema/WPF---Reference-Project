@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.Windows;
 using WpfApp1.Classes;
 
@@ -13,7 +14,7 @@ public partial class SnacksGridSix
             if (d is not SnacksGridSix c) return;
             c.Disposables.Add(c.SnacksObs.Subscribe(snacks =>
             {
-                c.Snacks = snacks;
+                c.Snacks = new ObservableCollection<Snack>(snacks);
                 c.OnPropertyChanged(nameof(Snacks));
             }));
         }));
@@ -30,9 +31,9 @@ public partial class SnacksGridSix
 
 
     // --- Internal Properties
-    private IEnumerable<Snack>? _snacks;
+    private ObservableCollection<Snack>? _snacks;
 
-    public IEnumerable<Snack>? Snacks
+    public ObservableCollection<Snack>? Snacks
     {
         get => _snacks;
         set
