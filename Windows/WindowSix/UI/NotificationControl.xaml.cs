@@ -13,10 +13,7 @@ public partial class NotificationControl
         new PropertyMetadata(null, (d, _) =>
         {
             if (d is not NotificationControl c) return;
-            c.Disposables.Add(c.NotificationsObs.Subscribe(message =>
-            {
-                c.ShowNotification(message);
-            }));
+            c.Disposables.Add(c.NotificationsObs.Subscribe(message => { c.ShowNotification(message); }));
         }));
 
     public IObservable<string> NotificationsObs
