@@ -29,8 +29,8 @@ public class WindowSixViewModel : IDisposable
     public IObservable<bool> LoadingObs => StateObs.Select(state => state.Loading);
 
     // --- Notifications
-    private readonly Subject<string> _notifications = new();
-    public IObservable<string> NotificationsObs => _notifications.AsObservable();
+    private readonly Subject<NotificationMessage> _notifications = new();
+    public IObservable<NotificationMessage> NotificationsObs => _notifications.AsObservable();
 
     // --- Sources
     public readonly Subject<Snack> SelectedSnackChanged = new();
@@ -40,36 +40,36 @@ public class WindowSixViewModel : IDisposable
 
     private IObservable<Snack> SnackCreatedObs => Create.SelectMany(obj =>
         Observable.FromAsync(async () => await _snackService.AddSnackAsync(obj))
-            .Do(_ => _notifications.OnNext("Snack added successfully."))
+            .Do(_ => _notifications.OnNext(new NotificationMessage("Snack added successfully.", true)))
             .Catch((Exception e) =>
             {
-                _notifications.OnNext($"Error creating snack: {e.Message}");
+                _notifications.OnNext(new NotificationMessage($"Error creating snack: {e.Message}", false));
                 return Observable.Return(new Snack());
             }));
 
     private IObservable<Snack> SnackUpdatedObs => Update.SelectMany(obj =>
         Observable.FromAsync(async () => await _snackService.UpdateSnackAsync(obj))
-            .Do(_ => _notifications.OnNext("Snack updated successfully."))
+            .Do(_ => _notifications.OnNext(new NotificationMessage("Snack updated successfully.", true)))
             .Catch((Exception e) =>
             {
-                _notifications.OnNext($"Error updating snack: {e.Message}");
+                _notifications.OnNext(new NotificationMessage($"Error updating snack: {e.Message}", false));
                 return Observable.Return(new Snack());
             }));
 
     private IObservable<Snack> SnackDeletedObs => Delete.SelectMany(id =>
         Observable.FromAsync(async () => await _snackService.DeleteSnackAsync(id))
-            .Do(_ => _notifications.OnNext("Snack deleted successfully."))
+            .Do(_ => _notifications.OnNext(new NotificationMessage("Snack deleted successfully.", true)))
             .Catch((Exception e) =>
             {
-                _notifications.OnNext($"Error deleting snack: {e.Message}");
+                _notifications.OnNext(new NotificationMessage($"Error deleting snack: {e.Message}", false));
                 return Observable.Return(new Snack());
             }));
 
     private IObservable<List<Snack>> SnacksLoadedObs => Observable.FromAsync(_snackService.GetAllSnacksAsync)
-        .Do(_ => _notifications.OnNext("Snacks loaded successfully."))
+        .Do(_ => _notifications.OnNext(new NotificationMessage("Snacks loaded successfully.", true)))
         .Catch((Exception e) =>
         {
-            _notifications.OnNext($"Error loading snacks: {e.Message}");
+            _notifications.OnNext(new NotificationMessage($"Error loading snacks: {e.Message}", false));
             return Observable.Return(new List<Snack>());
         });
 
