@@ -1,9 +1,9 @@
 ﻿using System.Reflection.Emit;
 using System.Windows;
 using WpfApp1.Shared.Classes;
-using WpfApp1.Windows.WindowOne.UI;
+using WpfApp1.Windows.Window1.UI;
 
-namespace WpfApp1.Windows.WindowOne;
+namespace WpfApp1.Windows.Window1;
 
 public partial class WindowOne : Window
 {

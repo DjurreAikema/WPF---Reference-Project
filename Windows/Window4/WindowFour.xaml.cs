@@ -1,7 +1,7 @@
 ﻿using System.Reactive.Subjects;
 using WpfApp1.Shared.Classes;
 
-namespace WpfApp1.Windows.WindowFour;
+namespace WpfApp1.Windows.Window4;
 
 public partial class WindowFour
 {

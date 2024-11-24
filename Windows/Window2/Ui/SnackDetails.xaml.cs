@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using WpfApp1.Shared.Classes;
 
-namespace WpfApp1.Windows.WindowTwo.Ui;
+namespace WpfApp1.Windows.Window2.Ui;
 
 public partial class SnackDetails : UserControl
 {

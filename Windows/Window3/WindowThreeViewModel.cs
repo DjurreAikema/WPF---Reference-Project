@@ -3,7 +3,7 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using WpfApp1.Shared.Classes;
 
-namespace WpfApp1.Windows.WindowThree;
+namespace WpfApp1.Windows.Window3;
 
 public record WindowThreeState
 {

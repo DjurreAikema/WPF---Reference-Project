@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using WpfApp1.Shared.Classes;
 
-namespace WpfApp1.Windows.WindowTwo;
+namespace WpfApp1.Windows.Window2;
 
 public class WindowTwoViewModel : INotifyPropertyChanged
 {

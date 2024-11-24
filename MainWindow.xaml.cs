@@ -1,10 +1,10 @@
 ﻿using System.Windows;
-using WpfApp1.Windows.WindowFive;
-using WpfApp1.Windows.WindowFour;
-using WpfApp1.Windows.WindowOne;
-using WpfApp1.Windows.WindowSix;
-using WpfApp1.Windows.WindowThree;
-using WpfApp1.Windows.WindowTwo;
+using WpfApp1.Windows.Window1;
+using WpfApp1.Windows.Window2;
+using WpfApp1.Windows.Window3;
+using WpfApp1.Windows.Window4;
+using WpfApp1.Windows.Window5;
+using WpfApp1.Windows.Window6;
 
 namespace WpfApp1;
 

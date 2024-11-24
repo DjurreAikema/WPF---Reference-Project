@@ -1,8 +1,8 @@
 using System.Reactive.Subjects;
 using System.Windows;
-using WpfApp1.Windows.WindowFive.Events;
+using WpfApp1.Windows.Window5.Events;
 
-namespace WpfApp1.Windows.WindowFive;
+namespace WpfApp1.Windows.Window5;
 
 public partial class WindowFive : Window
 {

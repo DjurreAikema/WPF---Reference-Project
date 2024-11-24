@@ -2,7 +2,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using WpfApp1.Shared.Classes;
 
-namespace WpfApp1.Windows.WindowSix.UI;
+namespace WpfApp1.Windows.Window6.UI;
 
 public partial class SnacksGridSix
 {

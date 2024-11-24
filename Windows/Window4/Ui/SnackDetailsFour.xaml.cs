@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using WpfApp1.Shared.Classes;
 
-namespace WpfApp1.Windows.WindowFour.Ui;
+namespace WpfApp1.Windows.Window4.Ui;
 
 public partial class SnackDetailsFour
 {

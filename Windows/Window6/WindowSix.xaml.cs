@@ -2,7 +2,7 @@ using System.Reactive;
 using System.Reactive.Subjects;
 using WpfApp1.Shared.Classes;
 
-namespace WpfApp1.Windows.WindowSix;
+namespace WpfApp1.Windows.Window6;
 
 public partial class WindowSix
 {

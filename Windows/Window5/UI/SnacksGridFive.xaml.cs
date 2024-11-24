@@ -1,8 +1,8 @@
 using System.Windows;
 using WpfApp1.Shared.Classes;
-using WpfApp1.Windows.WindowFive.Events;
+using WpfApp1.Windows.Window5.Events;
 
-namespace WpfApp1.Windows.WindowFive.UI;
+namespace WpfApp1.Windows.Window5.UI;
 
 public partial class SnacksGridFive
 {

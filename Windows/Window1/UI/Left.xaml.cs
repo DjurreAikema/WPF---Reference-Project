@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using WpfApp1.Shared.Classes;
 
-namespace WpfApp1.Windows.WindowOne.UI;
+namespace WpfApp1.Windows.Window1.UI;
 
 public partial class Left : UserControl
 {

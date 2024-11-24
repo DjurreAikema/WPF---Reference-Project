@@ -6,7 +6,7 @@ using WpfApp1.Shared.Classes;
 using WpfApp1.Shared.DataAccess;
 using WpfApp1.Shared.Interfaces;
 
-namespace WpfApp1.Windows.WindowSix;
+namespace WpfApp1.Windows.Window6;
 
 public record WindowSixState
 {

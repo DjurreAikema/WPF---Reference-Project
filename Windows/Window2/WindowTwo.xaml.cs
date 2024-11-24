@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace WpfApp1.Windows.WindowTwo;
+namespace WpfApp1.Windows.Window2;
 
 public partial class WindowTwo : Window
 {

@@ -1,7 +1,7 @@
 using System.Windows;
 using WpfApp1.Shared.Classes;
 
-namespace WpfApp1.Windows.WindowFive.UI;
+namespace WpfApp1.Windows.Window5.UI;
 
 public partial class SnackDetailsFive
 {
