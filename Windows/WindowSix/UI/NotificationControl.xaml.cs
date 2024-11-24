@@ -50,11 +50,11 @@ public partial class NotificationControl
         {
             Interval = TimeSpan.FromSeconds(3)
         };
-        timer.Tick += (s, e) =>
+        timer.Tick += (_, _) =>
         {
             timer.Stop();
             var fadeOut = new DoubleAnimation(1, 0, TimeSpan.FromSeconds(0.5));
-            fadeOut.Completed += (s2, e2) => NotificationPanel.Children.Remove(textBlock);
+            fadeOut.Completed += (_, _) => NotificationPanel.Children.Remove(textBlock);
             textBlock.BeginAnimation(OpacityProperty, fadeOut);
         };
         timer.Start();
