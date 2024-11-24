@@ -1,6 +1,6 @@
 ﻿using System.Reflection.Emit;
 using System.Windows;
-using WpfApp1.Classes;
+using WpfApp1.Shared.Classes;
 using WpfApp1.Windows.WindowOne.UI;
 
 namespace WpfApp1.Windows.WindowOne;

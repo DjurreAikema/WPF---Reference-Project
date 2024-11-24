@@ -1,6 +1,6 @@
-using WpfApp1.Classes;
+using WpfApp1.Shared.Classes;
 
-namespace WpfApp1.Windows.WindowSix.Shared.Interfaces;
+namespace WpfApp1.Shared.Interfaces;
 
 public interface ISnackService
 {

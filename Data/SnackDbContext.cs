@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using WpfApp1.Classes;
+using WpfApp1.Shared.Classes;
 
 namespace WpfApp1.Data;
 

@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using WpfApp1.Classes;
 using WpfApp1.Data;
-using WpfApp1.Windows.WindowSix.Shared.Interfaces;
+using WpfApp1.Shared.Classes;
+using WpfApp1.Shared.Interfaces;
 
-namespace WpfApp1.Windows.WindowSix.Shared.DataAccess;
+namespace WpfApp1.Shared.DataAccess;
 
 public class SnackService : ISnackService
 {

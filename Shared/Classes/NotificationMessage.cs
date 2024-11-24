@@ -1,4 +1,4 @@
-﻿namespace WpfApp1.Classes;
+﻿namespace WpfApp1.Shared.Classes;
 
 public class NotificationMessage(string text, bool isSuccess)
 {

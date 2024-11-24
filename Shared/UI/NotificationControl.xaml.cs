@@ -2,9 +2,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using WpfApp1.Classes;
+using WpfApp1.Shared.Classes;
 
-namespace WpfApp1.Windows.WindowSix.Shared.UI;
+namespace WpfApp1.Shared.UI;
 
 public partial class NotificationControl
 {

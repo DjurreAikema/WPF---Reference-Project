@@ -5,6 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:ui="clr-namespace:WpfApp1.Windows.WindowThree.Ui"
         xmlns:uiShared="clr-namespace:WpfApp1.Shared.Ui"
+        xmlns:ui1="clr-namespace:WpfApp1.Shared.UI"
         mc:Ignorable="d"
         Title="WindowThree" Height="450" Width="800"
         DataContext="{Binding  RelativeSource={RelativeSource Self}}">
@@ -26,7 +27,7 @@
         </Grid>
 
 
-        <uiShared:LoadingSpinner IsLoading="{Binding Loading, UpdateSourceTrigger=PropertyChanged}" />
+        <ui1:LoadingSpinner IsLoading="{Binding Loading, UpdateSourceTrigger=PropertyChanged}" />
     </Grid>
 
 </Window>

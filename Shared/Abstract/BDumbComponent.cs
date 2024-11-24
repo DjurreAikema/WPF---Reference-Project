@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace WpfApp1.Abstract;
+namespace WpfApp1.Shared.Abstract;
 
 public abstract class BDumbComponent : UserControl, INotifyPropertyChanged
 {

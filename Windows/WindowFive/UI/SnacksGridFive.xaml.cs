@@ -1,5 +1,5 @@
 using System.Windows;
-using WpfApp1.Classes;
+using WpfApp1.Shared.Classes;
 using WpfApp1.Windows.WindowFive.Events;
 
 namespace WpfApp1.Windows.WindowFive.UI;

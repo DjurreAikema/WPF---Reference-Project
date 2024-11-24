@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace WpfApp1.Shared.Ui;
+namespace WpfApp1.Shared.UI;
 
 public partial class LoadingSpinner
 {

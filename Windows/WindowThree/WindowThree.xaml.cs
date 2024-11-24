@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Reactive.Disposables;
 using System.Runtime.CompilerServices;
-using WpfApp1.Classes;
+using WpfApp1.Shared.Classes;
 
 namespace WpfApp1.Windows.WindowThree;
 

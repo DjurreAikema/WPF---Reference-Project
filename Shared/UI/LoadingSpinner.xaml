@@ -1,12 +1,11 @@
-<abstract:ADumbComponent x:Class="WpfApp1.Shared.Ui.ObsLoadingSpinner"
-                         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                         xmlns:local="clr-namespace:WpfApp1.Shared.Ui"
-                         xmlns:abstract="clr-namespace:WpfApp1.Abstract"
-                         mc:Ignorable="d"
-                         d:DesignHeight="300" d:DesignWidth="300">
+﻿<UserControl x:Class="WpfApp1.Shared.UI.LoadingSpinner"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:ui1="clr-namespace:WpfApp1.Shared.UI"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300">
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -37,12 +36,14 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid DataContext="{Binding  RelativeSource={RelativeSource AncestorType=local:ObsLoadingSpinner}}"
+    <Grid DataContext="{Binding  RelativeSource={RelativeSource AncestorType=ui1:LoadingSpinner}}"
           Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+
         <Grid.Background>
             <SolidColorBrush Color="Black" Opacity="0.5" />
         </Grid.Background>
+
         <Path Style="{StaticResource Spinner}" HorizontalAlignment="Center" VerticalAlignment="Center" />
     </Grid>
 
-</abstract:ADumbComponent>
+</UserControl>

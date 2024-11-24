@@ -2,8 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using WpfApp1.Data;
-using WpfApp1.Windows.WindowSix.Shared.DataAccess;
-using WpfApp1.Windows.WindowSix.Shared.Interfaces;
+using WpfApp1.Shared.DataAccess;
+using WpfApp1.Shared.Interfaces;
 
 namespace WpfApp1;
 

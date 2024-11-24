@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WpfApp1.Classes;
+namespace WpfApp1.Shared.Classes;
 
 public class Snack
 {

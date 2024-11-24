@@ -2,9 +2,9 @@ using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using WpfApp1.Classes;
-using WpfApp1.Windows.WindowSix.Shared.DataAccess;
-using WpfApp1.Windows.WindowSix.Shared.Interfaces;
+using WpfApp1.Shared.Classes;
+using WpfApp1.Shared.DataAccess;
+using WpfApp1.Shared.Interfaces;
 
 namespace WpfApp1.Windows.WindowSix;
 
