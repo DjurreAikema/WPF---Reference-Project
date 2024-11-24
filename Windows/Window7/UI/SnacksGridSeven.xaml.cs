@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
-using System.Windows.Controls;
 using WpfApp1.Shared.Classes;
 
 namespace WpfApp1.Windows.Window7.UI;
