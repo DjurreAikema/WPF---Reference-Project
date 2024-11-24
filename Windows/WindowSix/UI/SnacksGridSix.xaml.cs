@@ -28,6 +28,7 @@ public partial class SnacksGridSix
     // --- Events
     public event Action<Snack>? SnackSelected;
     public event Action? AddSnack;
+    public event Action? Reload;
 
 
     // --- Internal Properties
@@ -54,8 +55,13 @@ public partial class SnacksGridSix
         };
     }
 
-    private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+    private void New_OnClick(object sender, RoutedEventArgs e)
     {
         AddSnack?.Invoke();
+    }
+
+    private void Reload_OnClick(object sender, RoutedEventArgs e)
+    {
+        Reload?.Invoke();
     }
 }

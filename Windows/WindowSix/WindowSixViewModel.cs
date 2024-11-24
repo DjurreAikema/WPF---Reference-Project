@@ -1,3 +1,4 @@
+using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
@@ -36,8 +37,21 @@ public class WindowSixViewModel : IDisposable
     public readonly Subject<Snack> SelectedSnackChanged = new();
     public readonly Subject<Snack> Create = new();
     public readonly Subject<Snack> Update = new();
+    public readonly Subject<Unit> Reload = new();
     public readonly Subject<int> Delete = new();
 
+    // Load
+    private IObservable<List<Snack>> SnacksLoadedObs =>
+        Reload.StartWith(Unit.Default)
+            .SelectMany(_ => Observable.FromAsync(_snackService.GetAllSnacksAsync)
+                .Do(_ => _notifications.OnNext(new NotificationMessage("Snacks loaded successfully.", true)))
+                .Catch((Exception e) =>
+                {
+                    _notifications.OnNext(new NotificationMessage($"Error loading snacks: {e.Message}", false));
+                    return Observable.Return(new List<Snack>());
+                }));
+
+    // Create
     private IObservable<Snack> SnackCreatedObs => Create.SelectMany(obj =>
         Observable.FromAsync(async () => await _snackService.AddSnackAsync(obj))
             .Do(_ => _notifications.OnNext(new NotificationMessage("Snack added successfully.", true)))
@@ -47,6 +61,7 @@ public class WindowSixViewModel : IDisposable
                 return Observable.Return(new Snack());
             }));
 
+    // Update
     private IObservable<Snack> SnackUpdatedObs => Update.SelectMany(obj =>
         Observable.FromAsync(async () => await _snackService.UpdateSnackAsync(obj))
             .Do(_ => _notifications.OnNext(new NotificationMessage("Snack updated successfully.", true)))
@@ -56,6 +71,7 @@ public class WindowSixViewModel : IDisposable
                 return Observable.Return(new Snack());
             }));
 
+    // Delete
     private IObservable<Snack> SnackDeletedObs => Delete.SelectMany(id =>
         Observable.FromAsync(async () => await _snackService.DeleteSnackAsync(id))
             .Do(_ => _notifications.OnNext(new NotificationMessage("Snack deleted successfully.", true)))
@@ -64,14 +80,6 @@ public class WindowSixViewModel : IDisposable
                 _notifications.OnNext(new NotificationMessage($"Error deleting snack: {e.Message}", false));
                 return Observable.Return(new Snack());
             }));
-
-    private IObservable<List<Snack>> SnacksLoadedObs => Observable.FromAsync(_snackService.GetAllSnacksAsync)
-        .Do(_ => _notifications.OnNext(new NotificationMessage("Snacks loaded successfully.", true)))
-        .Catch((Exception e) =>
-        {
-            _notifications.OnNext(new NotificationMessage($"Error loading snacks: {e.Message}", false));
-            return Observable.Return(new List<Snack>());
-        });
 
     // --- Reducers
     public WindowSixViewModel()

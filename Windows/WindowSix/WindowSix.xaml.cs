@@ -1,3 +1,4 @@
+using System.Reactive;
 using System.Reactive.Subjects;
 using WpfApp1.Classes;
 
@@ -42,5 +43,10 @@ public partial class WindowSix
     private void SnackDetailsSix_OnSnackDeleted(int snackId)
     {
         ViewModel.Delete.OnNext(snackId);
+    }
+
+    private void SnacksGridSix_OnReload()
+    {
+        ViewModel.Reload.OnNext(Unit.Default);
     }
 }

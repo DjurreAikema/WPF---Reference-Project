@@ -18,7 +18,8 @@
                               TriggerDispose="{Binding TriggerDispose}"
                               SnacksObs="{Binding ViewModel.SnacksObs}"
                               SnackSelected="SnacksGrid_SnackSelected"
-                              AddSnack="SnacksGridSix_OnAddSnack"/>
+                              AddSnack="SnacksGridSix_OnAddSnack"
+                              Reload="SnacksGridSix_OnReload"/>
 
             <ui:SnackDetailsSix Grid.Column="1"
                                 TriggerDispose="{Binding TriggerDispose}"
