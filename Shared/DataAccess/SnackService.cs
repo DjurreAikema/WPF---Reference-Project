@@ -8,7 +8,8 @@ namespace WpfApp1.Shared.DataAccess;
 public class SnackService : ISnackService
 {
     public bool SimulateFailures { get; set; } = false;
-    public double FailureProbability { get; set; } = 0.5;
+    public double FailureProbability { get; set; } = 0.3;
+    public double FailureProbabilityOnLoad { get; set; } = 0.3;
     private static readonly Random RandomGenerator = new();
 
     private static SnackDbContext CreateDbContext()
@@ -20,7 +21,7 @@ public class SnackService : ISnackService
 
     public async Task<List<Snack>> GetAllSnacksAsync()
     {
-        if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbability)
+        if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbabilityOnLoad)
             throw new Exception("Simulated database failure during GetAllSnacksAsync");
 
         await using var context = CreateDbContext();

@@ -87,7 +87,8 @@ public class WindowSixViewModel : IDisposable
         _snackService = new SnackService
         {
             SimulateFailures = true,
-            FailureProbability = 0.3
+            FailureProbability = 1,
+            FailureProbabilityOnLoad = 0.3
         };
 
         // SelectedSnackChanged reducer
