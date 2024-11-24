@@ -3,10 +3,39 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:local="clr-namespace:WpfApp1.Windows.Window7"
+        xmlns:ui="clr-namespace:WpfApp1.Windows.Window7.UI"
+        xmlns:ui1="clr-namespace:WpfApp1.Shared.UI"
         mc:Ignorable="d"
-        Title="WindowSeven" Height="450" Width="800">
+        Title="WindowSeven" Height="450" Width="800"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+
     <Grid>
-        
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="2*" />
+            </Grid.ColumnDefinitions>
+
+            <ui:SnacksGridSeven Grid.Column="0"
+                                TriggerDispose="{Binding TriggerDispose}"
+                                SnacksObs="{Binding ViewModel.SnacksObs}"
+                                SnackSelected="SnacksGrid_SnackSelected"
+                                AddSnack="SnacksGridSix_OnAddSnack"
+                                Reload="SnacksGridSix_OnReload" />
+
+            <ui:SnackDetailsSeven Grid.Column="1"
+                                  TriggerDispose="{Binding TriggerDispose}"
+                                  SelectedSnackObs="{Binding ViewModel.SelectedSnackObs}"
+                                  SnackSaved="SnackDetailsSix_OnSnackSaved"
+                                  SnackDeleted="SnackDetailsSix_OnSnackDeleted" />
+        </Grid>
+
+        <!-- Loading Spinner -->
+        <ui1:ObsLoadingSpinner IsLoadingObs="{Binding ViewModel.LoadingObs}" />
+
+        <!-- Notification Control -->
+        <ui1:NotificationControl NotificationsObs="{Binding ViewModel.NotificationsObs}" />
+
     </Grid>
+
 </Window>

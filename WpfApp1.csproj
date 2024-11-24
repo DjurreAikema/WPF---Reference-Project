@@ -47,6 +47,24 @@
       <Compile Update="Windows\WindowSix\WindowSixViewModel.cs">
         <DependentUpon>WindowSix.xaml</DependentUpon>
       </Compile>
+      <Compile Update="Windows\Window7\WindowSevenViewModel.cs">
+        <DependentUpon>WindowSeven.xaml</DependentUpon>
+      </Compile>
+      <Compile Update="Windows\Window6\WindowSixViewModel.cs">
+        <DependentUpon>WindowSix.xaml</DependentUpon>
+      </Compile>
+      <Compile Update="Windows\Window5\WindowFiveViewModel.cs">
+        <DependentUpon>WindowFive.xaml</DependentUpon>
+      </Compile>
+      <Compile Update="Windows\Window4\WindowFourViewModel.cs">
+        <DependentUpon>WindowFour.xaml</DependentUpon>
+      </Compile>
+      <Compile Update="Windows\Window3\WindowThreeViewModel.cs">
+        <DependentUpon>WindowThree.xaml</DependentUpon>
+      </Compile>
+      <Compile Update="Windows\Window2\WindowTwoViewModel.cs">
+        <DependentUpon>WindowTwo.xaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
