@@ -3,6 +3,7 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using WpfApp1.Classes;
 using WpfApp1.Windows.WindowSix.Shared.DataAccess;
+using WpfApp1.Windows.WindowSix.Shared.Interfaces;
 
 namespace WpfApp1.Windows.WindowSix;
 
@@ -16,7 +17,7 @@ public record WindowSixState
 public class WindowSixViewModel : IDisposable
 {
     private readonly CompositeDisposable _disposables = new();
-    private readonly SnackService _snackService;
+    private readonly ISnackService _snackService;
 
     // --- State
     private readonly BehaviorSubject<WindowSixState> _stateSubject = new(new WindowSixState());
@@ -64,12 +65,22 @@ public class WindowSixViewModel : IDisposable
                 return Observable.Return(new Snack());
             }));
 
-    private IObservable<List<Snack>> SnacksLoadedObs => Observable.FromAsync(_snackService.GetAllSnacksAsync);
+    private IObservable<List<Snack>> SnacksLoadedObs => Observable.FromAsync(_snackService.GetAllSnacksAsync)
+        .Do(_ => _notifications.OnNext("Snacks loaded successfully."))
+        .Catch((Exception e) =>
+        {
+            _notifications.OnNext($"Error loading snacks: {e.Message}");
+            return Observable.Return(new List<Snack>());
+        });
 
     // --- Reducers
     public WindowSixViewModel()
     {
-        _snackService = new SnackService();
+        _snackService = new SnackService
+        {
+            SimulateFailures = true,
+            FailureProbability = 0.3
+        };
 
         // SelectedSnackChanged reducer
         _disposables.Add(SelectedSnackChanged.Subscribe(snack => { _stateSubject.OnNext(_stateSubject.Value with {SelectedSnack = snack}); }));
@@ -87,6 +98,7 @@ public class WindowSixViewModel : IDisposable
         // SnackCreated reducer
         _disposables.Add(SnackCreatedObs.Subscribe(snack =>
         {
+            if (snack.Id is null) return;
             var snacks = _stateSubject.Value.Snacks;
             snacks.Add(snack);
 
@@ -100,6 +112,7 @@ public class WindowSixViewModel : IDisposable
         // SnackUpdated reducer
         _disposables.Add(SnackUpdatedObs.Subscribe(snack =>
         {
+            if (snack.Id is null) return;
             var snacks = _stateSubject.Value.Snacks;
             var index = snacks.FindIndex(s => s.Id == snack.Id);
             snacks[index] = snack;
@@ -114,6 +127,7 @@ public class WindowSixViewModel : IDisposable
         // SnackDeleted reducer
         _disposables.Add(SnackDeletedObs.Subscribe(snack =>
         {
+            if (snack.Id is null) return;
             var snacks = _stateSubject.Value.Snacks;
             var index = snacks.FindIndex(s => s.Id == snack.Id);
             snacks.RemoveAt(index);

@@ -7,6 +7,10 @@ namespace WpfApp1.Windows.WindowSix.Shared.DataAccess;
 
 public class SnackService : ISnackService
 {
+    public bool SimulateFailures { get; set; } = false;
+    public double FailureProbability { get; set; } = 0.5;
+    private static readonly Random RandomGenerator = new();
+
     private static SnackDbContext CreateDbContext()
     {
         var optionsBuilder = new DbContextOptionsBuilder<SnackDbContext>();
@@ -16,12 +20,18 @@ public class SnackService : ISnackService
 
     public async Task<List<Snack>> GetAllSnacksAsync()
     {
+        if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbability)
+            throw new Exception("Simulated database failure during GetAllSnacksAsync");
+
         await using var context = CreateDbContext();
         return await context.Snacks.ToListAsync();
     }
 
     public async Task<Snack> AddSnackAsync(Snack snack)
     {
+        if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbability)
+            throw new Exception("Simulated database failure during AddSnackAsync");
+
         await using var context = CreateDbContext();
         context.Snacks.Add(snack);
         await context.SaveChangesAsync();
@@ -30,6 +40,9 @@ public class SnackService : ISnackService
 
     public async Task<Snack> UpdateSnackAsync(Snack snack)
     {
+        if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbability)
+            throw new Exception("Simulated database failure during UpdateSnackAsync");
+
         await using var context = CreateDbContext();
         context.Snacks.Update(snack);
         await context.SaveChangesAsync();
@@ -38,6 +51,9 @@ public class SnackService : ISnackService
 
     public async Task<Snack> DeleteSnackAsync(int id)
     {
+        if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbability)
+            throw new Exception("Simulated database failure during DeleteSnackAsync");
+
         await using var context = CreateDbContext();
         var snack = await context.Snacks.FindAsync(id);
         if (snack == null) return snack;
