@@ -1,17 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using WpfApp1.Classes;
 using WpfApp1.Data;
-using WpfApp1.Windows.WindowSix.Interfaces;
+using WpfApp1.Windows.WindowSix.Shared.Interfaces;
 
-namespace WpfApp1.Windows.WindowSix.Services;
+namespace WpfApp1.Windows.WindowSix.Shared.DataAccess;
 
 public class SnackService : ISnackService
 {
-    public SnackService()
-    {
-    }
-
-    private SnackDbContext CreateDbContext()
+    private static SnackDbContext CreateDbContext()
     {
         var optionsBuilder = new DbContextOptionsBuilder<SnackDbContext>();
         optionsBuilder.UseSqlite("Data Source=snacks.db");
@@ -32,19 +28,12 @@ public class SnackService : ISnackService
         return snack;
     }
 
-    // public async Task UpdateSnackAsync(Snack snack)
-    // {
-    //     await using var context = CreateDbContext();
-    //     context.Snacks.Update(snack);
-    //     await context.SaveChangesAsync();
-    // }
-
     public async Task<Snack> UpdateSnackAsync(Snack snack)
     {
         await using var context = CreateDbContext();
         context.Snacks.Update(snack);
         await context.SaveChangesAsync();
-        return snack; // Return the updated snack
+        return snack;
     }
 
     public async Task<Snack> DeleteSnackAsync(int id)

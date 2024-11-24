@@ -2,8 +2,7 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using WpfApp1.Classes;
-using WpfApp1.Windows.WindowSix.Interfaces;
-using WpfApp1.Windows.WindowSix.Services;
+using WpfApp1.Windows.WindowSix.Shared.DataAccess;
 
 namespace WpfApp1.Windows.WindowSix;
 
@@ -17,7 +16,7 @@ public record WindowSixState
 public class WindowSixViewModel : IDisposable
 {
     private readonly CompositeDisposable _disposables = new();
-    private readonly ISnackService _snackService;
+    private readonly SnackService _snackService;
 
     // --- State
     private readonly BehaviorSubject<WindowSixState> _stateSubject = new(new WindowSixState());

@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ui="clr-namespace:WpfApp1.Windows.WindowSix.UI"
         xmlns:ui1="clr-namespace:WpfApp1.Shared.Ui"
+        xmlns:ui2="clr-namespace:WpfApp1.Windows.WindowSix.Shared.UI"
         Title="WindowSix" Height="450" Width="800"
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
 
@@ -30,7 +31,7 @@
         <ui1:ObsLoadingSpinner IsLoadingObs="{Binding ViewModel.LoadingObs}"/>
 
         <!-- Notification Control -->
-        <ui:NotificationControl NotificationsObs="{Binding ViewModel.NotificationsObs}" />
+        <ui2:NotificationControl NotificationsObs="{Binding ViewModel.NotificationsObs}" />
 
     </Grid>
 </Window>
