@@ -7,13 +7,13 @@ public partial class SnackDetailsSeven
 {
     // --- Dependency Properties
     public static readonly DependencyProperty SelectedSnackObsProperty = DependencyProperty.Register(
-        nameof(SelectedSnackObs), typeof(IObservable<Snack>), typeof(SnackDetailsSeven),
+        nameof(SelectedSnackObs), typeof(IObservable<Snack?>), typeof(SnackDetailsSeven),
         new PropertyMetadata(null, (d, _) =>
         {
             if (d is not SnackDetailsSeven c) return;
             c.Disposables.Add(c.SelectedSnackObs.Subscribe(snack =>
             {
-                c.SelectedSnack = snack;
+                c.SelectedSnack = snack != null ? new Snack(snack) : null;
                 c.OnPropertyChanged(nameof(SelectedSnack));
             }));
         }));
@@ -29,9 +29,9 @@ public partial class SnackDetailsSeven
     public event Action<int>? SnackDeleted;
 
     // --- Internal Properties
-    private Snack _selectedSnack = new();
+    private Snack? _selectedSnack;
 
-    public Snack SelectedSnack
+    public Snack? SelectedSnack
     {
         get => _selectedSnack;
         set
@@ -49,12 +49,13 @@ public partial class SnackDetailsSeven
 
     private void Save_OnClick(object sender, RoutedEventArgs e)
     {
+        if (SelectedSnack == null) return;
         SnackSaved?.Invoke(SelectedSnack);
     }
 
     private void Delete_OnClick(object sender, RoutedEventArgs e)
     {
-        if (SelectedSnack.Id is 0 or null) return;
+        if (SelectedSnack == null || SelectedSnack.Id is 0 or null) return;
         SnackDeleted?.Invoke(SelectedSnack.Id.Value);
     }
 }

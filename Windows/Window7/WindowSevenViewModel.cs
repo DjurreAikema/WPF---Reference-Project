@@ -117,17 +117,18 @@ public class WindowSevenViewModel : IDisposable
         // SnackUpdated reducer
         _disposables.Add(SnackUpdatedObs
             .ObserveOnCurrentSynchronizationContext()
-            .Subscribe(snack =>
+            .Subscribe(updatedSnack =>
             {
-                if (snack is null) return;
+                if (updatedSnack is null) return;
                 var snacks = _stateSubject.Value.Snacks;
-                var index = snacks.FindIndex(s => s.Id == snack.Id);
-                snacks[index] = snack;
+                var index = snacks.FindIndex(s => s.Id == updatedSnack.Id);
+                if (index < 0) return;
+                snacks[index] = updatedSnack;
 
                 _stateSubject.OnNext(_stateSubject.Value with
                 {
                     Snacks = snacks,
-                    SelectedSnack = snack
+                    SelectedSnack = updatedSnack
                 });
             }));
 
