@@ -4,6 +4,7 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using WpfApp1.Shared.Classes;
 using WpfApp1.Shared.DataAccess;
+using WpfApp1.Shared.ExtensionMethods;
 using WpfApp1.Shared.Interfaces;
 
 namespace WpfApp1.Windows.Window7;
@@ -91,10 +92,14 @@ public class WindowSevenViewModel : IDisposable
         };
 
         // SelectedSnackChanged reducer
-        _disposables.Add(SelectedSnackChanged.Subscribe(snack => { _stateSubject.OnNext(_stateSubject.Value with {SelectedSnack = snack}); }));
+        _disposables.Add(SelectedSnackChanged
+            .ObserveOnCurrentSynchronizationContext()
+            .Subscribe(snack => { _stateSubject.OnNext(_stateSubject.Value with {SelectedSnack = snack}); }));
 
         // SnacksLoaded reducer
-        _disposables.Add(SnacksLoadedObs.Subscribe(snacks =>
+        _disposables.Add(SnacksLoadedObs
+            .ObserveOnCurrentSynchronizationContext()
+            .Subscribe(snacks =>
         {
             _stateSubject.OnNext(_stateSubject.Value with
             {
@@ -104,7 +109,9 @@ public class WindowSevenViewModel : IDisposable
         }));
 
         // SnackCreated reducer
-        _disposables.Add(SnackCreatedObs.Subscribe(snack =>
+        _disposables.Add(SnackCreatedObs
+            .ObserveOnCurrentSynchronizationContext()
+            .Subscribe(snack =>
         {
             if (snack.Id is null) return;
             var snacks = _stateSubject.Value.Snacks;
@@ -118,7 +125,9 @@ public class WindowSevenViewModel : IDisposable
         }));
 
         // SnackUpdated reducer
-        _disposables.Add(SnackUpdatedObs.Subscribe(snack =>
+        _disposables.Add(SnackUpdatedObs
+            .ObserveOnCurrentSynchronizationContext()
+            .Subscribe(snack =>
         {
             if (snack.Id is null) return;
             var snacks = _stateSubject.Value.Snacks;
@@ -133,7 +142,9 @@ public class WindowSevenViewModel : IDisposable
         }));
 
         // SnackDeleted reducer
-        _disposables.Add(SnackDeletedObs.Subscribe(snack =>
+        _disposables.Add(SnackDeletedObs
+            .ObserveOnCurrentSynchronizationContext()
+            .Subscribe(snack =>
         {
             if (snack.Id is null) return;
             var snacks = _stateSubject.Value.Snacks;
