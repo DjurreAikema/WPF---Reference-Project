@@ -51,28 +51,25 @@ public class WindowSevenViewModel : IDisposable
                     new List<Snack>()));
 
     // Create
-    private IObservable<Snack> SnackCreatedObs => Create.SelectMany(obj =>
+    private IObservable<Snack?> SnackCreatedObs => Create.SelectMany(obj =>
         Observable.FromAsync(async () => await _snackService.AddSnackAsync(obj))
             .NotifyOnSuccessAndError(_notifications,
                 "Snack added successfully.",
-                e => $"Error creating snacks: {e.Message}",
-                new Snack()));
+                e => $"Error creating snacks: {e.Message}"));
 
     // Update
-    private IObservable<Snack> SnackUpdatedObs => Update.SelectMany(obj =>
+    private IObservable<Snack?> SnackUpdatedObs => Update.SelectMany(obj =>
         Observable.FromAsync(async () => await _snackService.UpdateSnackAsync(obj))
             .NotifyOnSuccessAndError(_notifications,
                 "Snack updated successfully.",
-                e => $"Error updating snacks: {e.Message}",
-                new Snack()));
+                e => $"Error updating snacks: {e.Message}"));
 
     // Delete
-    private IObservable<Snack> SnackDeletedObs => Delete.SelectMany(id =>
+    private IObservable<Snack?> SnackDeletedObs => Delete.SelectMany(id =>
         Observable.FromAsync(async () => await _snackService.DeleteSnackAsync(id))
             .NotifyOnSuccessAndError(_notifications,
                 "Snack deleted successfully.",
-                e => $"Error deleting snacks: {e.Message}",
-                new Snack()));
+                e => $"Error deleting snacks: {e.Message}"));
 
     // --- Reducers
     public WindowSevenViewModel()
@@ -80,7 +77,8 @@ public class WindowSevenViewModel : IDisposable
         _snackService = new SnackService
         {
             SimulateFailures = true,
-            FailureProbability = 0.3
+            FailureProbability = 0.7,
+            FailureProbabilityOnLoad = 0.3
         };
 
         // SelectedSnackChanged reducer
@@ -105,7 +103,7 @@ public class WindowSevenViewModel : IDisposable
             .ObserveOnCurrentSynchronizationContext()
             .Subscribe(snack =>
             {
-                if (snack.Id is null) return;
+                if (snack is null) return;
                 var snacks = _stateSubject.Value.Snacks;
                 snacks.Add(snack);
 
@@ -121,7 +119,7 @@ public class WindowSevenViewModel : IDisposable
             .ObserveOnCurrentSynchronizationContext()
             .Subscribe(snack =>
             {
-                if (snack.Id is null) return;
+                if (snack is null) return;
                 var snacks = _stateSubject.Value.Snacks;
                 var index = snacks.FindIndex(s => s.Id == snack.Id);
                 snacks[index] = snack;
@@ -138,7 +136,7 @@ public class WindowSevenViewModel : IDisposable
             .ObserveOnCurrentSynchronizationContext()
             .Subscribe(snack =>
             {
-                if (snack.Id is null) return;
+                if (snack is null) return;
                 var snacks = _stateSubject.Value.Snacks;
                 var index = snacks.FindIndex(s => s.Id == snack.Id);
                 snacks.RemoveAt(index);
