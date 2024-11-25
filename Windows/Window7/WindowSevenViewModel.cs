@@ -45,42 +45,34 @@ public class WindowSevenViewModel : IDisposable
     private IObservable<List<Snack>> SnacksLoadedObs =>
         Reload.StartWith(Unit.Default)
             .SelectMany(_ => Observable.FromAsync(_snackService.GetAllSnacksAsync)
-                .Do(_ => _notifications.OnNext(new NotificationMessage("Snacks loaded successfully.", true)))
-                .Catch((Exception e) =>
-                {
-                    _notifications.OnNext(new NotificationMessage($"Error loading snacks: {e.Message}", false));
-                    return Observable.Return(new List<Snack>());
-                }));
+                .NotifyOnSuccessAndError(_notifications,
+                    "Snacks loaded successfully.",
+                    e => $"Error loading snacks: {e.Message}",
+                    new List<Snack>()));
 
     // Create
     private IObservable<Snack> SnackCreatedObs => Create.SelectMany(obj =>
         Observable.FromAsync(async () => await _snackService.AddSnackAsync(obj))
-            .Do(_ => _notifications.OnNext(new NotificationMessage("Snack added successfully.", true)))
-            .Catch((Exception e) =>
-            {
-                _notifications.OnNext(new NotificationMessage($"Error creating snack: {e.Message}", false));
-                return Observable.Return(new Snack());
-            }));
+            .NotifyOnSuccessAndError(_notifications,
+                "Snack added successfully.",
+                e => $"Error creating snacks: {e.Message}",
+                new Snack()));
 
     // Update
     private IObservable<Snack> SnackUpdatedObs => Update.SelectMany(obj =>
         Observable.FromAsync(async () => await _snackService.UpdateSnackAsync(obj))
-            .Do(_ => _notifications.OnNext(new NotificationMessage("Snack updated successfully.", true)))
-            .Catch((Exception e) =>
-            {
-                _notifications.OnNext(new NotificationMessage($"Error updating snack: {e.Message}", false));
-                return Observable.Return(new Snack());
-            }));
+            .NotifyOnSuccessAndError(_notifications,
+                "Snack updated successfully.",
+                e => $"Error updating snacks: {e.Message}",
+                new Snack()));
 
     // Delete
     private IObservable<Snack> SnackDeletedObs => Delete.SelectMany(id =>
         Observable.FromAsync(async () => await _snackService.DeleteSnackAsync(id))
-            .Do(_ => _notifications.OnNext(new NotificationMessage("Snack deleted successfully.", true)))
-            .Catch((Exception e) =>
-            {
-                _notifications.OnNext(new NotificationMessage($"Error deleting snack: {e.Message}", false));
-                return Observable.Return(new Snack());
-            }));
+            .NotifyOnSuccessAndError(_notifications,
+                "Snack deleted successfully.",
+                e => $"Error deleting snacks: {e.Message}",
+                new Snack()));
 
     // --- Reducers
     public WindowSevenViewModel()
@@ -100,63 +92,63 @@ public class WindowSevenViewModel : IDisposable
         _disposables.Add(SnacksLoadedObs
             .ObserveOnCurrentSynchronizationContext()
             .Subscribe(snacks =>
-        {
-            _stateSubject.OnNext(_stateSubject.Value with
             {
-                Snacks = snacks,
-                Loading = false
-            });
-        }));
+                _stateSubject.OnNext(_stateSubject.Value with
+                {
+                    Snacks = snacks,
+                    Loading = false
+                });
+            }));
 
         // SnackCreated reducer
         _disposables.Add(SnackCreatedObs
             .ObserveOnCurrentSynchronizationContext()
             .Subscribe(snack =>
-        {
-            if (snack.Id is null) return;
-            var snacks = _stateSubject.Value.Snacks;
-            snacks.Add(snack);
-
-            _stateSubject.OnNext(_stateSubject.Value with
             {
-                Snacks = snacks,
-                SelectedSnack = snack
-            });
-        }));
+                if (snack.Id is null) return;
+                var snacks = _stateSubject.Value.Snacks;
+                snacks.Add(snack);
+
+                _stateSubject.OnNext(_stateSubject.Value with
+                {
+                    Snacks = snacks,
+                    SelectedSnack = snack
+                });
+            }));
 
         // SnackUpdated reducer
         _disposables.Add(SnackUpdatedObs
             .ObserveOnCurrentSynchronizationContext()
             .Subscribe(snack =>
-        {
-            if (snack.Id is null) return;
-            var snacks = _stateSubject.Value.Snacks;
-            var index = snacks.FindIndex(s => s.Id == snack.Id);
-            snacks[index] = snack;
-
-            _stateSubject.OnNext(_stateSubject.Value with
             {
-                Snacks = snacks,
-                SelectedSnack = snack
-            });
-        }));
+                if (snack.Id is null) return;
+                var snacks = _stateSubject.Value.Snacks;
+                var index = snacks.FindIndex(s => s.Id == snack.Id);
+                snacks[index] = snack;
+
+                _stateSubject.OnNext(_stateSubject.Value with
+                {
+                    Snacks = snacks,
+                    SelectedSnack = snack
+                });
+            }));
 
         // SnackDeleted reducer
         _disposables.Add(SnackDeletedObs
             .ObserveOnCurrentSynchronizationContext()
             .Subscribe(snack =>
-        {
-            if (snack.Id is null) return;
-            var snacks = _stateSubject.Value.Snacks;
-            var index = snacks.FindIndex(s => s.Id == snack.Id);
-            snacks.RemoveAt(index);
-
-            _stateSubject.OnNext(_stateSubject.Value with
             {
-                Snacks = snacks,
-                SelectedSnack = null
-            });
-        }));
+                if (snack.Id is null) return;
+                var snacks = _stateSubject.Value.Snacks;
+                var index = snacks.FindIndex(s => s.Id == snack.Id);
+                snacks.RemoveAt(index);
+
+                _stateSubject.OnNext(_stateSubject.Value with
+                {
+                    Snacks = snacks,
+                    SelectedSnack = null
+                });
+            }));
     }
 
     // --- Dispose
