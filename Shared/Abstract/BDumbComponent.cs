@@ -1,32 +1,31 @@
-using System.ComponentModel;
 using System.Reactive.Disposables;
-using System.Runtime.CompilerServices;
+using System.Reactive.Subjects;
 using System.Windows;
 using System.Windows.Controls;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace WpfApp1.Shared.Abstract;
 
-public abstract class BDumbComponent : UserControl, INotifyPropertyChanged
+[ObservableObject]
+public abstract partial class BDumbComponent : UserControl
 {
     // --- Dealing with disposables
     protected readonly CompositeDisposable Disposables = new();
 
-    protected BDumbComponent()
-    {
-        // Subscribe to the Unloaded event
-        Unloaded += OnComponentUnloaded;
-    }
+    public static readonly DependencyProperty TriggerDisposeProperty = DependencyProperty.Register(
+        nameof(TriggerDispose), typeof(Subject<bool>), typeof(BDumbComponent),
+        new PropertyMetadata(null, (d, _) =>
+        {
+            if (d is not BDumbComponent c) return;
+            c.Disposables.Add(c.TriggerDispose.Subscribe(trigger =>
+            {
+                if (trigger) c.Disposables.Dispose();
+            }));
+        }));
 
-    private void OnComponentUnloaded(object sender, RoutedEventArgs e)
+    public Subject<bool> TriggerDispose
     {
-        Disposables.Dispose();
-    }
-
-    // --- OnPropertyChanged
-    public event PropertyChangedEventHandler? PropertyChanged;
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        get => (Subject<bool>) GetValue(TriggerDisposeProperty);
+        set => SetValue(TriggerDisposeProperty, value);
     }
 }
