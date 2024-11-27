@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
+using CommunityToolkit.Mvvm.ComponentModel;
 using WpfApp1.Shared.Classes;
 
 namespace WpfApp1.Windows.Window7.UI;
@@ -15,7 +16,7 @@ public partial class SnacksGridSeven
             c.Disposables.Add(c.SnacksObs.Subscribe(snacks =>
             {
                 c.Snacks = new ObservableCollection<Snack>(snacks);
-                c.OnPropertyChanged(nameof(Snacks));
+                // c.OnPropertyChanged(nameof(Snacks));
             }));
         }));
 
@@ -32,17 +33,7 @@ public partial class SnacksGridSeven
 
 
     // --- Internal Properties
-    private ObservableCollection<Snack>? _snacks;
-
-    public ObservableCollection<Snack>? Snacks
-    {
-        get => _snacks;
-        set
-        {
-            _snacks = value;
-            OnPropertyChanged();
-        }
-    }
+    [ObservableProperty] private ObservableCollection<Snack>? _snacks;
 
     // --- Constructor
     public SnacksGridSeven()

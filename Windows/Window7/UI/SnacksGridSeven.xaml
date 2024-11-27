@@ -1,4 +1,4 @@
-﻿<abstract:ADumbComponent x:Class="WpfApp1.Windows.Window7.UI.SnacksGridSeven"
+﻿<abstract:BDumbComponent x:Class="WpfApp1.Windows.Window7.UI.SnacksGridSeven"
                          xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -36,4 +36,4 @@
 
     </Grid>
 
-</abstract:ADumbComponent>
+</abstract:BDumbComponent>

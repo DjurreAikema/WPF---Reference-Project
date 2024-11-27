@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using CommunityToolkit.Mvvm.ComponentModel;
 using WpfApp1.Shared.Classes;
 
 namespace WpfApp1.Windows.Window7.UI;
@@ -29,17 +30,7 @@ public partial class SnackDetailsSeven
     public event Action<int>? SnackDeleted;
 
     // --- Internal Properties
-    private Snack? _selectedSnack;
-
-    public Snack? SelectedSnack
-    {
-        get => _selectedSnack;
-        set
-        {
-            _selectedSnack = value;
-            OnPropertyChanged();
-        }
-    }
+    [ObservableProperty] private Snack? _selectedSnack;
 
     // --- Constructor
     public SnackDetailsSeven()

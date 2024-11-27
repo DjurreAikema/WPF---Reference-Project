@@ -1,4 +1,4 @@
-﻿<abstract:ADumbComponent x:Class="WpfApp1.Windows.Window7.UI.SnackDetailsSeven"
+﻿<abstract:BDumbComponent x:Class="WpfApp1.Windows.Window7.UI.SnackDetailsSeven"
                          xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -9,9 +9,9 @@
                          mc:Ignorable="d"
                          d:DesignHeight="300" d:DesignWidth="300">
 
-    <abstract:ADumbComponent.Resources>
+    <abstract:BDumbComponent.Resources>
         <converters:NullToBoolConverter x:Key="NullToBoolConverter" />
-    </abstract:ADumbComponent.Resources>
+    </abstract:BDumbComponent.Resources>
 
     <StackPanel DataContext="{Binding RelativeSource={RelativeSource AncestorType=ui:SnackDetailsSeven}}" Margin="10">
         <Label Content="Snack details" />
@@ -50,4 +50,4 @@
         </StackPanel>
     </StackPanel>
 
-</abstract:ADumbComponent>
+</abstract:BDumbComponent>
