@@ -1,51 +1,33 @@
-﻿using System.Reactive;
-using System.Reactive.Subjects;
-using WpfApp1.Shared.Classes;
+﻿using System.Reactive.Disposables;
+using System.Windows.Controls;
+using ReactiveUI;
 
 namespace WpfApp1.Windows.Window8;
 
-public partial class WindowEight
+public partial class WindowEight : ReactiveWindow<WindowEightViewModel>
 {
-    public WindowEightViewModel ViewModel { get; } = new();
-    public Subject<bool> TriggerDispose { get; set; } = new();
-
     public WindowEight()
     {
         InitializeComponent();
+        ViewModel = new WindowEightViewModel();
 
-        // Dispose of all subscriptions when the window is closed
-        Closing += (_, _) =>
+        this.WhenActivated(disposables =>
         {
-            ViewModel.Dispose();
-            TriggerDispose.OnNext(true);
-        };
-    }
+            // Bind ViewModel properties to the View
+            this.OneWayBind(ViewModel, vm => vm.Snacks, v => v.SnacksGrid.ItemsSource)
+                .DisposeWith(disposables);
 
-    private void SnacksGrid_SnackSelected(Snack snack)
-    {
-        ViewModel.SelectedSnackChanged.OnNext(snack);
-    }
+            this.Bind(ViewModel, vm => vm.SelectedSnack, v => v.SnacksGrid.SelectedItem)
+                .DisposeWith(disposables);
 
-    private void SnacksGridSix_OnAddSnack()
-    {
-        ViewModel.SelectedSnackChanged.OnNext(new Snack());
-    }
+            // Bind Commands
+            this.BindCommand(ViewModel, vm => vm.LoadSnacksCommand, v => v.ReloadButton)
+                .DisposeWith(disposables);
 
-    private void SnackDetailsSix_OnSnackSaved(Snack snack)
-    {
-        if (snack.Id is 0 or null)
-            ViewModel.Create.OnNext(snack);
-        else
-            ViewModel.Update.OnNext(snack);
-    }
+            this.BindCommand(ViewModel, vm => vm.CreateSnackCommand, v => v.AddButton, nameof(Button.Click))
+                .DisposeWith(disposables);
 
-    private void SnackDetailsSix_OnSnackDeleted(int snackId)
-    {
-        ViewModel.Delete.OnNext(snackId);
-    }
-
-    private void SnacksGridSix_OnReload()
-    {
-        ViewModel.Reload.OnNext(Unit.Default);
+            // Other bindings...
+        });
     }
 }

@@ -2,9 +2,10 @@
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using WpfApp1.Shared.Classes;
 using WpfApp1.Shared.DataAccess;
-using WpfApp1.Shared.ExtensionMethods;
 using WpfApp1.Shared.Interfaces;
 
 namespace WpfApp1.Windows.Window8;
@@ -16,7 +17,7 @@ public record WindowEightState
     public bool Loading { get; init; } = true;
 }
 
-public class WindowEightViewModel : IDisposable
+public class WindowEightViewModel : ReactiveObject, IDisposable
 {
     private readonly CompositeDisposable _disposables = new();
     private readonly ISnackService _snackService;
@@ -26,9 +27,9 @@ public class WindowEightViewModel : IDisposable
     private IObservable<WindowEightState> StateObs => _stateSubject.AsObservable();
 
     // --- Selectors
-    public IObservable<List<Snack>> SnacksObs => StateObs.Select(state => state.Snacks);
-    public IObservable<Snack?> SelectedSnackObs => StateObs.Select(state => state.SelectedSnack);
-    public IObservable<bool> LoadingObs => StateObs.Select(state => state.Loading);
+    [Reactive] public List<Snack> Snacks { get; set; } = [];
+    [Reactive] public Snack? SelectedSnack { get; set; }
+    [Reactive] public bool IsLoading { get; set; } = true;
 
     // --- Notifications
     private readonly Subject<NotificationMessage> _notifications = new();
@@ -36,40 +37,11 @@ public class WindowEightViewModel : IDisposable
 
     // --- Sources
     public readonly Subject<Snack> SelectedSnackChanged = new();
-    public readonly Subject<Snack> Create = new();
-    public readonly Subject<Snack> Update = new();
-    public readonly Subject<Unit> Reload = new();
-    public readonly Subject<int> Delete = new();
 
-    // Load
-    private IObservable<List<Snack>> SnacksLoadedObs =>
-        Reload.StartWith(Unit.Default)
-            .SelectMany(_ => Observable.FromAsync(_snackService.GetAllSnacksAsync)
-                .NotifyOnSuccessAndError(_notifications,
-                    "Snacks loaded successfully.",
-                    e => $"Error loading snacks: {e.Message}",
-                    new List<Snack>()));
-
-    // Create
-    private IObservable<Snack?> SnackCreatedObs => Create.SelectMany(obj =>
-        Observable.FromAsync(async () => await _snackService.AddSnackAsync(obj))
-            .NotifyOnSuccessAndError(_notifications,
-                "Snack added successfully.",
-                e => $"Error creating snacks: {e.Message}"));
-
-    // Update
-    private IObservable<Snack?> SnackUpdatedObs => Update.SelectMany(obj =>
-        Observable.FromAsync(async () => await _snackService.UpdateSnackAsync(obj))
-            .NotifyOnSuccessAndError(_notifications,
-                "Snack updated successfully.",
-                e => $"Error updating snacks: {e.Message}"));
-
-    // Delete
-    private IObservable<Snack?> SnackDeletedObs => Delete.SelectMany(id =>
-        Observable.FromAsync(async () => await _snackService.DeleteSnackAsync(id))
-            .NotifyOnSuccessAndError(_notifications,
-                "Snack deleted successfully.",
-                e => $"Error deleting snacks: {e.Message}"));
+    public ReactiveCommand<Unit, List<Snack>> LoadSnacksCommand { get; }
+    public ReactiveCommand<Snack, Snack> CreateSnackCommand { get; }
+    public ReactiveCommand<Snack, Snack> UpdateSnackCommand { get; }
+    public ReactiveCommand<int, Snack> DeleteSnackCommand { get; }
 
     // --- Reducers
     public WindowEightViewModel()
@@ -81,73 +53,99 @@ public class WindowEightViewModel : IDisposable
             FailureProbabilityOnLoad = 0.3
         };
 
-        // SelectedSnackChanged reducer
-        _disposables.Add(SelectedSnackChanged
-            .ObserveOnCurrentSynchronizationContext()
-            .Subscribe(snack => { _stateSubject.OnNext(_stateSubject.Value with {SelectedSnack = snack}); }));
-
-        // SnacksLoaded reducer
-        _disposables.Add(SnacksLoadedObs
-            .ObserveOnCurrentSynchronizationContext()
-            .Subscribe(snacks =>
+        // Load Snacks Command
+        LoadSnacksCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            IsLoading = true;
+            try
             {
-                _stateSubject.OnNext(_stateSubject.Value with
-                {
-                    Snacks = snacks,
-                    Loading = false
-                });
-            }));
-
-        // SnackCreated reducer
-        _disposables.Add(SnackCreatedObs
-            .ObserveOnCurrentSynchronizationContext()
-            .Subscribe(snack =>
+                var snacks = await _snackService.GetAllSnacksAsync();
+                Snacks = snacks;
+                _notifications.OnNext(new NotificationMessage("Snacks loaded successfully.", true));
+                return snacks;
+            }
+            catch (Exception e)
             {
-                if (snack is null) return;
-                var snacks = _stateSubject.Value.Snacks;
-                snacks.Add(snack);
-
-                _stateSubject.OnNext(_stateSubject.Value with
-                {
-                    Snacks = snacks,
-                    SelectedSnack = snack
-                });
-            }));
-
-        // SnackUpdated reducer
-        _disposables.Add(SnackUpdatedObs
-            .ObserveOnCurrentSynchronizationContext()
-            .Subscribe(updatedSnack =>
+                _notifications.OnNext(new NotificationMessage($"Error loading snacks: {e.Message}", false));
+                return [];
+            }
+            finally
             {
-                if (updatedSnack is null) return;
-                var snacks = _stateSubject.Value.Snacks;
-                var index = snacks.FindIndex(s => s.Id == updatedSnack.Id);
-                if (index < 0) return;
-                snacks[index] = updatedSnack;
+                IsLoading = false;
+            }
+        });
 
-                _stateSubject.OnNext(_stateSubject.Value with
-                {
-                    Snacks = snacks,
-                    SelectedSnack = updatedSnack
-                });
-            }));
-
-        // SnackDeleted reducer
-        _disposables.Add(SnackDeletedObs
-            .ObserveOnCurrentSynchronizationContext()
-            .Subscribe(snack =>
+        // Create Snack Command
+        CreateSnackCommand = ReactiveCommand.CreateFromTask<Snack, Snack>(async snack =>
+        {
+            try
             {
-                if (snack is null) return;
-                var snacks = _stateSubject.Value.Snacks;
-                var index = snacks.FindIndex(s => s.Id == snack.Id);
-                snacks.RemoveAt(index);
+                var createdSnack = await _snackService.AddSnackAsync(snack);
+                _notifications.OnNext(new NotificationMessage("Snack added successfully.", true));
+                return createdSnack;
+            }
+            catch (Exception e)
+            {
+                _notifications.OnNext(new NotificationMessage($"Error creating snack: {e.Message}", false));
+                return null;
+            }
+        });
 
-                _stateSubject.OnNext(_stateSubject.Value with
-                {
-                    Snacks = snacks,
-                    SelectedSnack = null
-                });
-            }));
+        // Update Snack Command
+        UpdateSnackCommand = ReactiveCommand.CreateFromTask<Snack, Snack>(async snack =>
+        {
+            try
+            {
+                var updatedSnack = await _snackService.UpdateSnackAsync(snack);
+                _notifications.OnNext(new NotificationMessage("Snack updated successfully.", true));
+                return updatedSnack;
+            }
+            catch (Exception e)
+            {
+                _notifications.OnNext(new NotificationMessage($"Error updating snack: {e.Message}", false));
+                return null;
+            }
+        });
+
+        // Delete Snack Command
+        DeleteSnackCommand = ReactiveCommand.CreateFromTask<int, Snack>(async id =>
+        {
+            try
+            {
+                var deletedSnack = await _snackService.DeleteSnackAsync(id);
+                _notifications.OnNext(new NotificationMessage("Snack deleted successfully.", true));
+                return deletedSnack;
+            }
+            catch (Exception e)
+            {
+                _notifications.OnNext(new NotificationMessage($"Error deleting snack: {e.Message}", false));
+                return null;
+            }
+        });
+
+        // Handle the results of the commands
+        LoadSnacksCommand.Subscribe(snacks => { Snacks = snacks; });
+
+        CreateSnackCommand.Subscribe(snack =>
+        {
+            Snacks.Add(snack);
+            SelectedSnack = snack;
+        });
+
+        UpdateSnackCommand.Subscribe(snack =>
+        {
+            var index = Snacks.FindIndex(s => s.Id == snack.Id);
+            if (index < 0) return;
+
+            Snacks[index] = snack;
+            SelectedSnack = snack;
+        });
+
+        DeleteSnackCommand.Subscribe(snack =>
+        {
+            Snacks.Remove(snack);
+            SelectedSnack = null;
+        });
     }
 
     // --- Dispose

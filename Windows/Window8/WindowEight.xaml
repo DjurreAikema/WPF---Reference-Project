@@ -1,42 +1,40 @@
-﻿<Window x:Class="WpfApp1.Windows.Window8.WindowEight"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:local="clr-namespace:WpfApp1.Windows.Window8"
-        xmlns:ui="clr-namespace:WpfApp1.Windows.Window8.UI"
-        xmlns:ui1="clr-namespace:WpfApp1.Shared.UI"
-        mc:Ignorable="d"
-        Title="WindowEight" Height="450" Width="800"
-        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+﻿<reactiveUi:ReactiveWindow x:TypeArguments="local:WindowEightViewModel" x:Class="WpfApp1.Windows.Window8.WindowEight"
+                           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                           xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                           xmlns:local="clr-namespace:WpfApp1.Windows.Window8"
+                           xmlns:reactiveUi="http://reactiveui.net"
+                           mc:Ignorable="d"
+                           Title="WindowEight" Height="450" Width="800"
+                           DataContext="{Binding RelativeSource={RelativeSource Self}}">
 
     <Grid>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="2*" />
-            </Grid.ColumnDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
 
-            <ui:SnacksGridEight Grid.Column="0"
-                                TriggerDispose="{Binding TriggerDispose}"
-                                SnacksObs="{Binding ViewModel.SnacksObs}"
-                                SnackSelected="SnacksGrid_SnackSelected"
-                                AddSnack="SnacksGridSix_OnAddSnack"
-                                Reload="SnacksGridSix_OnReload" />
+        <!-- Snacks Grid -->
+        <DataGrid x:Name="SnacksGrid" Grid.Column="0"
+                  ItemsSource="{Binding Snacks}"
+                  SelectedItem="{Binding SelectedSnack, Mode=TwoWay}" />
 
-            <ui:SnackDetailsEight Grid.Column="1"
-                                  TriggerDispose="{Binding TriggerDispose}"
-                                  SelectedSnackObs="{Binding ViewModel.SelectedSnackObs}"
-                                  SnackSaved="SnackDetailsSix_OnSnackSaved"
-                                  SnackDeleted="SnackDetailsSix_OnSnackDeleted" />
-        </Grid>
+        <!-- Snack Details -->
+        <StackPanel Grid.Column="1" DataContext="{Binding SelectedSnack}">
+            <!-- Form Fields -->
+            <TextBox Text="{Binding Name, Mode=TwoWay}" />
+            <TextBox Text="{Binding Price, Mode=TwoWay}" />
+            <TextBox Text="{Binding Quantity, Mode=TwoWay}" />
 
-        <!-- Loading Spinner -->
-        <ui1:ObsLoadingSpinner IsLoadingObs="{Binding ViewModel.LoadingObs}" />
+            <!-- Buttons -->
+            <Button x:Name="SaveButton" Content="Save" Command="{Binding ElementName=Window, Path=DataContext.UpdateSnackCommand}" CommandParameter="{Binding}" />
+            <Button x:Name="DeleteButton" Content="Delete" Command="{Binding ElementName=Window, Path=DataContext.DeleteSnackCommand}" CommandParameter="{Binding Id}" />
+        </StackPanel>
 
-        <!-- Notification Control -->
-        <ui1:NotificationControl NotificationsObs="{Binding ViewModel.NotificationsObs}" />
-
+        <!-- Buttons -->
+        <Button x:Name="ReloadButton" Content="Reload" Grid.Row="1" />
+        <Button x:Name="AddButton" Content="New Snack" Grid.Row="1" />
     </Grid>
 
-</Window>
+</reactiveUi:ReactiveWindow>
