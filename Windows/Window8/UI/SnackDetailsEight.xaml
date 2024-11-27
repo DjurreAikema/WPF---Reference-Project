@@ -1,12 +1,53 @@
-﻿<UserControl x:Class="WpfApp1.Windows.Window8.UI.SnackDetailsEight"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:WpfApp1.Windows.Window8.UI"
-             mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-        
-    </Grid>
-</UserControl>
+﻿<abstract:BDumbComponent x:Class="WpfApp1.Windows.Window8.UI.SnackDetailsEight"
+                         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                         xmlns:abstract="clr-namespace:WpfApp1.Shared.Abstract"
+                         xmlns:converters="clr-namespace:WpfApp1.Shared.Converters"
+                         xmlns:ui="clr-namespace:WpfApp1.Windows.Window8.UI"
+                         mc:Ignorable="d"
+                         d:DesignHeight="300" d:DesignWidth="300">
+
+    <abstract:BDumbComponent.Resources>
+        <converters:NullToBoolConverter x:Key="NullToBoolConverter" />
+    </abstract:BDumbComponent.Resources>
+
+    <StackPanel DataContext="{Binding RelativeSource={RelativeSource AncestorType=ui:SnackDetailsEight}}" Margin="10">
+        <Label Content="Snack details" />
+
+        <Grid Margin="0 10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Label Content="Name:" Grid.Column="0" HorizontalAlignment="Left" />
+            <TextBox Text="{Binding SelectedSnack.Name, Mode=TwoWay}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch"
+                     IsEnabled="{Binding SelectedSnack, Converter={StaticResource NullToBoolConverter}}" />
+
+            <Label Content="Price:" Grid.Column="0" HorizontalAlignment="Left" Grid.Row="1" />
+            <TextBox Text="{Binding SelectedSnack.Price, Mode=TwoWay}" Grid.Column="1" HorizontalAlignment="Stretch" Grid.Row="1"
+                     IsEnabled="{Binding SelectedSnack, Converter={StaticResource NullToBoolConverter}}" />
+
+            <Label Content="Quantity:" Grid.Column="0" HorizontalAlignment="Left" Grid.Row="2" />
+            <TextBox Text="{Binding SelectedSnack.Quantity, Mode=TwoWay}" Grid.Column="1" HorizontalAlignment="Stretch" Grid.Row="2"
+                     IsEnabled="{Binding SelectedSnack, Converter={StaticResource NullToBoolConverter}}" />
+        </Grid>
+
+        <StackPanel Orientation="Horizontal">
+            <Button Content="Save" Click="Save_OnClick" Margin="0 0 10 0"
+                    IsEnabled="{Binding SelectedSnack, Converter={StaticResource NullToBoolConverter}}" />
+
+            <Button Content="Delete" Click="Delete_OnClick"
+                    IsEnabled="{Binding SelectedSnack, Converter={StaticResource NullToBoolConverter}}" />
+        </StackPanel>
+    </StackPanel>
+
+</abstract:BDumbComponent>
