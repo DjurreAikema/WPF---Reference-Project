@@ -1,33 +1,19 @@
-﻿using System.Reactive.Disposables;
-using System.Windows.Controls;
-using ReactiveUI;
+﻿using ReactiveUI;
 
-namespace WpfApp1.Windows.Window8;
-
-public partial class WindowEight : ReactiveWindow<WindowEightViewModel>
+namespace WpfApp1.Windows.Window8
 {
-    public WindowEight()
+    public partial class WindowEight : ReactiveWindow<WindowEightViewModel>
     {
-        InitializeComponent();
-        ViewModel = new WindowEightViewModel();
-
-        this.WhenActivated(disposables =>
+        public WindowEight()
         {
-            // Bind ViewModel properties to the View
-            this.OneWayBind(ViewModel, vm => vm.Snacks, v => v.SnacksGrid.ItemsSource)
-                .DisposeWith(disposables);
+            InitializeComponent();
+            ViewModel = new WindowEightViewModel();
 
-            this.Bind(ViewModel, vm => vm.SelectedSnack, v => v.SnacksGrid.SelectedItem)
-                .DisposeWith(disposables);
-
-            // Bind Commands
-            this.BindCommand(ViewModel, vm => vm.LoadSnacksCommand, v => v.ReloadButton)
-                .DisposeWith(disposables);
-
-            this.BindCommand(ViewModel, vm => vm.CreateSnackCommand, v => v.AddButton, nameof(Button.Click))
-                .DisposeWith(disposables);
-
-            // Other bindings...
-        });
+            this.WhenActivated(disposables =>
+            {
+                // You can add any additional bindings here if needed
+                // For example, handling notifications or other UI elements
+            });
+        }
     }
 }

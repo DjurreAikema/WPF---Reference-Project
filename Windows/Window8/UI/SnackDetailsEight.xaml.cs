@@ -1,52 +1,40 @@
-﻿using System.Windows;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Reactive;
+using System.Reactive.Disposables;
+using ReactiveUI;
 using WpfApp1.Shared.Classes;
 
 namespace WpfApp1.Windows.Window8.UI;
 
-public partial class SnackDetailsEight
+public partial class SnackDetailsEight : ReactiveUserControl<SnackDetailsEightViewModel>
 {
-    // --- Dependency Properties
-    public static readonly DependencyProperty SelectedSnackObsProperty = DependencyProperty.Register(
-        nameof(SelectedSnackObs), typeof(IObservable<Snack?>), typeof(SnackDetailsEight),
-        new PropertyMetadata(null, (d, _) =>
-        {
-            if (d is not SnackDetailsEight c) return;
-            c.Disposables.Add(c.SelectedSnackObs.Subscribe(snack =>
-            {
-                c.SelectedSnack = snack != null ? new Snack(snack) : null;
-                c.OnPropertyChanged(nameof(SelectedSnack));
-            }));
-        }));
-
-    public IObservable<Snack> SelectedSnackObs
-    {
-        get => (IObservable<Snack>) GetValue(SelectedSnackObsProperty);
-        set => SetValue(SelectedSnackObsProperty, value);
-    }
-
-    // --- Events
-    public event Action<Snack>? SnackSaved;
-    public event Action<int>? SnackDeleted;
-
-    // --- Internal Properties
-    [ObservableProperty] private Snack? _selectedSnack;
-
-    // --- Constructor
     public SnackDetailsEight()
     {
         InitializeComponent();
+
+        this.WhenActivated(disposables =>
+        {
+            // Bind the DataContext of the control to the ViewModel.Snack
+            this.OneWayBind(ViewModel, vm => vm, v => v.DataContext)
+                .DisposeWith(disposables);
+        });
+    }
+}
+
+public class SnackDetailsEightViewModel : ReactiveObject
+{
+    private Snack? _snack;
+    public Snack? Snack
+    {
+        get => _snack;
+        set => this.RaiseAndSetIfChanged(ref _snack, value);
     }
 
-    private void Save_OnClick(object sender, RoutedEventArgs e)
-    {
-        if (SelectedSnack == null) return;
-        SnackSaved?.Invoke(SelectedSnack);
-    }
+    public ReactiveCommand<Unit, Unit> SaveCommand { get; set; }
+    public ReactiveCommand<Unit, Unit> DeleteCommand { get; set; }
 
-    private void Delete_OnClick(object sender, RoutedEventArgs e)
+    // Constructor
+    public SnackDetailsEightViewModel()
     {
-        if (SelectedSnack == null || SelectedSnack.Id is 0 or null) return;
-        SnackDeleted?.Invoke(SelectedSnack.Id.Value);
+        // Commands will be assigned from the parent ViewModel
     }
 }

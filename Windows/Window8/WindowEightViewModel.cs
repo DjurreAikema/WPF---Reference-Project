@@ -1,5 +1,5 @@
-﻿using System.Reactive;
-using System.Reactive.Disposables;
+﻿using System.Collections.ObjectModel;
+using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using ReactiveUI;
@@ -7,24 +7,17 @@ using ReactiveUI.Fody.Helpers;
 using WpfApp1.Shared.Classes;
 using WpfApp1.Shared.DataAccess;
 using WpfApp1.Shared.Interfaces;
+using WpfApp1.Windows.Window8.UI;
 
 namespace WpfApp1.Windows.Window8;
 
-public record WindowEightState
+public class WindowEightViewModel : ReactiveObject
 {
-    public List<Snack> Snacks { get; init; } = [];
-    public Snack? SelectedSnack { get; init; }
-    public bool Loading { get; init; } = true;
-}
-
-public class WindowEightViewModel : ReactiveObject, IDisposable
-{
-    private readonly CompositeDisposable _disposables = new();
     private readonly ISnackService _snackService;
 
-    // --- State
-    private readonly BehaviorSubject<WindowEightState> _stateSubject = new(new WindowEightState());
-    private IObservable<WindowEightState> StateObs => _stateSubject.AsObservable();
+    // Child ViewModels
+    public SnacksGridEightViewModel SnacksGridViewModel { get; }
+    public SnackDetailsEightViewModel SnackDetailsViewModel { get; }
 
     // --- Selectors
     [Reactive] public List<Snack> Snacks { get; set; } = [];
@@ -36,8 +29,6 @@ public class WindowEightViewModel : ReactiveObject, IDisposable
     public IObservable<NotificationMessage> NotificationsObs => _notifications.AsObservable();
 
     // --- Sources
-    public readonly Subject<Snack> SelectedSnackChanged = new();
-
     public ReactiveCommand<Unit, List<Snack>> LoadSnacksCommand { get; }
     public ReactiveCommand<Snack, Snack> CreateSnackCommand { get; }
     public ReactiveCommand<Snack, Snack> UpdateSnackCommand { get; }
@@ -53,104 +44,78 @@ public class WindowEightViewModel : ReactiveObject, IDisposable
             FailureProbabilityOnLoad = 0.3
         };
 
+        // Initialize child ViewModels
+        SnacksGridViewModel = new SnacksGridEightViewModel();
+        SnackDetailsViewModel = new SnackDetailsEightViewModel();
+
+        // Initialize commands
+        var canExecuteSnackSelected = this.WhenAnyValue(vm => vm.SnackDetailsViewModel.Snack)
+            .Select(snack => snack != null);
+
         // Load Snacks Command
-        LoadSnacksCommand = ReactiveCommand.CreateFromTask(async () =>
+        var loadSnacksCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            IsLoading = true;
-            try
-            {
-                var snacks = await _snackService.GetAllSnacksAsync();
-                Snacks = snacks;
-                _notifications.OnNext(new NotificationMessage("Snacks loaded successfully.", true));
-                return snacks;
-            }
-            catch (Exception e)
-            {
-                _notifications.OnNext(new NotificationMessage($"Error loading snacks: {e.Message}", false));
-                return [];
-            }
-            finally
-            {
-                IsLoading = false;
-            }
+            var snacks = await _snackService.GetAllSnacksAsync();
+            SnacksGridViewModel.Snacks = new ObservableCollection<Snack>(snacks);
         });
 
-        // Create Snack Command
-        CreateSnackCommand = ReactiveCommand.CreateFromTask<Snack, Snack>(async snack =>
+        // Add Snack Command
+        var addSnackCommand = ReactiveCommand.Create(() =>
         {
-            try
+            var newSnack = new Snack();
+            SnackDetailsViewModel.Snack = newSnack;
+        });
+
+        // Save Snack Command
+        var saveSnackCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            var snack = SnackDetailsViewModel.Snack;
+            if (snack == null) return;
+
+            if (snack.Id == null || snack.Id == 0)
             {
+                // Create new snack
                 var createdSnack = await _snackService.AddSnackAsync(snack);
-                _notifications.OnNext(new NotificationMessage("Snack added successfully.", true));
-                return createdSnack;
+                SnacksGridViewModel.Snacks.Add(createdSnack);
+                SnackDetailsViewModel.Snack = createdSnack;
             }
-            catch (Exception e)
+            else
             {
-                _notifications.OnNext(new NotificationMessage($"Error creating snack: {e.Message}", false));
-                return null;
-            }
-        });
-
-        // Update Snack Command
-        UpdateSnackCommand = ReactiveCommand.CreateFromTask<Snack, Snack>(async snack =>
-        {
-            try
-            {
+                // Update existing snack
                 var updatedSnack = await _snackService.UpdateSnackAsync(snack);
-                _notifications.OnNext(new NotificationMessage("Snack updated successfully.", true));
-                return updatedSnack;
+                var index = SnacksGridViewModel.Snacks.IndexOf(snack);
+                if (index >= 0)
+                {
+                    SnacksGridViewModel.Snacks[index] = updatedSnack;
+                }
+
+                SnackDetailsViewModel.Snack = updatedSnack;
             }
-            catch (Exception e)
-            {
-                _notifications.OnNext(new NotificationMessage($"Error updating snack: {e.Message}", false));
-                return null;
-            }
-        });
+        }, canExecuteSnackSelected);
 
         // Delete Snack Command
-        DeleteSnackCommand = ReactiveCommand.CreateFromTask<int, Snack>(async id =>
+        var deleteSnackCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            try
-            {
-                var deletedSnack = await _snackService.DeleteSnackAsync(id);
-                _notifications.OnNext(new NotificationMessage("Snack deleted successfully.", true));
-                return deletedSnack;
-            }
-            catch (Exception e)
-            {
-                _notifications.OnNext(new NotificationMessage($"Error deleting snack: {e.Message}", false));
-                return null;
-            }
-        });
+            var snack = SnackDetailsViewModel.Snack;
+            if (snack == null || snack.Id == null) return;
 
-        // Handle the results of the commands
-        LoadSnacksCommand.Subscribe(snacks => { Snacks = snacks; });
+            await _snackService.DeleteSnackAsync(snack.Id.Value);
+            SnacksGridViewModel.Snacks.Remove(snack);
+            SnackDetailsViewModel.Snack = null;
+        }, canExecuteSnackSelected);
 
-        CreateSnackCommand.Subscribe(snack =>
-        {
-            Snacks.Add(snack);
-            SelectedSnack = snack;
-        });
+        // Assign commands to child ViewModels
+        SnacksGridViewModel.ReloadCommand = loadSnacksCommand;
+        SnacksGridViewModel.AddCommand = addSnackCommand;
 
-        UpdateSnackCommand.Subscribe(snack =>
-        {
-            var index = Snacks.FindIndex(s => s.Id == snack.Id);
-            if (index < 0) return;
+        SnackDetailsViewModel.SaveCommand = saveSnackCommand;
+        SnackDetailsViewModel.DeleteCommand = deleteSnackCommand;
 
-            Snacks[index] = snack;
-            SelectedSnack = snack;
-        });
+        // Handle selection changes
+        SnacksGridViewModel.WhenAnyValue(vm => vm.SelectedSnack)
+            .BindTo(this, vm => vm.SnackDetailsViewModel.Snack);
 
-        DeleteSnackCommand.Subscribe(snack =>
-        {
-            Snacks.Remove(snack);
-            SelectedSnack = null;
-        });
-    }
-
-    // --- Dispose
-    public void Dispose()
-    {
-        _disposables.Dispose();
+        // Load initial data
+        loadSnacksCommand.Execute().Subscribe();
     }
 }

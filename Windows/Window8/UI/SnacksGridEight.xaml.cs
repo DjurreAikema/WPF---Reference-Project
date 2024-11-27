@@ -1,55 +1,49 @@
 ﻿using System.Collections.ObjectModel;
-using System.Windows;
-using System.Windows.Controls;
-using CommunityToolkit.Mvvm.ComponentModel;
+using System.Reactive;
+using System.Reactive.Disposables;
+using ReactiveUI;
 using WpfApp1.Shared.Classes;
 
-namespace WpfApp1.Windows.Window8.UI;
-
-public partial class SnacksGridEight
+namespace WpfApp1.Windows.Window8.UI
 {
-    // --- Dependency Properties
-    public static readonly DependencyProperty SnacksObsProperty = DependencyProperty.Register(
-        nameof(SnacksObs), typeof(IObservable<IEnumerable<Snack>>), typeof(SnacksGridEight),
-        new PropertyMetadata(null, (d, _) =>
+    public partial class SnacksGridEight : ReactiveUserControl<SnacksGridEightViewModel>
+    {
+        public SnacksGridEight()
         {
-            if (d is not SnacksGridEight c) return;
-            c.Disposables.Add(c.SnacksObs.Subscribe(snacks => { c.Snacks = new ObservableCollection<Snack>(snacks); }));
-        }));
+            InitializeComponent();
 
-    public IObservable<IEnumerable<Snack>> SnacksObs
-    {
-        get => (IObservable<IEnumerable<Snack>>) GetValue(SnacksObsProperty);
-        set => SetValue(SnacksObsProperty, value);
+            this.WhenActivated(disposables =>
+            {
+                // Bind the DataContext of the control to the ViewModel
+                this.OneWayBind(ViewModel, vm => vm, v => v.DataContext)
+                    .DisposeWith(disposables);
+            });
+        }
     }
 
-    // --- Events
-    public event Action<Snack>? SnackSelected;
-    public event Action? AddSnack;
-    public event Action? Reload;
-
-
-    // --- Internal Properties
-    [ObservableProperty] private ObservableCollection<Snack>? _snacks;
-
-    // --- Constructor
-    public SnacksGridEight()
+    public class SnacksGridEightViewModel : ReactiveObject
     {
-        InitializeComponent();
-
-        SnacksDataGrid.SelectionChanged += (_, _) =>
+        private ObservableCollection<Snack>? _snacks;
+        public ObservableCollection<Snack>? Snacks
         {
-            if (SnacksDataGrid.SelectedItem is Snack selectedSnack) SnackSelected?.Invoke(selectedSnack);
-        };
-    }
+            get => _snacks;
+            set => this.RaiseAndSetIfChanged(ref _snacks, value);
+        }
 
-    private void New_OnClick(object sender, RoutedEventArgs e)
-    {
-        AddSnack?.Invoke();
-    }
+        private Snack? _selectedSnack;
+        public Snack? SelectedSnack
+        {
+            get => _selectedSnack;
+            set => this.RaiseAndSetIfChanged(ref _selectedSnack, value);
+        }
 
-    private void Reload_OnClick(object sender, RoutedEventArgs e)
-    {
-        Reload?.Invoke();
+        public ReactiveCommand<Unit, Unit> ReloadCommand { get; set; }
+        public ReactiveCommand<Unit, Unit> AddCommand { get; set; }
+
+        // Constructor
+        public SnacksGridEightViewModel()
+        {
+            // Commands will be assigned from the parent ViewModel
+        }
     }
 }
