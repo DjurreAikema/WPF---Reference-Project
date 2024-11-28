@@ -12,7 +12,6 @@
     d:DesignHeight="300" d:DesignWidth="300">
 
     <UserControl.Resources>
-        <!-- Converters -->
         <converters:NullToBoolConverter x:Key="NullToBoolConverter" />
     </UserControl.Resources>
 
