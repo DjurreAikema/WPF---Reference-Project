@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using Record_Book_MVVM.Models;
 using Record_Book_MVVM.ViewModel;
 
 namespace Record_Book_MVVM.Views;
@@ -18,6 +19,14 @@ public partial class MainWindow : Window
 
     private void FilterTextBox_TextChanged(object sender, TextChangedEventArgs e)
     {
-        throw new NotImplementedException();
+        UserList.Items.Filter = FilterMethod;
+    }
+
+    private bool FilterMethod(object obj)
+    {
+        if (obj is not User user)
+            return false;
+
+        return user.Name.Contains(FilterTextBox.Text, StringComparison.OrdinalIgnoreCase);
     }
 }
