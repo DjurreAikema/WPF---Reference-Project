@@ -27,11 +27,13 @@
                     VerticalContentAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Right"
                     BorderThickness="1" BorderBrush="#E0E0E0" />
 
-            <ListView Name="UserList" BorderBrush="#cdcdcd" Margin="25,70,35,35" Padding="0">
+            <ListView Name="UserList" ItemsSource="{Binding Users}"
+                      Margin="25,70,35,35" Padding="0"
+                      BorderBrush="#cdcdcd">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Name" />
-                        <GridViewColumn Header="Email" />
+                        <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name" />
+                        <GridViewColumn DisplayMemberBinding="{Binding Email}" Header="Email" />
                     </GridView>
                 </ListView.View>
             </ListView>
