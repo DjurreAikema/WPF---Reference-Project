@@ -11,11 +11,11 @@
     <Grid Background="#F5F5F5">
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Grid Background="White" Grid.Row="1" Margin="25, 40, 25, 15">
+        <Grid Background="White" Grid.Row="0" Margin="25, 40, 25, 15">
 
             <TextBox Name="FilterTextBox" TextChanged="FilterTextBox_TextChanged"
                      Height="30" Width="200" Margin="25"
@@ -37,7 +37,10 @@
                     </GridView>
                 </ListView.View>
             </ListView>
+
         </Grid>
+
+        <TextBox Grid.Row="1">https://www.youtube.com/watch?v=4v8PobcZpqM</TextBox>
     </Grid>
 
 </Window>
