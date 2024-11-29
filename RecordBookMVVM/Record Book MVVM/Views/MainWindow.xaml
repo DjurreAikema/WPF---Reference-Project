@@ -22,7 +22,7 @@
                      VerticalAlignment="Top" HorizontalAlignment="left"
                      BorderThickness="1" BorderBrush="#E0E0E0" />
 
-            <Button CommandParameter="{x:Reference Name= Mainwindow}" Command="{Binding ShowWindowCommand}" Content="Add User"
+            <Button CommandParameter="{x:Reference Name=Mainwindow}" Command="{Binding ShowWindowCommand}" Content="Add User"
                     Height="30" Width="100" Padding="5" Margin="35 25"
                     VerticalContentAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Right"
                     BorderThickness="1" BorderBrush="#E0E0E0" />

@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
 using Record_Book_MVVM.Commands;
 using Record_Book_MVVM.Models;
@@ -21,7 +22,13 @@ public class MainViewModel
 
     private static void ShowWindow(object obj)
     {
-        var addUserWin = new AddUser();
+        var mainWindow = obj as Window;
+
+        var addUserWin = new AddUser
+        {
+            Owner = mainWindow,
+            WindowStartupLocation = WindowStartupLocation.CenterOwner
+        };
         addUserWin.Show();
     }
 }
