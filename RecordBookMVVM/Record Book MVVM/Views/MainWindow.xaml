@@ -1,0 +1,41 @@
+﻿<Window x:Class="Record_Book_MVVM.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Record_Book_MVVM"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="650" Width="1000"
+        Name="Mainwindow">
+
+    <Grid Background="#F5F5F5">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Background="White" Grid.Row="1" Margin="25, 40, 25, 15">
+
+            <TextBox Name="FilterTextBox" TextChanged="FilterTextBox_TextChanged"
+                     Height="30" Width="200" Margin="25"
+                     VerticalAlignment="Top" HorizontalAlignment="left"
+                     BorderThickness="1" BorderBrush="#E0E0E0" />
+
+            <Button CommandParameter="{x:Reference Name= Mainwindow}" Command="{Binding ShowWindowCommand}" Content="Add User"
+                    Height="30" Width="100" Padding="5" Margin="35 25"
+                    VerticalContentAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Right"
+                    BorderThickness="1" BorderBrush="#E0E0E0" />
+
+            <ListView Name="UserList" BorderBrush="#cdcdcd" Margin="25,70,35,35" Padding="0">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Name" />
+                        <GridViewColumn Header="Email" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+    </Grid>
+
+</Window>
