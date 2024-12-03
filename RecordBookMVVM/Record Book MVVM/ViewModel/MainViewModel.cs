@@ -29,6 +29,7 @@ public class MainViewModel
             Owner = mainWindow,
             WindowStartupLocation = WindowStartupLocation.CenterOwner
         };
+
         addUserWin.Show();
     }
 }
