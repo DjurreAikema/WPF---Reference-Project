@@ -9,14 +9,8 @@ namespace Record_Book_MVVM.ViewModel;
 
 public class MainViewModel
 {
-    public ObservableCollection<User> Users { get; set; }
-    public ICommand ShowWindowCommand { get; set; }
-
-    public MainViewModel()
-    {
-        Users = UserManager.GetUsers();
-        ShowWindowCommand = new RelayCommand(ShowWindow, CanShowWindow);
-    }
+    public ObservableCollection<User> Users { get; set; } = UserManager.GetUsers();
+    public ICommand ShowWindowCommand { get; set; } = new RelayCommand(ShowWindow, CanShowWindow);
 
     private static bool CanShowWindow(object obj) => true;
 
