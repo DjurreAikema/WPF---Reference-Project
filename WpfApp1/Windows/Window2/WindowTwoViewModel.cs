@@ -34,7 +34,7 @@ public class WindowTwoViewModel : INotifyPropertyChanged
     {
         Snacks = new List<Snack>
         {
-            new() {Name = "Chips", Price = 1.50, Quantity = 10},
+            new() {Name = "Chips", Price = 1.50, Quantity = 10, SnackSub = new SnackSub {Description = "Test"}},
             new() {Name = "Chocolate", Price = 2.50, Quantity = 5},
             new() {Name = "Candy", Price = 0.50, Quantity = 20},
             new() {Name = "Gum", Price = 0.25, Quantity = 50},

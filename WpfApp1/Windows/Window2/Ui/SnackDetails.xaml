@@ -12,6 +12,7 @@
             <TextBlock Text="{Binding SelectedSnack.Name}" />
             <TextBlock Text="{Binding SelectedSnack.Price}" />
             <TextBlock Text="{Binding SelectedSnack.Quantity}" />
+            <TextBlock Text="{Binding SelectedSnack.SnackSub.Description}" />
         </StackPanel>
 
 </UserControl>
