@@ -19,9 +19,9 @@ public partial class SnackDetailsSeven
             }));
         }));
 
-    public IObservable<Snack> SelectedSnackObs
+    public IObservable<Snack?> SelectedSnackObs
     {
-        get => (IObservable<Snack>) GetValue(SelectedSnackObsProperty);
+        get => (IObservable<Snack?>) GetValue(SelectedSnackObsProperty);
         set => SetValue(SelectedSnackObsProperty, value);
     }
 

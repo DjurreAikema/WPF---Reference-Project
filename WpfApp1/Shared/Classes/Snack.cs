@@ -9,7 +9,7 @@ public class Snack
     [Required] public double Price { get; set; }
     [Required] public int Quantity { get; set; }
 
-    public SnackSub? SnackSub { get; set; }
+    // public SnackSub? SnackSub { get; set; }
 
     public Snack()
     {
