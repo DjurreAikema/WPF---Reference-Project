@@ -19,6 +19,7 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
         <Button Grid.Row="0" Grid.Column="0" Content="Open Window One"
@@ -48,6 +49,10 @@
         <Button Grid.Row="6" Grid.Column="0" Content="Open Window Seven"
                 Padding="10" Margin="5"
                 Click="OpenWindowSevenButton_Click"/>
+
+        <Button Grid.Row="6" Grid.Column="1" Content="Open Window Seven.One"
+                Padding="10" Margin="5"
+                Click="OpenWindowSevenOneButton_Click"/>
 
         <Button Grid.Row="7" Grid.Column="0" Content="Open Window Eight"
                 Padding="10" Margin="5"
