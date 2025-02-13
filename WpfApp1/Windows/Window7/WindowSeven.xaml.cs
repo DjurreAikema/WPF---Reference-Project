@@ -21,6 +21,7 @@ public partial class WindowSeven
         };
     }
 
+    // --- Grid
     private void SnacksGrid_SnackSelected(Snack snack)
     {
         ViewModel.SelectedSnackChanged.OnNext(snack);
@@ -31,6 +32,7 @@ public partial class WindowSeven
         ViewModel.SelectedSnackChanged.OnNext(new Snack());
     }
 
+    // --- Details
     private void SnackDetailsSix_OnSnackSaved(Snack snack)
     {
         if (snack.Id is 0 or null)
