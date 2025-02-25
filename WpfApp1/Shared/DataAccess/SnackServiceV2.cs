@@ -49,18 +49,6 @@ public class SnackServiceV2
         return snack;
     }
 
-    public async Task<SnackV2> UpdateLockingAsync(SnackV2 snack)
-    {
-        await using var context = CreateDbContext();
-
-        context.Snacks.Attach(snack);
-        context.Entry(snack).Property(s => s.Locked).IsModified = true;
-        context.Entry(snack).Property(s => s.LockedBy).IsModified = true;
-
-        await context.SaveChangesAsync();
-        return snack;
-    }
-
     public async Task<SnackV2?> DeleteSnackAsync(int id)
     {
         if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbability)
@@ -71,6 +59,19 @@ public class SnackServiceV2
         if (snack == null) return snack;
 
         context.Snacks.Remove(snack);
+        await context.SaveChangesAsync();
+        return snack;
+    }
+
+    // --- locking
+    public async Task<SnackV2> UpdateLockingAsync(SnackV2 snack)
+    {
+        await using var context = CreateDbContext();
+
+        context.Snacks.Attach(snack);
+        context.Entry(snack).Property(s => s.Locked).IsModified = true;
+        context.Entry(snack).Property(s => s.LockedBy).IsModified = true;
+
         await context.SaveChangesAsync();
         return snack;
     }

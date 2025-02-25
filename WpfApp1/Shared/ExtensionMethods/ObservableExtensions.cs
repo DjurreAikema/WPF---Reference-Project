@@ -23,7 +23,7 @@ public static class ObservableExtensions
         return source.Do(_ => notifications.OnNext(new NotificationMessage(successMessage, true)));
     }
 
-    private static IObservable<T> NotifyOnError<T>(
+    public static IObservable<T> NotifyOnError<T>(
         this IObservable<T> source,
         Subject<NotificationMessage> notifications,
         Func<Exception, string> errorMessageFactory,

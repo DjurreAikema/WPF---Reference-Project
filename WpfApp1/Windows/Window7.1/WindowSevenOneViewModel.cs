@@ -30,7 +30,11 @@ public class WindowSevenOneViewModel : IDisposable
     public IObservable<List<SnackV2>> SnacksObs => StateObs.Select(state => state.Snacks);
     public IObservable<SnackV2?> SelectedSnackObs => StateObs.Select(state => state.SelectedSnack);
     public IObservable<bool> LoadingObs => StateObs.Select(state => state.Loading);
-    public IObservable<SnackV2?> SelectedLockableObs => SnackLockVm.SelectedItemObs;
+
+    // Locking
+    public IObservable<bool> IsLockedObs => SnackLockVm.IsLockedObs;
+    public IObservable<bool> IsSoftLockedObs => SnackLockVm.IsSoftLockedObs;
+    public IObservable<bool> IsUnlockedObs => SnackLockVm.IsUnlockedObs;
 
     // --- Notifications
     private readonly Subject<NotificationMessage> _notifications = new();
@@ -66,13 +70,6 @@ public class WindowSevenOneViewModel : IDisposable
                 "Snack updated successfully.",
                 e => $"Error updating snack: {e.Message}"));
 
-    // Locking
-    private IObservable<SnackV2?> SnackLockObs => SelectedLockableObs.SelectMany(obj =>
-        Observable.FromAsync(async () => await _snackService.UpdateLockingAsync(obj))
-            .NotifyOnSuccessAndError(_notifications,
-                "Snack locked successfully.",
-                e => $"Error locking snack: {e.Message}"));
-
     // Delete
     private IObservable<SnackV2?> SnackDeletedObs => Delete.SelectMany(id =>
         Observable.FromAsync(async () => await _snackService.DeleteSnackAsync(id))
@@ -90,7 +87,7 @@ public class WindowSevenOneViewModel : IDisposable
             FailureProbabilityOnLoad = 0.3
         };
 
-        SnackLockVm = new LockViewModel<SnackV2>();
+        SnackLockVm = new LockViewModel<SnackV2>(_snackService.UpdateLockingAsync);
 
         // SelectedSnackChanged reducer
         _disposables.Add(SelectedSnackChanged
@@ -99,9 +96,10 @@ public class WindowSevenOneViewModel : IDisposable
             {
                 // Locking
                 var previous = _stateSubject.Value.SelectedSnack;
-                SnackLockVm.ReleaseLock.OnNext(previous);
-                SnackLockVm.SelectItem.OnNext(snack);
+                if (previous?.LockState == LockState.Unlocked && previous.LockedBy == Environment.UserName)
+                    SnackLockVm.ReleaseLock.OnNext(previous);
 
+                SnackLockVm.SelectItem.OnNext(snack);
                 _stateSubject.OnNext(_stateSubject.Value with {SelectedSnack = snack});
             }));
 
@@ -148,23 +146,6 @@ public class WindowSevenOneViewModel : IDisposable
                 {
                     Snacks = snacks,
                     SelectedSnack = updatedSnack
-                });
-            }));
-
-        // SnackLock reducer
-        _disposables.Add(SnackLockObs
-            .ObserveOnCurrentSynchronizationContext()
-            .Subscribe(lockedSnack =>
-            {
-                if (lockedSnack is null) return;
-                var snacks = _stateSubject.Value.Snacks;
-                var index = snacks.FindIndex(s => s.Id == lockedSnack.Id);
-                if (index < 0) return;
-                snacks[index] = lockedSnack;
-
-                _stateSubject.OnNext(_stateSubject.Value with
-                {
-                    Snacks = snacks
                 });
             }));
 

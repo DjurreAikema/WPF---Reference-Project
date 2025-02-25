@@ -10,5 +10,10 @@ public interface ILockable
     /// <summary>
     /// Name or ID of the user who locked the item. If null, item is SoftLocked.
     /// </summary>
+    DateTime? Locked { get; set; }
+
+    /// <summary>
+    /// Name or ID of the user who locked the item. If null, item is SoftLocked.
+    /// </summary>
     string? LockedBy { get; set; }
 }

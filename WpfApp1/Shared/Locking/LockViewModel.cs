@@ -1,6 +1,8 @@
 ﻿using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using WpfApp1.Shared.Classes;
+using WpfApp1.Shared.ExtensionMethods;
 
 namespace WpfApp1.Shared.Locking;
 
@@ -22,22 +24,52 @@ public class LockViewModel<TItem> : IDisposable where TItem : class, ILockable
 
     // --- Selectors
     public IObservable<TItem?> SelectedItemObs => StateObs.Select(state => state.SelectedItem);
+    public IObservable<bool> IsLockedObs => StateObs.Select(state => state.SelectedItem?.LockState == LockState.Locked);
+    public IObservable<bool> IsSoftLockedObs => StateObs.Select(state => state.SelectedItem?.LockState == LockState.SoftLocked);
+    public IObservable<bool> IsUnlockedObs => StateObs.Select(state => state.SelectedItem?.LockState == LockState.Unlocked);
     public IObservable<bool> LoadingObs => StateObs.Select(state => state.Loading);
+
+    // --- Notifications
+    private readonly Subject<NotificationMessage> _notifications = new();
+    public IObservable<NotificationMessage> NotificationsObs => _notifications.AsObservable();
 
     // --- Sources
     public Subject<TItem?> SelectItem { get; } = new(); // user picks a new item
-    public Subject<TItem?> ClaimLock { get; } = new(); // user tries to claim lock (unlock for themselves)
-    public Subject<TItem?> ReleaseLock { get; } = new(); // user leaves the item or closes window
+    public Subject<TItem> ClaimLock { get; } = new(); // user tries to claim lock (unlock for themselves)
+    public Subject<TItem> ReleaseLock { get; } = new(); // user leaves the item or closes window
+
+    // Claim
+    private IObservable<TItem?> ClaimLockObs => ClaimLock.SelectMany(obj =>
+    {
+        obj.Locked = DateTime.Now;
+        obj.LockedBy = Environment.UserName;
+        obj.LockState = LockState.Unlocked;
+
+        return Observable.FromAsync(() => _updateLockFunc(obj))
+            .NotifyOnError(_notifications, e => $"Error claiming lock: {e.Message}");
+    });
+
+    // Release
+    private IObservable<TItem?> ReleaseLockObs => ReleaseLock.SelectMany(obj =>
+    {
+        obj.Locked = null;
+        obj.LockedBy = null;
+        obj.LockState = LockState.SoftLocked;
+
+        return Observable.FromAsync(() => _updateLockFunc(obj))
+            .NotifyOnError(_notifications, e => $"Error releasing lock: {e.Message}");
+    });
 
     // Current user
-    private readonly string _currentUser = "UserA";
+    private readonly Func<TItem, Task<TItem>> _updateLockFunc;
 
     // --- Reducers
-    public LockViewModel()
+    public LockViewModel(Func<TItem, Task<TItem>> updateLockFunc)
     {
+        _updateLockFunc = updateLockFunc;
+
         // Initialize with an empty item and not loading
-        _stateSubject = new BehaviorSubject<LockViewModelState<TItem>>(
-            new LockViewModelState<TItem>
+        _stateSubject = new BehaviorSubject<LockViewModelState<TItem>>(new LockViewModelState<TItem>
             {
                 SelectedItem = null,
                 Loading = false
@@ -48,79 +80,44 @@ public class LockViewModel<TItem> : IDisposable where TItem : class, ILockable
         _disposables.Add(SelectItem
             .Subscribe(item =>
             {
-                var previous = _stateSubject.Value.SelectedItem;
-                if (previous != null && previous.LockState == LockState.Unlocked && previous.LockedBy == _currentUser)
-                {
-                    // Turn it back to SoftLocked so other users can lock it
-                    previous.LockState = LockState.SoftLocked;
-                    previous.LockedBy = null;
-                    // Optionally update DB: “ReleaseLockInDbAsync(previous)”
-                }
-
                 if (item == null)
                 {
-                    // No new item selected
                     _stateSubject.OnNext(_stateSubject.Value with {SelectedItem = null});
+                    return;
                 }
+
+                if (item.LockedBy == null)
+                    item.LockState = LockState.SoftLocked;
+                else if (item.LockedBy == Environment.UserName)
+                    item.LockState = LockState.Unlocked;
                 else
+                    item.LockState = LockState.Locked;
+
+                _stateSubject.OnNext(_stateSubject.Value with {SelectedItem = item});
+            })
+        );
+
+        // ClaimLockObs reducer
+        _disposables.Add(ClaimLockObs
+            .ObserveOnCurrentSynchronizationContext()
+            .Subscribe(item =>
+            {
+                _stateSubject.OnNext(_stateSubject.Value with
                 {
-                    // Evaluate item’s current lock state
-                    if (item.LockedBy == null)
-                    {
-                        // Means nobody has locked it => SoftLocked
-                        item.LockState = LockState.SoftLocked;
-                    }
-                    else if (item.LockedBy == _currentUser)
-                    {
-                        // Means user had locked it previously => Unlocked
-                        item.LockState = LockState.Unlocked;
-                    }
-                    else
-                    {
-                        // Another user locked it => Locked
-                        item.LockState = LockState.Locked;
-                    }
+                    SelectedItem = item
+                });
+            }));
 
-                    // Next state
-                    _stateSubject.OnNext(_stateSubject.Value with
-                    {
-                        SelectedItem = item
-                    });
-                }
-            })
-        );
-
-        // Claim lock means: if item is SoftLocked => set to Unlocked for the current user
-        _disposables.Add(ClaimLock
-            .Subscribe(current =>
+        // ReleaseLockObs reducer
+        _disposables.Add(ReleaseLockObs
+            .ObserveOnCurrentSynchronizationContext()
+            .Subscribe(item =>
             {
-                if (current is null) return;
-                if (current.LockState != LockState.SoftLocked) return;
-
-                current.LockState = LockState.Unlocked;
-                current.LockedBy = _currentUser;
-                // Optionally persist to DB
-                // await _snackService.UpdateSnackLockAsync(current, _currentUser);
-
-                _stateSubject.OnNext(_stateSubject.Value with {SelectedItem = current});
-            })
-        );
-
-        // Release lock means: if item is Unlocked by me => set to SoftLocked
-        _disposables.Add(ReleaseLock
-            .Subscribe(current =>
-            {
-                if (current is null) return;
-                if (current.LockState != LockState.Unlocked || current.LockedBy != _currentUser) return;
-
-                current.LockState = LockState.SoftLocked;
-                current.LockedBy = null;
-                // Optionally update DB
-                // await _snackService.UpdateSnackLockAsync(current, null);
-
-                _stateSubject.OnNext(_stateSubject.Value with {SelectedItem = current});
-            })
-        );
+                _stateSubject.OnNext(_stateSubject.Value with
+                {
+                    SelectedItem = item
+                });
+            }));
     }
 
     // --- Dispose
