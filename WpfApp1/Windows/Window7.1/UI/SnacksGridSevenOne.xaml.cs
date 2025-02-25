@@ -16,7 +16,6 @@ public partial class SnacksGridSevenOne
             c.Disposables.Add(c.SnacksObs.Subscribe(snacks =>
             {
                 c.Snacks = new ObservableCollection<Snack>(snacks);
-                // c.OnPropertyChanged(nameof(Snacks));
             }));
         }));
 
