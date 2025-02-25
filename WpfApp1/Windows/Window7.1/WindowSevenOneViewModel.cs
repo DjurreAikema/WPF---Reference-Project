@@ -5,6 +5,7 @@ using System.Reactive.Subjects;
 using WpfApp1.Shared.Classes;
 using WpfApp1.Shared.DataAccess;
 using WpfApp1.Shared.ExtensionMethods;
+using WpfApp1.Shared.Locking;
 
 namespace WpfApp1.Windows.Window7._1;
 
@@ -18,6 +19,7 @@ public record WindowSevenOneState
 public class WindowSevenOneViewModel : IDisposable
 {
     private readonly CompositeDisposable _disposables = new();
+    private LockViewModel<SnackV2> SnackLockVm { get; }
     private readonly SnackServiceV2 _snackService;
 
     // --- State
@@ -28,6 +30,7 @@ public class WindowSevenOneViewModel : IDisposable
     public IObservable<List<SnackV2>> SnacksObs => StateObs.Select(state => state.Snacks);
     public IObservable<SnackV2?> SelectedSnackObs => StateObs.Select(state => state.SelectedSnack);
     public IObservable<bool> LoadingObs => StateObs.Select(state => state.Loading);
+    public IObservable<SnackV2?> SelectedLockableObs => SnackLockVm.SelectedItemObs;
 
     // --- Notifications
     private readonly Subject<NotificationMessage> _notifications = new();
@@ -54,21 +57,28 @@ public class WindowSevenOneViewModel : IDisposable
         Observable.FromAsync(async () => await _snackService.AddSnackAsync(obj))
             .NotifyOnSuccessAndError(_notifications,
                 "Snack added successfully.",
-                e => $"Error creating snacks: {e.Message}"));
+                e => $"Error creating snack: {e.Message}"));
 
     // Update
     private IObservable<SnackV2?> SnackUpdatedObs => Update.SelectMany(obj =>
         Observable.FromAsync(async () => await _snackService.UpdateSnackAsync(obj))
             .NotifyOnSuccessAndError(_notifications,
                 "Snack updated successfully.",
-                e => $"Error updating snacks: {e.Message}"));
+                e => $"Error updating snack: {e.Message}"));
+
+    // Locking
+    private IObservable<SnackV2?> SnackLockObs => SelectedLockableObs.SelectMany(obj =>
+        Observable.FromAsync(async () => await _snackService.UpdateLockingAsync(obj))
+            .NotifyOnSuccessAndError(_notifications,
+                "Snack locked successfully.",
+                e => $"Error locking snack: {e.Message}"));
 
     // Delete
     private IObservable<SnackV2?> SnackDeletedObs => Delete.SelectMany(id =>
         Observable.FromAsync(async () => await _snackService.DeleteSnackAsync(id))
             .NotifyOnSuccessAndError(_notifications,
                 "Snack deleted successfully.",
-                e => $"Error deleting snacks: {e.Message}"));
+                e => $"Error deleting snack: {e.Message}"));
 
     // --- Reducers
     public WindowSevenOneViewModel()
@@ -80,10 +90,20 @@ public class WindowSevenOneViewModel : IDisposable
             FailureProbabilityOnLoad = 0.3
         };
 
+        SnackLockVm = new LockViewModel<SnackV2>();
+
         // SelectedSnackChanged reducer
         _disposables.Add(SelectedSnackChanged
             .ObserveOnCurrentSynchronizationContext()
-            .Subscribe(snack => { _stateSubject.OnNext(_stateSubject.Value with {SelectedSnack = snack}); }));
+            .Subscribe(snack =>
+            {
+                // Locking
+                var previous = _stateSubject.Value.SelectedSnack;
+                SnackLockVm.ReleaseLock.OnNext(previous);
+                SnackLockVm.SelectItem.OnNext(snack);
+
+                _stateSubject.OnNext(_stateSubject.Value with {SelectedSnack = snack});
+            }));
 
         // SnacksLoaded reducer
         _disposables.Add(SnacksLoadedObs
@@ -128,6 +148,23 @@ public class WindowSevenOneViewModel : IDisposable
                 {
                     Snacks = snacks,
                     SelectedSnack = updatedSnack
+                });
+            }));
+
+        // SnackLock reducer
+        _disposables.Add(SnackLockObs
+            .ObserveOnCurrentSynchronizationContext()
+            .Subscribe(lockedSnack =>
+            {
+                if (lockedSnack is null) return;
+                var snacks = _stateSubject.Value.Snacks;
+                var index = snacks.FindIndex(s => s.Id == lockedSnack.Id);
+                if (index < 0) return;
+                snacks[index] = lockedSnack;
+
+                _stateSubject.OnNext(_stateSubject.Value with
+                {
+                    Snacks = snacks
                 });
             }));
 
