@@ -1,25 +1,24 @@
 using Microsoft.EntityFrameworkCore;
 using WpfApp1.Data;
 using WpfApp1.Shared.Classes;
-using WpfApp1.Shared.Interfaces;
 
 namespace WpfApp1.Shared.DataAccess;
 
-public class SnackService : ISnackService
+public class SnackServiceV2
 {
     public bool SimulateFailures { get; set; } = false;
     public double FailureProbability { get; set; } = 0.3;
     public double FailureProbabilityOnLoad { get; set; } = 0.3;
     private static readonly Random RandomGenerator = new();
 
-    private static SnackDbContext CreateDbContext()
+    private static SnackDbContextV2 CreateDbContext()
     {
-        var optionsBuilder = new DbContextOptionsBuilder<SnackDbContext>();
-        optionsBuilder.UseSqlite("Data Source=snacks.db");
-        return new SnackDbContext(optionsBuilder.Options);
+        var optionsBuilder = new DbContextOptionsBuilder<SnackDbContextV2>();
+        optionsBuilder.UseSqlite("Data Source=SnacksV2.db");
+        return new SnackDbContextV2(optionsBuilder.Options);
     }
 
-    public async Task<List<Snack>> GetAllSnacksAsync()
+    public async Task<List<SnackV2>> GetAllSnacksAsync()
     {
         if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbabilityOnLoad)
             throw new Exception("Simulated database failure during GetAllSnacksAsync");
@@ -28,7 +27,7 @@ public class SnackService : ISnackService
         return await context.Snacks.ToListAsync();
     }
 
-    public async Task<Snack> AddSnackAsync(Snack snack)
+    public async Task<SnackV2> AddSnackAsync(SnackV2 snack)
     {
         if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbability)
             throw new Exception("Simulated database failure during AddSnackAsync");
@@ -39,7 +38,7 @@ public class SnackService : ISnackService
         return snack;
     }
 
-    public async Task<Snack> UpdateSnackAsync(Snack snack)
+    public async Task<SnackV2> UpdateSnackAsync(SnackV2 snack)
     {
         if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbability)
             throw new Exception("Simulated database failure during UpdateSnackAsync");
@@ -50,7 +49,7 @@ public class SnackService : ISnackService
         return snack;
     }
 
-    public async Task<Snack> DeleteSnackAsync(int id)
+    public async Task<SnackV2?> DeleteSnackAsync(int id)
     {
         if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbability)
             throw new Exception("Simulated database failure during DeleteSnackAsync");

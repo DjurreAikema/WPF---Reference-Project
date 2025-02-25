@@ -5,29 +5,28 @@ using System.Reactive.Subjects;
 using WpfApp1.Shared.Classes;
 using WpfApp1.Shared.DataAccess;
 using WpfApp1.Shared.ExtensionMethods;
-using WpfApp1.Shared.Interfaces;
 
 namespace WpfApp1.Windows.Window7._1;
 
 public record WindowSevenOneState
 {
-    public List<Snack> Snacks { get; init; } = [];
-    public Snack? SelectedSnack { get; init; }
+    public List<SnackV2> Snacks { get; init; } = [];
+    public SnackV2? SelectedSnack { get; init; }
     public bool Loading { get; init; } = true;
 }
 
 public class WindowSevenOneViewModel : IDisposable
 {
     private readonly CompositeDisposable _disposables = new();
-    private readonly ISnackService _snackService;
+    private readonly SnackServiceV2 _snackService;
 
     // --- State
     private readonly BehaviorSubject<WindowSevenOneState> _stateSubject = new(new WindowSevenOneState());
     private IObservable<WindowSevenOneState> StateObs => _stateSubject.AsObservable();
 
     // --- Selectors
-    public IObservable<List<Snack>> SnacksObs => StateObs.Select(state => state.Snacks);
-    public IObservable<Snack?> SelectedSnackObs => StateObs.Select(state => state.SelectedSnack);
+    public IObservable<List<SnackV2>> SnacksObs => StateObs.Select(state => state.Snacks);
+    public IObservable<SnackV2?> SelectedSnackObs => StateObs.Select(state => state.SelectedSnack);
     public IObservable<bool> LoadingObs => StateObs.Select(state => state.Loading);
 
     // --- Notifications
@@ -35,37 +34,37 @@ public class WindowSevenOneViewModel : IDisposable
     public IObservable<NotificationMessage> NotificationsObs => _notifications.AsObservable();
 
     // --- Sources
-    public readonly Subject<Snack> SelectedSnackChanged = new();
-    public readonly Subject<Snack> Create = new();
-    public readonly Subject<Snack> Update = new();
+    public readonly Subject<SnackV2> SelectedSnackChanged = new();
+    public readonly Subject<SnackV2> Create = new();
+    public readonly Subject<SnackV2> Update = new();
     public readonly Subject<Unit> Reload = new();
     public readonly Subject<int> Delete = new();
 
     // Load
-    private IObservable<List<Snack>> SnacksLoadedObs =>
+    private IObservable<List<SnackV2>> SnacksLoadedObs =>
         Reload.StartWith(Unit.Default)
             .SelectMany(_ => Observable.FromAsync(_snackService.GetAllSnacksAsync)
                 .NotifyOnSuccessAndError(_notifications,
                     "Snacks loaded successfully.",
                     e => $"Error loading snacks: {e.Message}",
-                    new List<Snack>()));
+                    new List<SnackV2>()));
 
     // Create
-    private IObservable<Snack?> SnackCreatedObs => Create.SelectMany(obj =>
+    private IObservable<SnackV2?> SnackCreatedObs => Create.SelectMany(obj =>
         Observable.FromAsync(async () => await _snackService.AddSnackAsync(obj))
             .NotifyOnSuccessAndError(_notifications,
                 "Snack added successfully.",
                 e => $"Error creating snacks: {e.Message}"));
 
     // Update
-    private IObservable<Snack?> SnackUpdatedObs => Update.SelectMany(obj =>
+    private IObservable<SnackV2?> SnackUpdatedObs => Update.SelectMany(obj =>
         Observable.FromAsync(async () => await _snackService.UpdateSnackAsync(obj))
             .NotifyOnSuccessAndError(_notifications,
                 "Snack updated successfully.",
                 e => $"Error updating snacks: {e.Message}"));
 
     // Delete
-    private IObservable<Snack?> SnackDeletedObs => Delete.SelectMany(id =>
+    private IObservable<SnackV2?> SnackDeletedObs => Delete.SelectMany(id =>
         Observable.FromAsync(async () => await _snackService.DeleteSnackAsync(id))
             .NotifyOnSuccessAndError(_notifications,
                 "Snack deleted successfully.",
@@ -74,7 +73,7 @@ public class WindowSevenOneViewModel : IDisposable
     // --- Reducers
     public WindowSevenOneViewModel()
     {
-        _snackService = new SnackService
+        _snackService = new SnackServiceV2
         {
             SimulateFailures = true,
             FailureProbability = 0.3,

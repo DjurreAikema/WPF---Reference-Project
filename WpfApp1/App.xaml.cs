@@ -20,22 +20,32 @@ public partial class App : Application
 
         var services = new ServiceCollection();
 
+        // --- V1 DB and Service ---
         // Configure DbContext with SQLite
         services.AddDbContext<SnackDbContext>(options =>
             options.UseSqlite("Data Source=snacks.db"));
-
         // Register Services
         services.AddScoped<ISnackService, SnackService>();
+
+        // --- V2 DB and Service ---
+        services.AddDbContext<SnackDbContextV2>(options =>
+            options.UseSqlite("Data Source=snacksV2.db"));
+        services.AddScoped<SnackServiceV2>();
 
         ServiceProvider = services.BuildServiceProvider();
 
 
-        // Initialize and seed the database
         using (var scope = ServiceProvider.CreateScope())
         {
-            var context = scope.ServiceProvider.GetRequiredService<SnackDbContext>();
-            context.Database.EnsureCreated();
-            DatabaseInitializer.SeedData(context);
+            // --- Initialize and seed the V1 database
+            var contextV1 = scope.ServiceProvider.GetRequiredService<SnackDbContext>();
+            contextV1.Database.EnsureCreated();
+            DatabaseInitializer.SeedData(contextV1);
+
+            // --- Initialize and seed the V2 database
+            var contextV2 = scope.ServiceProvider.GetRequiredService<SnackDbContextV2>();
+            contextV2.Database.EnsureCreated();
+            DatabaseInitializerV2.SeedData(contextV2);
         }
     }
 }

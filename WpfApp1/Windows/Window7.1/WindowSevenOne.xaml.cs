@@ -22,18 +22,18 @@ public partial class WindowSevenOne
     }
 
     // --- Grid
-    private void SnacksGrid_SnackSelected(Snack snack)
+    private void SnacksGrid_SnackSelected(SnackV2 snack)
     {
         ViewModel.SelectedSnackChanged.OnNext(snack);
     }
 
     private void SnacksGridSix_OnAddSnack()
     {
-        ViewModel.SelectedSnackChanged.OnNext(new Snack());
+        ViewModel.SelectedSnackChanged.OnNext(new SnackV2());
     }
 
     // --- Details
-    private void SnackDetailsSix_OnSnackSaved(Snack snack)
+    private void SnackDetailsSix_OnSnackSaved(SnackV2 snack)
     {
         if (snack.Id is 0 or null)
             ViewModel.Create.OnNext(snack);

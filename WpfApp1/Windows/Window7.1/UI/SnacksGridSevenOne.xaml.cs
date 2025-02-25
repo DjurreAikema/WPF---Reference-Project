@@ -9,30 +9,30 @@ public partial class SnacksGridSevenOne
 {
     // --- Dependency Properties
     public static readonly DependencyProperty SnacksObsProperty = DependencyProperty.Register(
-        nameof(SnacksObs), typeof(IObservable<IEnumerable<Snack>>), typeof(SnacksGridSevenOne),
+        nameof(SnacksObs), typeof(IObservable<IEnumerable<SnackV2>>), typeof(SnacksGridSevenOne),
         new PropertyMetadata(null, (d, _) =>
         {
             if (d is not SnacksGridSevenOne c) return;
             c.Disposables.Add(c.SnacksObs.Subscribe(snacks =>
             {
-                c.Snacks = new ObservableCollection<Snack>(snacks);
+                c.Snacks = new ObservableCollection<SnackV2>(snacks);
             }));
         }));
 
-    public IObservable<IEnumerable<Snack>> SnacksObs
+    public IObservable<IEnumerable<SnackV2>> SnacksObs
     {
-        get => (IObservable<IEnumerable<Snack>>) GetValue(SnacksObsProperty);
+        get => (IObservable<IEnumerable<SnackV2>>) GetValue(SnacksObsProperty);
         set => SetValue(SnacksObsProperty, value);
     }
 
     // --- Events
-    public event Action<Snack>? SnackSelected;
+    public event Action<SnackV2>? SnackSelected;
     public event Action? AddSnack;
     public event Action? Reload;
 
 
     // --- Internal Properties
-    [ObservableProperty] private ObservableCollection<Snack>? _snacks;
+    [ObservableProperty] private ObservableCollection<SnackV2>? _snacks;
 
     // --- Constructor
     public SnacksGridSevenOne()
@@ -41,7 +41,7 @@ public partial class SnacksGridSevenOne
 
         SnacksDataGrid.SelectionChanged += (_, _) =>
         {
-            if (SnacksDataGrid.SelectedItem is Snack selectedSnack) SnackSelected?.Invoke(selectedSnack);
+            if (SnacksDataGrid.SelectedItem is SnackV2 selectedSnack) SnackSelected?.Invoke(selectedSnack);
         };
     }
 

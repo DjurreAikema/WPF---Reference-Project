@@ -30,13 +30,13 @@ public static class DatabaseInitializer
         if (context.Snacks.Any()) return;
         context.Snacks.AddRange(new List<Snack>
         {
-            new Snack {Name = "Doritos", Price = 1.50, Quantity = 4},
-            new Snack {Name = "Lays", Price = 1.00, Quantity = 3},
-            new Snack {Name = "Pringles", Price = 2.00, Quantity = 2},
-            new Snack {Name = "Cheetos", Price = 1.25, Quantity = 5},
-            new Snack {Name = "Ruffles", Price = 1.75, Quantity = 1},
-            new Snack {Name = "Tostitos", Price = 1.50, Quantity = 6},
-            new Snack {Name = "Sun Chips", Price = 1.25, Quantity = 7},
+            new() {Name = "Doritos", Price = 1.50, Quantity = 4},
+            new() {Name = "Lays", Price = 1.00, Quantity = 3},
+            new() {Name = "Pringles", Price = 2.00, Quantity = 2},
+            new() {Name = "Cheetos", Price = 1.25, Quantity = 5},
+            new() {Name = "Ruffles", Price = 1.75, Quantity = 1},
+            new() {Name = "Tostitos", Price = 1.50, Quantity = 6},
+            new() {Name = "Sun Chips", Price = 1.25, Quantity = 7},
         });
 
         context.SaveChanges();
