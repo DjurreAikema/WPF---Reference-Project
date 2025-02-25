@@ -25,6 +25,8 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <Label Content="Name:" Grid.Column="0" HorizontalAlignment="Left" />
@@ -38,6 +40,14 @@
             <Label Content="Quantity:" Grid.Column="0" HorizontalAlignment="Left" Grid.Row="2" />
             <TextBox Text="{Binding SelectedSnack.Quantity, Mode=TwoWay}" Grid.Column="1" HorizontalAlignment="Stretch" Grid.Row="2"
                      IsEnabled="{Binding SelectedSnack, Converter={StaticResource NullToBoolConverter}}" />
+
+            <Label Content="Locked:" Grid.Column="0" HorizontalAlignment="Left" Grid.Row="3" />
+            <TextBox Text="{Binding SelectedSnack.Locked, Mode=TwoWay}" Grid.Column="1" HorizontalAlignment="Stretch" Grid.Row="3"
+                     IsEnabled="False" />
+
+            <Label Content="LockedBy:" Grid.Column="0" HorizontalAlignment="Left" Grid.Row="4" />
+            <TextBox Text="{Binding SelectedSnack.LockedBy, Mode=TwoWay}" Grid.Column="1" HorizontalAlignment="Stretch" Grid.Row="4"
+                     IsEnabled="False" />
         </Grid>
 
         <StackPanel Orientation="Horizontal">
