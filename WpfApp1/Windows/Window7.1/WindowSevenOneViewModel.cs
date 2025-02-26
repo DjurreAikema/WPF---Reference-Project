@@ -31,11 +31,6 @@ public class WindowSevenOneViewModel : IDisposable
     public IObservable<SnackV2?> SelectedSnackObs => StateObs.Select(state => state.SelectedSnack);
     public IObservable<bool> LoadingObs => StateObs.Select(state => state.Loading);
 
-    // Locking
-    public IObservable<bool> IsLockedObs => SnackLockVm.IsLockedObs;
-    public IObservable<bool> IsSoftLockedObs => SnackLockVm.IsSoftLockedObs;
-    public IObservable<bool> IsUnlockedObs => SnackLockVm.IsUnlockedObs;
-
     // --- Notifications
     private readonly Subject<NotificationMessage> _notifications = new();
     public IObservable<NotificationMessage> NotificationsObs => _notifications.AsObservable();
