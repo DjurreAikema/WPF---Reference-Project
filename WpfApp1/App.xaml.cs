@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using WpfApp1.Data;
 using WpfApp1.Shared.DataAccess;
 using WpfApp1.Shared.Interfaces;
+using WpfApp1.Shared.Locking.V1;
 
 namespace WpfApp1;
 
@@ -12,40 +13,70 @@ namespace WpfApp1;
 /// </summary>
 public partial class App : Application
 {
-    public IServiceProvider ServiceProvider { get; private set; }
+    private ServiceProvider _serviceProvider;
 
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
 
+        // Set up dependency injection
         var services = new ServiceCollection();
+        ConfigureServices(services);
+        _serviceProvider = services.BuildServiceProvider();
 
-        // --- V1 DB and Service ---
-        // Configure DbContext with SQLite
-        services.AddDbContext<SnackDbContext>(options =>
-            options.UseSqlite("Data Source=snacks.db"));
-        // Register Services
-        services.AddScoped<ISnackService, SnackService>();
+        // Set global service provider reference
+        Shared.Utils.ServiceProvider = _serviceProvider;
 
-        // --- V2 DB and Service ---
+        // Initialize and seed database
+        InitializeDatabase();
+
+        // Show main window
+        var mainWindow = _serviceProvider.GetRequiredService<Windows.Window7._1.WindowSevenOneV2>();
+        mainWindow.Show();
+    }
+
+    private void ConfigureServices(ServiceCollection services)
+    {
+        // Register DbContext
         services.AddDbContext<SnackDbContextV2>(options =>
-            options.UseSqlite("Data Source=snacksV2.db"));
-        services.AddScoped<SnackServiceV2>();
+            options.UseSqlite("Data Source=SnacksV2.db"));
 
-        ServiceProvider = services.BuildServiceProvider();
+        // Register lock service
+        services.AddSingleton<ILockService>(provider =>
+            new SqliteLockService(
+                provider,
+                new LockServiceOptions
+                {
+                    DefaultLockDuration = TimeSpan.FromMinutes(30),
+                    CleanupInterval = TimeSpan.FromMinutes(5)
+                }
+            )
+        );
 
+        // Register snack service
+        services.AddTransient<SnackServiceV3>();
 
-        using (var scope = ServiceProvider.CreateScope())
+        // Register windows
+        services.AddTransient<Windows.Window7._1.WindowSevenOneV2>();
+    }
+
+    private void InitializeDatabase()
+    {
+        // Create database schema if it doesn't exist
+        DatabaseInitializerV2.InitializeDatabase();
+
+        // Seed initial data if needed
+        using (var scope = _serviceProvider.CreateScope())
         {
-            // --- Initialize and seed the V1 database
-            var contextV1 = scope.ServiceProvider.GetRequiredService<SnackDbContext>();
-            contextV1.Database.EnsureCreated();
-            DatabaseInitializer.SeedData(contextV1);
-
-            // --- Initialize and seed the V2 database
-            var contextV2 = scope.ServiceProvider.GetRequiredService<SnackDbContextV2>();
-            contextV2.Database.EnsureCreated();
-            DatabaseInitializerV2.SeedData(contextV2);
+            var context = scope.ServiceProvider.GetRequiredService<SnackDbContextV2>();
+            DatabaseInitializerV2.SeedData(context);
         }
+    }
+
+    protected override void OnExit(ExitEventArgs e)
+    {
+        // Clean up resources
+        _serviceProvider.Dispose();
+        base.OnExit(e);
     }
 }

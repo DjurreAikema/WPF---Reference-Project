@@ -62,7 +62,7 @@ public partial class MainWindow : Window
 
     private void OpenWindowSevenOneButton_Click(object sender, RoutedEventArgs e)
     {
-        var windowSevenOne = new WindowSevenOne();
+        var windowSevenOne = new WindowSevenOneV2();
         windowSevenOne.Show();
     }
 

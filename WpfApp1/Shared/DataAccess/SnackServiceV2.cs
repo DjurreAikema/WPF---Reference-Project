@@ -69,7 +69,7 @@ public class SnackServiceV2
         await using var context = CreateDbContext();
 
         context.Snacks.Attach(snack);
-        context.Entry(snack).Property(s => s.Locked).IsModified = true;
+        // context.Entry(snack).Property(s => s.Locked).IsModified = true;
         context.Entry(snack).Property(s => s.LockedBy).IsModified = true;
 
         await context.SaveChangesAsync();

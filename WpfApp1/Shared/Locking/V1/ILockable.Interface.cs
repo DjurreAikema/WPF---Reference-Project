@@ -1,19 +1,37 @@
 ﻿namespace WpfApp1.Shared.Locking.V1;
 
+/// <summary>
+/// Enhanced interface for lockable entities with additional metadata
+/// </summary>
 public interface ILockable
 {
     /// <summary>
-    /// Indicates the current lock state for this item (Locked, SoftLocked, Unlocked).
+    /// Unique identifier for the lockable entity
     /// </summary>
-    LockState LockState { get; set; }
+    int? Id { get; }
 
     /// <summary>
-    /// Name or ID of the user who locked the item. If null, item is SoftLocked.
+    /// When the item was locked (UTC)
     /// </summary>
-    DateTime? Locked { get; set; }
+    DateTime? LockedAt { get; set; }
 
     /// <summary>
-    /// Name or ID of the user who locked the item. If null, item is SoftLocked.
+    /// Who locked the item
     /// </summary>
     string? LockedBy { get; set; }
+
+    /// <summary>
+    /// Optional lock expiration time (UTC)
+    /// </summary>
+    DateTime? LockExpiresAt { get; set; }
+
+    /// <summary>
+    /// Optional reason for locking
+    /// </summary>
+    string? LockReason { get; set; }
+
+    /// <summary>
+    /// Computed property for current lock state
+    /// </summary>
+    LockState LockState { get; }
 }

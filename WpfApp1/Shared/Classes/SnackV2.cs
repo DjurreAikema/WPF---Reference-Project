@@ -1,10 +1,12 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using WpfApp1.Shared.Locking;
 using WpfApp1.Shared.Locking.V1;
 
 namespace WpfApp1.Shared.Classes;
 
+/// <summary>
+/// Enhanced SnackV2 class with improved locking capabilities
+/// </summary>
 public class SnackV2 : ILockable
 {
     // --- Internal
@@ -15,11 +17,14 @@ public class SnackV2 : ILockable
     [Required] public double Price { get; set; }
     [Required] public int Quantity { get; set; }
 
-    // --- Locking
-    public DateTime? Locked { get; set; }
+    // --- Locking - Enhanced
+    public DateTime? LockedAt { get; set; }
     public string? LockedBy { get; set; }
+    public DateTime? LockExpiresAt { get; set; }
+    public string? LockReason { get; set; }
 
-    [NotMapped] public LockState LockState { get; set; } = LockState.SoftLocked;
+    [NotMapped]
+    public LockState LockState => this.GetLockState(Environment.UserName);
 
     public SnackV2()
     {
@@ -31,7 +36,9 @@ public class SnackV2 : ILockable
         Name = other.Name;
         Price = other.Price;
         Quantity = other.Quantity;
-        Locked = other.Locked;
+        LockedAt = other.LockedAt;
         LockedBy = other.LockedBy;
+        LockExpiresAt = other.LockExpiresAt;
+        LockReason = other.LockReason;
     }
 }

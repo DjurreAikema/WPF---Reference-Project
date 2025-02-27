@@ -5,10 +5,102 @@
                          xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                          xmlns:local="clr-namespace:WpfApp1.Windows.Window7._1.UI"
                          xmlns:abstract="clr-namespace:WpfApp1.Shared.Abstract"
+                         xmlns:v1="clr-namespace:WpfApp1.Shared.Locking.V1"
+                         xmlns:converters="clr-namespace:WpfApp1.Shared.Converters"
                          mc:Ignorable="d">
 
-    <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:LockingControl}}">
-        <TextBox Text="{Binding SelectedSnack.LockState, Mode=TwoWay}" HorizontalAlignment="Stretch" />
-    </Grid>
+    <abstract:BDumbComponent.Resources>
+        <v1:LockStateToBrushConverter x:Key="LockStateToBrushConverter" />
+        <v1:LockStateToTextConverter x:Key="LockStateToTextConverter" />
+        <v1:LockStateToVisibilityConverter x:Key="ShowIfLockedByMe" ShowForState="True" TargetState="LockedByMe" />
+        <v1:LockStateToVisibilityConverter x:Key="ShowIfLockedByOther" ShowForState="True" TargetState="LockedByOther" />
+        <v1:LockStateToVisibilityConverter x:Key="ShowIfUnlocked" ShowForState="True" TargetState="Unlocked" />
+        <v1:LockStateToVisibilityConverter x:Key="ShowIfExpired" ShowForState="True" TargetState="LockExpired" />
+        <v1:LockTimeRemainingConverter x:Key="LockTimeRemainingConverter" />
+        <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+    </abstract:BDumbComponent.Resources>
 
+    <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:LockingControl}}">
+        <Border
+            BorderBrush="{Binding SelectedItem.LockState, Converter={StaticResource LockStateToBrushConverter}}"
+            BorderThickness="2"
+            Padding="8"
+            CornerRadius="4"
+            Margin="4">
+
+            <StackPanel>
+                <TextBlock FontWeight="Bold" Text="Lock Management" Margin="0,0,0,8"/>
+
+                <!-- Status Display -->
+                <Grid Margin="0,0,0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Status:" FontWeight="SemiBold" Margin="0,0,8,0"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1"
+                               Text="{Binding SelectedItem.LockState, Converter={StaticResource LockStateToTextConverter}}"
+                               Foreground="{Binding SelectedItem.LockState, Converter={StaticResource LockStateToBrushConverter}}"/>
+
+                    <!-- Show who locked it if locked by other -->
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Locked by:" FontWeight="SemiBold" Margin="0,0,8,0"
+                               Visibility="{Binding SelectedItem.LockState, Converter={StaticResource ShowIfLockedByOther}}"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedItem.LockedBy}"
+                               Visibility="{Binding SelectedItem.LockState, Converter={StaticResource ShowIfLockedByOther}}"/>
+
+                    <!-- Show lock expiration if locked by me -->
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Expires:" FontWeight="SemiBold" Margin="0,0,8,0"
+                               Visibility="{Binding SelectedItem.LockState, Converter={StaticResource ShowIfLockedByMe}}"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1"
+                               Text="{Binding SelectedItem.LockExpiresAt, Converter={StaticResource LockTimeRemainingConverter}}"
+                               Visibility="{Binding SelectedItem.LockState, Converter={StaticResource ShowIfLockedByMe}}"/>
+
+                    <!-- Show lock reason if provided -->
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Reason:" FontWeight="SemiBold" Margin="0,0,8,0"
+                               Visibility="{Binding SelectedItem.LockReason, Converter={StaticResource NullToVisibilityConverter}}"/>
+                    <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SelectedItem.LockReason}"
+                               Visibility="{Binding SelectedItem.LockReason, Converter={StaticResource NullToVisibilityConverter}}"/>
+                </Grid>
+
+                <!-- Lock Buttons -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <!-- Acquire Lock button - only show if unlocked or expired -->
+                    <Button Content="Acquire Lock"
+                            Margin="4,0,4,0" Padding="8,4"
+                            Click="AcquireLock_Click"
+                            Visibility="{Binding SelectedItem.LockState, Converter={StaticResource ShowIfUnlocked}}"/>
+
+                    <Button Content="Acquire Lock"
+                            Margin="4,0,4,0" Padding="8,4"
+                            Click="AcquireLock_Click"
+                            Visibility="{Binding SelectedItem.LockState, Converter={StaticResource ShowIfExpired}}"/>
+
+                    <!-- Extend Lock button - only show if locked by me -->
+                    <Button Content="Extend Lock"
+                            Margin="4,0,4,0" Padding="8,4"
+                            Click="ExtendLock_Click"
+                            Visibility="{Binding SelectedItem.LockState, Converter={StaticResource ShowIfLockedByMe}}"/>
+
+                    <!-- Release Lock button - only show if locked by me -->
+                    <Button Content="Release Lock"
+                            Margin="4,0,4,0" Padding="8,4"
+                            Click="ReleaseLock_Click"
+                            Visibility="{Binding SelectedItem.LockState, Converter={StaticResource ShowIfLockedByMe}}"/>
+
+                    <!-- Break Lock button - consider adding admin check -->
+                    <Button Content="Break Lock"
+                            Margin="4,0,4,0" Padding="8,4"
+                            Click="BreakLock_Click"
+                            Visibility="{Binding SelectedItem.LockState, Converter={StaticResource ShowIfLockedByOther}}"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </Grid>
 </abstract:BDumbComponent>

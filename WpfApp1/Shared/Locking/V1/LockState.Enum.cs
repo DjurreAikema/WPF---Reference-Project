@@ -1,19 +1,27 @@
 ﻿namespace WpfApp1.Shared.Locking.V1;
 
+/// <summary>
+/// Enhanced lock state enumeration
+/// </summary>
 public enum LockState
 {
     /// <summary>
-    /// The item is locked by another user.  (User A cannot claim it if it’s locked by User B.)
+    /// The item is not locked and available for editing
     /// </summary>
-    Locked,
+    Unlocked,
 
     /// <summary>
-    /// The item is not locked by any user; so it’s available for the user to claim (become Unlocked).
+    /// The item is locked by the current user
     /// </summary>
-    SoftLocked,
+    LockedByMe,
 
     /// <summary>
-    /// The item is locked by the **current** user. For other users, it appears locked.
+    /// The item is locked by another user
     /// </summary>
-    Unlocked
+    LockedByOther,
+
+    /// <summary>
+    /// The lock has expired but hasn't been released
+    /// </summary>
+    LockExpired
 }
