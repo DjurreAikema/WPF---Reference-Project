@@ -29,6 +29,7 @@ public class WindowSevenOneViewModel : IDisposable
     // --- Selectors
     public IObservable<List<SnackV2>> SnacksObs => StateObs.Select(state => state.Snacks);
     public IObservable<SnackV2?> SelectedSnackObs => StateObs.Select(state => state.SelectedSnack);
+    public IObservable<SnackV2?> LockingObs => SnackLockVm.SelectedItemObs;
     public IObservable<bool> LoadingObs => StateObs.Select(state => state.Loading);
 
     // --- Notifications

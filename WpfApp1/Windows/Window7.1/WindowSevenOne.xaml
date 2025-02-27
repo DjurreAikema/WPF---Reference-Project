@@ -11,23 +11,32 @@
 
     <Grid>
         <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="2*" />
             </Grid.ColumnDefinitions>
 
-            <ui:SnacksGridSevenOne Grid.Column="0"
-                                TriggerDispose="{Binding TriggerDispose}"
-                                SnacksObs="{Binding ViewModel.SnacksObs}"
-                                SnackSelected="SnacksGrid_SnackSelected"
-                                AddSnack="SnacksGridSix_OnAddSnack"
-                                Reload="SnacksGridSix_OnReload" />
+            <ui:SnacksGridSevenOne Grid.RowSpan="2" Grid.Column="0"
+                                   TriggerDispose="{Binding TriggerDispose}"
+                                   SnacksObs="{Binding ViewModel.SnacksObs}"
+                                   SnackSelected="SnacksGrid_SnackSelected"
+                                   AddSnack="SnacksGridSix_OnAddSnack"
+                                   Reload="SnacksGridSix_OnReload" />
 
-            <ui:SnackDetailsSevenOne Grid.Column="1"
+            <ui:SnackDetailsSevenOne Grid.Row="0" Grid.Column="1"
                                      TriggerDispose="{Binding TriggerDispose}"
                                      SelectedSnackObs="{Binding ViewModel.SelectedSnackObs}"
                                      SnackSaved="SnackDetailsSix_OnSnackSaved"
                                      SnackDeleted="SnackDetailsSix_OnSnackDeleted" />
+
+            <ui:LockingControl Grid.Row="1" Grid.Column="1"
+                               TriggerDispose="{Binding TriggerDispose}"
+                               LockingObs="{Binding ViewModel.LockingObs}"/>
         </Grid>
 
         <!-- Loading Spinner -->
