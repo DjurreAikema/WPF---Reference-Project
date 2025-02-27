@@ -7,12 +7,13 @@
                          xmlns:converters="clr-namespace:WpfApp1.Shared.Converters"
                          xmlns:ui="clr-namespace:WpfApp1.Windows.Window7._1.UI"
                          xmlns:locking="clr-namespace:WpfApp1.Shared.Locking"
+                         xmlns:v1="clr-namespace:WpfApp1.Shared.Locking.V1"
                          mc:Ignorable="d">
 
     <abstract:BDumbComponent.Resources>
         <converters:NullToBoolConverter x:Key="NullToBoolConverter" />
 
-        <locking:LockStateToBrushConverter x:Key="LockStateToBrushConverter" />
+        <v1:LockStateToBrushConverter x:Key="LockStateToBrushConverter" />
     </abstract:BDumbComponent.Resources>
 
     <Border Background="{Binding SelectedSnack.LockState,

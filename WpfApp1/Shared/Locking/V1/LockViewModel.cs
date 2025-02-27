@@ -4,7 +4,7 @@ using System.Reactive.Subjects;
 using WpfApp1.Shared.Classes;
 using WpfApp1.Shared.ExtensionMethods;
 
-namespace WpfApp1.Shared.Locking;
+namespace WpfApp1.Shared.Locking.V1;
 
 public record LockViewModelState<TItem> where TItem : class, ILockable
 {

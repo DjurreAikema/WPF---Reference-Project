@@ -1,4 +1,4 @@
-﻿namespace WpfApp1.Shared.Locking;
+﻿namespace WpfApp1.Shared.Locking.V1;
 
 public interface ILockable
 {

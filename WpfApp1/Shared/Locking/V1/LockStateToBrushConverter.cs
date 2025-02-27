@@ -2,7 +2,7 @@
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace WpfApp1.Shared.Locking;
+namespace WpfApp1.Shared.Locking.V1;
 
 public class LockStateToBrushConverter : IValueConverter
 {

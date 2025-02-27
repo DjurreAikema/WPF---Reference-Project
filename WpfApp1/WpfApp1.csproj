@@ -86,4 +86,8 @@
       <PackageReference Include="System.Reactive.Windows.Threading" Version="6.0.1" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Shared\Locking\V2\" />
+    </ItemGroup>
+
 </Project>

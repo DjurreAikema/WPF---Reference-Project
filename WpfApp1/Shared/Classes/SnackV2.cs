@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using WpfApp1.Shared.Locking;
+using WpfApp1.Shared.Locking.V1;
 
 namespace WpfApp1.Shared.Classes;
 

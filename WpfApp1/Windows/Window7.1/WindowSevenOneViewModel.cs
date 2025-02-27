@@ -6,6 +6,7 @@ using WpfApp1.Shared.Classes;
 using WpfApp1.Shared.DataAccess;
 using WpfApp1.Shared.ExtensionMethods;
 using WpfApp1.Shared.Locking;
+using WpfApp1.Shared.Locking.V1;
 
 namespace WpfApp1.Windows.Window7._1;
 
