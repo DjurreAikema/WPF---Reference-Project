@@ -71,6 +71,14 @@
       <Compile Update="Windows\Window7.1\WindowSevenOneViewModel.cs">
         <DependentUpon>WindowSevenOne.xaml</DependentUpon>
       </Compile>
+      <Compile Remove="Shared\Locking\V2\LockState.Enum.cs" />
+      <Compile Remove="Shared\Locking\V2\LockServiceOptions.cs" />
+      <Compile Remove="Shared\Locking\V2\LockResult.Model.cs" />
+      <Compile Remove="Shared\Locking\V2\LockAuditRecord.Model.cs" />
+      <Compile Remove="Shared\Locking\V2\ILockable.cs" />
+      <Compile Remove="Shared\Classes\SnackV3.cs" />
+      <Compile Remove="Data\SnackDbContextV3.cs" />
+      <Compile Remove="Data\DatabaseInitializerV3.cs" />
     </ItemGroup>
 
     <ItemGroup>
