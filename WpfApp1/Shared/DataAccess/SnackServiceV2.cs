@@ -62,17 +62,4 @@ public class SnackServiceV2
         await context.SaveChangesAsync();
         return snack;
     }
-
-    // --- locking
-    public async Task<SnackV2> UpdateLockingAsync(SnackV2 snack)
-    {
-        await using var context = CreateDbContext();
-
-        context.Snacks.Attach(snack);
-        context.Entry(snack).Property(s => s.Locked).IsModified = true;
-        context.Entry(snack).Property(s => s.LockedBy).IsModified = true;
-
-        await context.SaveChangesAsync();
-        return snack;
-    }
 }

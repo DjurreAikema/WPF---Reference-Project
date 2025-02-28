@@ -5,8 +5,6 @@ using System.Reactive.Subjects;
 using WpfApp1.Shared.Classes;
 using WpfApp1.Shared.DataAccess;
 using WpfApp1.Shared.ExtensionMethods;
-using WpfApp1.Shared.Locking;
-using WpfApp1.Shared.Locking.V1;
 
 namespace WpfApp1.Windows.Window7._1;
 
@@ -20,7 +18,6 @@ public record WindowSevenOneState
 public class WindowSevenOneViewModel : IDisposable
 {
     private readonly CompositeDisposable _disposables = new();
-    private LockViewModel<SnackV2> SnackLockVm { get; }
     private readonly SnackServiceV2 _snackService;
 
     // --- State
@@ -30,7 +27,6 @@ public class WindowSevenOneViewModel : IDisposable
     // --- Selectors
     public IObservable<List<SnackV2>> SnacksObs => StateObs.Select(state => state.Snacks);
     public IObservable<SnackV2?> SelectedSnackObs => StateObs.Select(state => state.SelectedSnack);
-    public IObservable<SnackV2?> LockingObs => SnackLockVm.SelectedItemObs;
     public IObservable<bool> LoadingObs => StateObs.Select(state => state.Loading);
 
     // --- Notifications
@@ -84,19 +80,11 @@ public class WindowSevenOneViewModel : IDisposable
             FailureProbabilityOnLoad = 0.3
         };
 
-        SnackLockVm = new LockViewModel<SnackV2>(_snackService.UpdateLockingAsync);
-
         // SelectedSnackChanged reducer
         _disposables.Add(SelectedSnackChanged
             .ObserveOnCurrentSynchronizationContext()
             .Subscribe(snack =>
             {
-                // Locking
-                var previous = _stateSubject.Value.SelectedSnack;
-                if (previous?.LockState == LockState.Unlocked && previous.LockedBy == Environment.UserName)
-                    SnackLockVm.ReleaseLock.OnNext(previous);
-
-                SnackLockVm.SelectItem.OnNext(snack);
                 _stateSubject.OnNext(_stateSubject.Value with {SelectedSnack = snack});
             }));
 

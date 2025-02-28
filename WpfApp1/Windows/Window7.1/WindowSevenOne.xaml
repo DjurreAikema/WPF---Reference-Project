@@ -33,10 +33,6 @@
                                      SelectedSnackObs="{Binding ViewModel.SelectedSnackObs}"
                                      SnackSaved="SnackDetailsSix_OnSnackSaved"
                                      SnackDeleted="SnackDetailsSix_OnSnackDeleted" />
-
-            <ui:LockingControl Grid.Row="1" Grid.Column="1"
-                               TriggerDispose="{Binding TriggerDispose}"
-                               LockingObs="{Binding ViewModel.LockingObs}"/>
         </Grid>
 
         <!-- Loading Spinner -->
