@@ -50,5 +50,4 @@ public partial class WindowSevenOne
     {
         ViewModel.Reload.OnNext(Unit.Default);
     }
-
 }
