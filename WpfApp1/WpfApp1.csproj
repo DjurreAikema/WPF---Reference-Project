@@ -79,6 +79,9 @@
       <Compile Remove="Shared\Classes\SnackV3.cs" />
       <Compile Remove="Data\SnackDbContextV3.cs" />
       <Compile Remove="Data\DatabaseInitializerV3.cs" />
+      <Compile Update="Windows\WIndow7.2\WindowSevenTwoViewModel.cs">
+        <DependentUpon>WindowSevenTwo.xaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

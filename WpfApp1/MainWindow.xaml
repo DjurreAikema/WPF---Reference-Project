@@ -16,47 +16,52 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
         <Button Grid.Row="0" Grid.Column="0" Content="Open Window One"
                 Padding="10" Margin="5"
-                Click="OpenWindowOneButton_Click"/>
+                Click="OpenWindowOneButton_Click" />
 
         <Button Grid.Row="1" Grid.Column="0" Content="Open Window Two"
                 Padding="10" Margin="5"
-                Click="OpenWindowTwoButton_Click"/>
+                Click="OpenWindowTwoButton_Click" />
 
         <Button Grid.Row="2" Grid.Column="0" Content="Open Window Three"
                 Padding="10" Margin="5"
-                Click="OpenWindowThreeButton_Click"/>
+                Click="OpenWindowThreeButton_Click" />
 
         <Button Grid.Row="3" Grid.Column="0" Content="Open Window Four"
                 Padding="10" Margin="5"
-                Click="OpenWindowFourButton_Click"/>
+                Click="OpenWindowFourButton_Click" />
 
         <Button Grid.Row="4" Grid.Column="0" Content="Open Window Five"
                 Padding="10" Margin="5"
-                Click="OpenWindowFiveButton_Click"/>
+                Click="OpenWindowFiveButton_Click" />
 
         <Button Grid.Row="5" Grid.Column="0" Content="Open Window Six"
                 Padding="10" Margin="5"
-                Click="OpenWindowSixButton_Click"/>
+                Click="OpenWindowSixButton_Click" />
 
         <Button Grid.Row="6" Grid.Column="0" Content="Open Window Seven"
                 Padding="10" Margin="5"
-                Click="OpenWindowSevenButton_Click"/>
+                Click="OpenWindowSevenButton_Click" />
 
         <Button Grid.Row="6" Grid.Column="1" Content="Open Window Seven.One"
                 Padding="10" Margin="5"
-                Click="OpenWindowSevenOneButton_Click"/>
+                Click="OpenWindowSevenOneButton_Click" />
+
+        <Button Grid.Row="6" Grid.Column="2" Content="Open Window Seven.Two"
+                Padding="10" Margin="5"
+                Click="OpenWindowSevenTwoButton_Click" />
 
         <Button Grid.Row="7" Grid.Column="0" Content="Open Window Eight"
                 Padding="10" Margin="5"
-                Click="OpenWindowEightButton_Click"/>
-
+                Click="OpenWindowEightButton_Click" />
     </Grid>
 </Window>
