@@ -57,25 +57,25 @@ public class WindowSevenTwoViewModel : IDisposable
         .ExecuteAsyncOperation(
             _stateSubject,
             obj => _snackService.AddSnackAsync(obj),
-            _notifications,
-            "Snack added successfully.",
-            e => $"Error creating snack: {e.Message}"
+            _notifications, "Snack added successfully.", e => $"Error creating snack: {e.Message}"
         );
 
 
     // Update
-    private IObservable<SnackV2?> SnackUpdatedObs => Update.SelectMany(obj =>
-        Observable.FromAsync(async () => await _snackService.UpdateSnackAsync(obj))
-            .NotifyOnSuccessAndError(_notifications,
-                "Snack updated successfully.",
-                e => $"Error updating snack: {e.Message}"));
+    private IObservable<SnackV2?> SnackUpdatedObs => Update
+        .ExecuteAsyncOperation(
+            _stateSubject,
+            obj => _snackService.UpdateSnackAsync(obj),
+            _notifications, "Snack updated successfully.", e => $"Error updating snack: {e.Message}"
+        );
 
     // Delete
-    private IObservable<SnackV2?> SnackDeletedObs => Delete.SelectMany(id =>
-        Observable.FromAsync(async () => await _snackService.DeleteSnackAsync(id))
-            .NotifyOnSuccessAndError(_notifications,
-                "Snack deleted successfully.",
-                e => $"Error deleting snack: {e.Message}"));
+    private IObservable<SnackV2?> SnackDeletedObs => Delete
+        .ExecuteAsyncOperation(
+            _stateSubject,
+            id => _snackService.DeleteSnackAsync(id),
+            _notifications, "Snack deleted successfully.", e => $"Error deleting snack: {e.Message}"
+        );
 
     // --- Reducers
     public WindowSevenTwoViewModel()
@@ -108,62 +108,92 @@ public class WindowSevenTwoViewModel : IDisposable
         _disposables.Add(SnackCreatedObs
             .ObserveOnCurrentSynchronizationContext()
             .Subscribe(snack =>
-            {
-                if (snack is null)
                 {
+                    if (snack is null)
+                    {
+                        _stateSubject.OnNext(_stateSubject.Value with
+                        {
+                            SelectedSnack = null,
+                            InProgress = false
+                        });
+                        return;
+                    }
+
+                    // Create a defensive copy of the list
+                    var snacks = new List<SnackV2>(_stateSubject.Value.Snacks) {snack};
+
+                    _stateSubject.OnNext(_stateSubject.Value with
+                    {
+                        Snacks = snacks,
+                        SelectedSnack = snack,
+                        InProgress = false
+                    });
+                },
+                error =>
+                {
+                    Console.WriteLine($"Unhandled error in subscriber: {error.Message}");
                     _stateSubject.OnNext(_stateSubject.Value with
                     {
                         SelectedSnack = null,
                         InProgress = false
                     });
-                    return;
                 }
-
-                var snacks = _stateSubject.Value.Snacks;
-                snacks.Add(snack);
-
-                _stateSubject.OnNext(_stateSubject.Value with
-                {
-                    Snacks = snacks,
-                    SelectedSnack = snack,
-                    InProgress = false
-                });
-            }));
+            ));
 
         // SnackUpdated reducer
         _disposables.Add(SnackUpdatedObs
             .ObserveOnCurrentSynchronizationContext()
             .Subscribe(updatedSnack =>
-            {
-                if (updatedSnack is null) return;
-                var snacks = _stateSubject.Value.Snacks;
-                var index = snacks.FindIndex(s => s.Id == updatedSnack.Id);
-                if (index < 0) return;
-                snacks[index] = updatedSnack;
-
-                _stateSubject.OnNext(_stateSubject.Value with
                 {
-                    Snacks = snacks,
-                    SelectedSnack = updatedSnack
-                });
-            }));
+                    if (updatedSnack is null) return;
+                    var snacks = new List<SnackV2>(_stateSubject.Value.Snacks);
+                    var index = snacks.FindIndex(s => s.Id == updatedSnack.Id);
+                    if (index < 0) return;
+                    snacks[index] = updatedSnack;
+
+                    _stateSubject.OnNext(_stateSubject.Value with
+                    {
+                        Snacks = snacks,
+                        SelectedSnack = updatedSnack
+                    });
+                },
+                error =>
+                {
+                    Console.WriteLine($"Unhandled error in subscriber: {error.Message}");
+                    _stateSubject.OnNext(_stateSubject.Value with
+                    {
+                        SelectedSnack = null,
+                        InProgress = false
+                    });
+                }
+            ));
 
         // SnackDeleted reducer
         _disposables.Add(SnackDeletedObs
             .ObserveOnCurrentSynchronizationContext()
             .Subscribe(snack =>
-            {
-                if (snack is null) return;
-                var snacks = _stateSubject.Value.Snacks;
-                var index = snacks.FindIndex(s => s.Id == snack.Id);
-                snacks.RemoveAt(index);
-
-                _stateSubject.OnNext(_stateSubject.Value with
                 {
-                    Snacks = snacks,
-                    SelectedSnack = null
-                });
-            }));
+                    if (snack is null) return;
+                    var snacks = new List<SnackV2>(_stateSubject.Value.Snacks);
+                    var index = snacks.FindIndex(s => s.Id == snack.Id);
+                    snacks.RemoveAt(index);
+
+                    _stateSubject.OnNext(_stateSubject.Value with
+                    {
+                        Snacks = snacks,
+                        SelectedSnack = null
+                    });
+                },
+                error =>
+                {
+                    Console.WriteLine($"Unhandled error in subscriber: {error.Message}");
+                    _stateSubject.OnNext(_stateSubject.Value with
+                    {
+                        SelectedSnack = null,
+                        InProgress = false
+                    });
+                }
+            ));
     }
 
     // --- Dispose
