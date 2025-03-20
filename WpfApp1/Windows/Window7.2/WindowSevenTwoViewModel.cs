@@ -2,19 +2,20 @@ using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using WpfApp1.Shared.Abstract;
 using WpfApp1.Shared.Classes;
 using WpfApp1.Shared.DataAccess;
 using WpfApp1.Shared.ExtensionMethods;
-using WpfApp1.Shared.Interfaces;
 
 namespace WpfApp1.Windows.Window7._2;
 
-public record WindowSevenTwoState : IBaseState
+public record WindowSevenTwoState : BaseState<WindowSevenTwoState>
 {
     public List<SnackV2> Snacks { get; init; } = [];
     public SnackV2? SelectedSnack { get; init; }
-    public bool Loading { get; init; } = true;
-    public bool InProgress { get; init; }
+
+    public override WindowSevenTwoState WithInProgress(bool inProgress) =>
+        this with { InProgress = inProgress };
 }
 
 public class WindowSevenTwoViewModel : IDisposable
@@ -59,14 +60,7 @@ public class WindowSevenTwoViewModel : IDisposable
                 e => $"Error creating snack: {e.Message}"));
 
     private IObservable<SnackV2?> SnackCreatedObs2 => Create
-        .Synchronize()
-        .Do(_ => _stateSubject.OnNext(_stateSubject.Value with {InProgress = true}))
-        .SelectMany(obj => Observable.FromAsync(() => _snackService.AddSnackAsync(obj)))
-        .Do(
-            _ => { }, // On next (success) - do nothing here, handled by NotifyOnSuccess
-            _ => { }, // On error - do nothing here, handled by NotifyOnError
-            () => _stateSubject.OnNext(_stateSubject.Value with {InProgress = false}) // On complete
-        )
+        .TrackAsyncOperation(_stateSubject, obj => _snackService.AddSnackAsync(obj))
         .NotifyOnSuccessAndError(_notifications,
             "Snack added successfully.",
             e => $"Error creating snack: {e.Message}");
