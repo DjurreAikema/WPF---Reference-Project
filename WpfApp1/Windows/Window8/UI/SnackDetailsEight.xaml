@@ -6,6 +6,7 @@
                          xmlns:abstract="clr-namespace:WpfApp1.Shared.Abstract"
                          xmlns:converters="clr-namespace:WpfApp1.Shared.Converters"
                          xmlns:ui="clr-namespace:WpfApp1.Windows.Window8.UI"
+                         xmlns:ui1="clr-namespace:WpfApp1.Shared.FormBuilder.UI"
                          mc:Ignorable="d">
 
     <abstract:BDumbComponent.Resources>
@@ -13,42 +14,56 @@
     </abstract:BDumbComponent.Resources>
 
     <StackPanel DataContext="{Binding RelativeSource={RelativeSource AncestorType=ui:SnackDetailsEight}}" Margin="10"
-                IsEnabled="{Binding }">
-        <Label Content="Snack details" />
+                IsEnabled="{Binding SelectedSnack, Converter={StaticResource NullToBoolConverter}}">
+        <Label Content="Snack details" FontWeight="Bold" Margin="0,0,0,10" />
 
-        <Grid Margin="0 10">
+        <!-- Form Fields -->
+        <Grid Margin="0,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <Label Content="Name:" Grid.Column="0" HorizontalAlignment="Left" />
-            <TextBox Text="{Binding SelectedSnack.Name, Mode=TwoWay}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch"
-                     IsEnabled="{Binding SelectedSnack, Converter={StaticResource NullToBoolConverter}}" />
+            <Label Content="Name:" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" />
+            <ui1:FormFieldControl Grid.Row="0" Grid.Column="1"
+                                FormField="{Binding NameField}"
+                                Margin="0,0,0,10" />
 
-            <Label Content="Price:" Grid.Column="0" HorizontalAlignment="Left" Grid.Row="1" />
-            <TextBox Text="{Binding SelectedSnack.Price, Mode=TwoWay}" Grid.Column="1" HorizontalAlignment="Stretch" Grid.Row="1"
-                     IsEnabled="{Binding SelectedSnack, Converter={StaticResource NullToBoolConverter}}" />
+            <Label Content="Price:" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" />
+            <ui1:FormFieldControl Grid.Row="1" Grid.Column="1"
+                                FormField="{Binding PriceField}"
+                                Margin="0,0,0,10" />
 
-            <Label Content="Quantity:" Grid.Column="0" HorizontalAlignment="Left" Grid.Row="2" />
-            <TextBox Text="{Binding SelectedSnack.Quantity, Mode=TwoWay}" Grid.Column="1" HorizontalAlignment="Stretch" Grid.Row="2"
-                     IsEnabled="{Binding SelectedSnack, Converter={StaticResource NullToBoolConverter}}" />
+            <Label Content="Quantity:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" />
+            <ui1:FormFieldControl Grid.Row="2" Grid.Column="1"
+                                FormField="{Binding QuantityField}"
+                                Margin="0,0,0,10" />
         </Grid>
 
+        <!-- Form Controls -->
         <StackPanel Orientation="Horizontal">
-            <Button Content="Save" Click="Save_OnClick" Margin="0 0 10 0"
-                    IsEnabled="{Binding SelectedSnack, Converter={StaticResource NullToBoolConverter}}" />
+            <Button Content="Save"
+                    Click="Save_OnClick"
+                    Margin="0,0,10,0"
+                    Padding="15,5"
+                    IsEnabled="{Binding IsFormValid}" />
 
-            <Button Content="Delete" Click="Delete_OnClick"
-                    IsEnabled="{Binding SelectedSnack, Converter={StaticResource NullToBoolConverter}}" />
+            <Button Content="Delete"
+                    Click="Delete_OnClick"
+                    Padding="15,5"
+                    IsEnabled="{Binding HasId}" />
+        </StackPanel>
+
+        <!-- Form Status -->
+        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+            <TextBlock Text="Form Status: " FontWeight="Bold" />
+            <TextBlock Text="{Binding FormStatusText}" />
         </StackPanel>
     </StackPanel>
 

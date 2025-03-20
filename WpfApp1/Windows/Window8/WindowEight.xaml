@@ -6,7 +6,7 @@
         xmlns:ui="clr-namespace:WpfApp1.Windows.Window8.UI"
         xmlns:ui1="clr-namespace:WpfApp1.Shared.UI"
         mc:Ignorable="d"
-        Title="WindowEight" Height="450" Width="800"
+        Title="Window Eight - FormBuilder Demo" Height="450" Width="800"
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
 
     <Grid>
@@ -22,17 +22,21 @@
             </Grid.ColumnDefinitions>
 
             <ui:SnacksGridEight Grid.RowSpan="2" Grid.Column="0"
-                                   TriggerDispose="{Binding TriggerDispose}"
-                                   SnacksObs="{Binding ViewModel.SnacksObs}"
-                                   SnackSelected="Grid_SnackSelected"
-                                   AddSnack="Grid_OnAddSnack"
-                                   Reload="Grid_OnReload" />
+                                TriggerDispose="{Binding TriggerDispose}"
+                                SnacksObs="{Binding ViewModel.SnacksObs}"
+                                SnackSelected="Grid_SnackSelected"
+                                AddSnack="Grid_OnAddSnack"
+                                Reload="Grid_OnReload" />
 
             <ui:SnackDetailsEight Grid.Row="0" Grid.Column="1"
-                                     TriggerDispose="{Binding TriggerDispose}"
-                                     SelectedSnackObs="{Binding ViewModel.SelectedSnackObs}"
-                                     SnackSaved="Details_OnSnackSaved"
-                                     SnackDeleted="Details_OnSnackDeleted" />
+                                  TriggerDispose="{Binding TriggerDispose}"
+                                  SelectedSnackObs="{Binding ViewModel.SelectedSnackObs}"
+                                  FormObs="{Binding ViewModel.FormObs}"
+                                  FormValidObs="{Binding ViewModel.FormValidObs}"
+                                  FormDirtyObs="{Binding ViewModel.FormDirtyObs}"
+                                  SnackSaved="Details_OnSnackSaved"
+                                  SnackDeleted="Details_OnSnackDeleted"
+                                  FormSubmitted="Details_OnFormSubmitted" />
         </Grid>
 
         <!-- Loading Spinner -->

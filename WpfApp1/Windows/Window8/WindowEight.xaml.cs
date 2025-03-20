@@ -38,4 +38,6 @@ public partial class WindowEight
     }
 
     private void Details_OnSnackDeleted(int snackId) => ViewModel.Delete.OnNext(snackId);
+
+    private void Details_OnFormSubmitted() => ViewModel.SaveForm.OnNext(Unit.Default);
 }

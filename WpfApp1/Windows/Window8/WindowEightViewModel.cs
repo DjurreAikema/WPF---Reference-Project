@@ -6,6 +6,8 @@ using WpfApp1.Shared.Abstract;
 using WpfApp1.Shared.Classes;
 using WpfApp1.Shared.DataAccess;
 using WpfApp1.Shared.ExtensionMethods;
+using WpfApp1.Shared.FormBuilder;
+using WpfApp1.Shared.FormBuilder.Validators;
 
 namespace WpfApp1.Windows.Window8;
 
@@ -13,9 +15,10 @@ public record WindowEightState : BaseState<WindowEightState>
 {
     public List<SnackV2> Snacks { get; init; } = [];
     public SnackV2? SelectedSnack { get; init; }
+    public FormGroup Form { get; init; }
 
     public override WindowEightState WithInProgress(bool inProgress) =>
-        this with {InProgress = inProgress};
+        this with { InProgress = inProgress };
 }
 
 public class WindowEightViewModel : IDisposable
@@ -24,13 +27,20 @@ public class WindowEightViewModel : IDisposable
     private readonly SnackServiceV2 _snackService;
 
     // --- State
-    private readonly BehaviorSubject<WindowEightState> _stateSubject = new(new WindowEightState());
+    private readonly BehaviorSubject<WindowEightState> _stateSubject = new(new WindowEightState
+    {
+        Form = CreateSnackForm(new SnackV2())
+    });
+
     private IObservable<WindowEightState> StateObs => _stateSubject.AsObservable();
 
     // --- Selectors
     public IObservable<List<SnackV2>> SnacksObs => StateObs.Select(state => state.Snacks);
     public IObservable<SnackV2?> SelectedSnackObs => StateObs.Select(state => state.SelectedSnack);
     public IObservable<bool> LoadingObs => StateObs.Select(state => state.Loading);
+    public IObservable<FormGroup> FormObs => StateObs.Select(state => state.Form);
+    public IObservable<bool> FormValidObs => StateObs.Select(state => state.Form?.IsValid ?? false);
+    public IObservable<bool> FormDirtyObs => StateObs.Select(state => state.Form?.IsDirty ?? false);
 
     // --- Notifications
     private readonly Subject<NotificationMessage> _notifications = new();
@@ -45,6 +55,7 @@ public class WindowEightViewModel : IDisposable
     public readonly Subject<SnackV2> Update = new();
     public readonly Subject<Unit> Reload = new();
     public readonly Subject<int> Delete = new();
+    public readonly Subject<Unit> SaveForm = new();
 
     // Load
     private IObservable<List<SnackV2>?> SnacksLoadedObs =>
@@ -64,7 +75,6 @@ public class WindowEightViewModel : IDisposable
             _notifications, "Snack added successfully.", e => $"Error creating snack: {e.Message}"
         );
 
-
     // Update
     private IObservable<SnackV2?> SnackUpdatedObs => Update
         .Do(snack => _originalBeforeOperation = new SnackV2(snack))
@@ -82,6 +92,21 @@ public class WindowEightViewModel : IDisposable
             _notifications, "Snack deleted successfully.", e => $"Error deleting snack: {e.Message}"
         );
 
+    // --- Form handling
+    private IObservable<Unit> FormSubmittedObs => SaveForm
+        .Do(_ => _stateSubject.Value.Form.MarkAllAsTouched())
+        .Where(_ => _stateSubject.Value.Form.IsValid)
+        .Select(_ => {
+            var formValues = GetSnackFromForm();
+
+            if (formValues.Id is 0 or null)
+                Create.OnNext(formValues);
+            else
+                Update.OnNext(formValues);
+
+            return Unit.Default;
+        });
+
     // --- Reducers
     public WindowEightViewModel()
     {
@@ -96,7 +121,14 @@ public class WindowEightViewModel : IDisposable
         _disposables.Add(SelectedSnackChanged
             .ObserveOnCurrentSynchronizationContext()
             .Subscribe(
-                snack => { _stateSubject.OnNext(_stateSubject.Value with {SelectedSnack = snack}); },
+                snack => {
+                    var form = _stateSubject.Value.Form;
+                    UpdateFormWithSnack(form, snack);
+
+                    _stateSubject.OnNext(_stateSubject.Value with {
+                        SelectedSnack = snack
+                    });
+                },
                 error => Console.WriteLine($"Unexpected error in SelectedSnackChanged: {error.Message}")
             ));
 
@@ -134,6 +166,13 @@ public class WindowEightViewModel : IDisposable
                             SelectedSnack = _originalBeforeOperation,
                             InProgress = false
                         });
+
+                        // Restore form to original values
+                        if (_originalBeforeOperation != null)
+                        {
+                            UpdateFormWithSnack(_stateSubject.Value.Form, _originalBeforeOperation);
+                        }
+
                         return;
                     }
 
@@ -145,6 +184,10 @@ public class WindowEightViewModel : IDisposable
                         SelectedSnack = snack,
                         InProgress = false
                     });
+
+                    // Reset form dirty state
+                    _stateSubject.Value.Form.Reset();
+                    UpdateFormWithSnack(_stateSubject.Value.Form, snack);
                 },
                 error =>
                 {
@@ -154,6 +197,12 @@ public class WindowEightViewModel : IDisposable
                         SelectedSnack = _originalBeforeOperation,
                         InProgress = false
                     });
+
+                    // Restore form to original values
+                    if (_originalBeforeOperation != null)
+                    {
+                        UpdateFormWithSnack(_stateSubject.Value.Form, _originalBeforeOperation);
+                    }
                 }
             ));
 
@@ -169,6 +218,13 @@ public class WindowEightViewModel : IDisposable
                             SelectedSnack = _originalBeforeOperation,
                             InProgress = false
                         });
+
+                        // Restore form to original values
+                        if (_originalBeforeOperation != null)
+                        {
+                            UpdateFormWithSnack(_stateSubject.Value.Form, _originalBeforeOperation);
+                        }
+
                         return;
                     }
 
@@ -182,6 +238,10 @@ public class WindowEightViewModel : IDisposable
                         Snacks = snacks,
                         SelectedSnack = updatedSnack
                     });
+
+                    // Reset form dirty state
+                    _stateSubject.Value.Form.Reset();
+                    UpdateFormWithSnack(_stateSubject.Value.Form, updatedSnack);
                 },
                 error =>
                 {
@@ -191,6 +251,12 @@ public class WindowEightViewModel : IDisposable
                         SelectedSnack = _originalBeforeOperation,
                         InProgress = false
                     });
+
+                    // Restore form to original values
+                    if (_originalBeforeOperation != null)
+                    {
+                        UpdateFormWithSnack(_stateSubject.Value.Form, _originalBeforeOperation);
+                    }
                 }
             ));
 
@@ -202,13 +268,17 @@ public class WindowEightViewModel : IDisposable
                     if (snack is null) return;
                     var snacks = new List<SnackV2>(_stateSubject.Value.Snacks);
                     var index = snacks.FindIndex(s => s.Id == snack.Id);
-                    snacks.RemoveAt(index);
+                    if (index >= 0) snacks.RemoveAt(index);
 
                     _stateSubject.OnNext(_stateSubject.Value with
                     {
                         Snacks = snacks,
                         SelectedSnack = null
                     });
+
+                    // Reset form with empty snack
+                    _stateSubject.Value.Form.Reset();
+                    UpdateFormWithSnack(_stateSubject.Value.Form, new SnackV2());
                 },
                 error =>
                 {
@@ -219,6 +289,40 @@ public class WindowEightViewModel : IDisposable
                     });
                 }
             ));
+
+        // Form submitted reducer
+        _disposables.Add(FormSubmittedObs.Subscribe());
+    }
+
+    // --- Form utilities
+    private static FormGroup CreateSnackForm(SnackV2 snack)
+    {
+        return FormBuilder.Group(new Dictionary<string, object>
+        {
+            ["name"] = FormBuilder.Control(snack.Name, new RequiredValidator()),
+            ["price"] = FormBuilder.Control(snack.Price, new MinValueValidator<double>(0, "Price must be positive")),
+            ["quantity"] = FormBuilder.Control(snack.Quantity, new MinValueValidator<int>(0, "Quantity must be positive"))
+        });
+    }
+
+    private void UpdateFormWithSnack(FormGroup form, SnackV2 snack)
+    {
+        form.GetControl<string>("name").SetValue(snack.Name);
+        form.GetControl<double>("price").SetValue(snack.Price);
+        form.GetControl<int>("quantity").SetValue(snack.Quantity);
+    }
+
+    private SnackV2 GetSnackFromForm()
+    {
+        var selectedSnack = _stateSubject.Value.SelectedSnack ?? new SnackV2();
+        var snack = new SnackV2(selectedSnack)
+        {
+            Name = _stateSubject.Value.Form.GetControl<string>("name").CurrentValue,
+            Price = _stateSubject.Value.Form.GetControl<double>("price").CurrentValue,
+            Quantity = _stateSubject.Value.Form.GetControl<int>("quantity").CurrentValue
+        };
+
+        return snack;
     }
 
     // --- Dispose
