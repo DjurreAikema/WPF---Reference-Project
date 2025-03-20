@@ -79,6 +79,9 @@
       <Compile Update="Windows\WIndow7.2\WindowSevenTwoViewModel.cs">
         <DependentUpon>WindowSevenTwo.xaml</DependentUpon>
       </Compile>
+      <Compile Update="Windows\Window8\WindowEightViewModel.cs">
+        <DependentUpon>WindowEight.xaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

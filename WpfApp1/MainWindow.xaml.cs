@@ -8,6 +8,7 @@ using WpfApp1.Windows.Window6;
 using WpfApp1.Windows.Window7;
 using WpfApp1.Windows.Window7._1;
 using WpfApp1.Windows.Window7._2;
+using WpfApp1.Windows.Window8;
 
 namespace WpfApp1;
 
@@ -70,5 +71,11 @@ public partial class MainWindow : Window
     {
         var windowSevenTwo = new WindowSevenTwo();
         windowSevenTwo.Show();
+    }
+
+    private void OpenWindowEightButton_Click(object sender, RoutedEventArgs e)
+    {
+        var windowEight= new WindowEight();
+        windowEight.Show();
     }
 }

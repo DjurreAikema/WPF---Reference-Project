@@ -59,5 +59,9 @@
         <Button Grid.Row="6" Grid.Column="2" Content="Open Window Seven.Two"
                 Padding="10" Margin="5"
                 Click="OpenWindowSevenTwoButton_Click" />
+
+        <Button Grid.Row="7" Grid.Column="0" Content="Open Window Eight"
+                Padding="10" Margin="5"
+                Click="OpenWindowEightButton_Click" />
     </Grid>
 </Window>
