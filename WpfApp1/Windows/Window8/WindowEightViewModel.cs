@@ -7,7 +7,6 @@ using WpfApp1.Shared.Classes;
 using WpfApp1.Shared.DataAccess;
 using WpfApp1.Shared.ExtensionMethods;
 using WpfApp1.Shared.FormBuilder;
-using WpfApp1.Shared.FormBuilder.Validators;
 
 namespace WpfApp1.Windows.Window8;
 
@@ -18,7 +17,7 @@ public record WindowEightState : BaseState<WindowEightState>
     public FormGroup Form { get; init; }
 
     public override WindowEightState WithInProgress(bool inProgress) =>
-        this with { InProgress = inProgress };
+        this with {InProgress = inProgress};
 }
 
 public class WindowEightViewModel : IDisposable
@@ -27,11 +26,7 @@ public class WindowEightViewModel : IDisposable
     private readonly SnackServiceV2 _snackService;
 
     // --- State
-    private readonly BehaviorSubject<WindowEightState> _stateSubject = new(new WindowEightState
-    {
-        Form = CreateSnackForm(new SnackV2())
-    });
-
+    private readonly BehaviorSubject<WindowEightState> _stateSubject;
     private IObservable<WindowEightState> StateObs => _stateSubject.AsObservable();
 
     // --- Selectors
@@ -94,22 +89,35 @@ public class WindowEightViewModel : IDisposable
 
     // --- Form handling
     private IObservable<Unit> FormSubmittedObs => SaveForm
-        .Do(_ => _stateSubject.Value.Form.MarkAllAsTouched())
         .Where(_ => _stateSubject.Value.Form.IsValid)
-        .Select(_ => {
-            var formValues = GetSnackFromForm();
+        .Select(_ =>
+        {
+            var snack = new SnackV2();
 
-            if (formValues.Id is 0 or null)
-                Create.OnNext(formValues);
+            // Get the existing ID if we're editing
+            if (_stateSubject.Value.SelectedSnack != null)
+            {
+                snack.Id = _stateSubject.Value.SelectedSnack.Id;
+            }
+
+            // Map form values to the model
+            FormModelBuilder.MapToModel(_stateSubject.Value.Form, snack);
+
+            if (snack.Id is 0 or null)
+                Create.OnNext(snack);
             else
-                Update.OnNext(formValues);
+                Update.OnNext(snack);
 
             return Unit.Default;
         });
 
-    // --- Reducers
+    // --- Constructor
     public WindowEightViewModel()
     {
+        // Initialize with an empty form
+        var initialForm = FormModelBuilder.FromModel(new SnackV2());
+        _stateSubject = new BehaviorSubject<WindowEightState>(new WindowEightState {Form = initialForm});
+
         _snackService = new SnackServiceV2
         {
             SimulateFailures = true,
@@ -121,11 +129,21 @@ public class WindowEightViewModel : IDisposable
         _disposables.Add(SelectedSnackChanged
             .ObserveOnCurrentSynchronizationContext()
             .Subscribe(
-                snack => {
-                    var form = _stateSubject.Value.Form;
-                    UpdateFormWithSnack(form, snack);
+                snack =>
+                {
+                    // Update the form with the selected snack's values
+                    if (snack != null)
+                    {
+                        FormModelBuilder.UpdateFormFromModel(_stateSubject.Value.Form, snack);
+                    }
+                    else
+                    {
+                        // Reset form with an empty snack
+                        FormModelBuilder.UpdateFormFromModel(_stateSubject.Value.Form, new SnackV2());
+                    }
 
-                    _stateSubject.OnNext(_stateSubject.Value with {
+                    _stateSubject.OnNext(_stateSubject.Value with
+                    {
                         SelectedSnack = snack
                     });
                 },
@@ -170,7 +188,7 @@ public class WindowEightViewModel : IDisposable
                         // Restore form to original values
                         if (_originalBeforeOperation != null)
                         {
-                            UpdateFormWithSnack(_stateSubject.Value.Form, _originalBeforeOperation);
+                            FormModelBuilder.UpdateFormFromModel(_stateSubject.Value.Form, _originalBeforeOperation);
                         }
 
                         return;
@@ -187,7 +205,7 @@ public class WindowEightViewModel : IDisposable
 
                     // Reset form dirty state
                     _stateSubject.Value.Form.Reset();
-                    UpdateFormWithSnack(_stateSubject.Value.Form, snack);
+                    FormModelBuilder.UpdateFormFromModel(_stateSubject.Value.Form, snack);
                 },
                 error =>
                 {
@@ -201,7 +219,7 @@ public class WindowEightViewModel : IDisposable
                     // Restore form to original values
                     if (_originalBeforeOperation != null)
                     {
-                        UpdateFormWithSnack(_stateSubject.Value.Form, _originalBeforeOperation);
+                        FormModelBuilder.UpdateFormFromModel(_stateSubject.Value.Form, _originalBeforeOperation);
                     }
                 }
             ));
@@ -222,7 +240,7 @@ public class WindowEightViewModel : IDisposable
                         // Restore form to original values
                         if (_originalBeforeOperation != null)
                         {
-                            UpdateFormWithSnack(_stateSubject.Value.Form, _originalBeforeOperation);
+                            FormModelBuilder.UpdateFormFromModel(_stateSubject.Value.Form, _originalBeforeOperation);
                         }
 
                         return;
@@ -241,7 +259,7 @@ public class WindowEightViewModel : IDisposable
 
                     // Reset form dirty state
                     _stateSubject.Value.Form.Reset();
-                    UpdateFormWithSnack(_stateSubject.Value.Form, updatedSnack);
+                    FormModelBuilder.UpdateFormFromModel(_stateSubject.Value.Form, updatedSnack);
                 },
                 error =>
                 {
@@ -255,7 +273,7 @@ public class WindowEightViewModel : IDisposable
                     // Restore form to original values
                     if (_originalBeforeOperation != null)
                     {
-                        UpdateFormWithSnack(_stateSubject.Value.Form, _originalBeforeOperation);
+                        FormModelBuilder.UpdateFormFromModel(_stateSubject.Value.Form, _originalBeforeOperation);
                     }
                 }
             ));
@@ -278,7 +296,7 @@ public class WindowEightViewModel : IDisposable
 
                     // Reset form with empty snack
                     _stateSubject.Value.Form.Reset();
-                    UpdateFormWithSnack(_stateSubject.Value.Form, new SnackV2());
+                    FormModelBuilder.UpdateFormFromModel(_stateSubject.Value.Form, new SnackV2());
                 },
                 error =>
                 {
@@ -292,37 +310,6 @@ public class WindowEightViewModel : IDisposable
 
         // Form submitted reducer
         _disposables.Add(FormSubmittedObs.Subscribe());
-    }
-
-    // --- Form utilities
-    private static FormGroup CreateSnackForm(SnackV2 snack)
-    {
-        return FormBuilder.Group(new Dictionary<string, object>
-        {
-            ["name"] = FormBuilder.Control(snack.Name, new RequiredValidator()),
-            ["price"] = FormBuilder.Control(snack.Price, new MinValueValidator<double>(0, "Price must be positive")),
-            ["quantity"] = FormBuilder.Control(snack.Quantity, new MinValueValidator<int>(0, "Quantity must be positive"))
-        });
-    }
-
-    private void UpdateFormWithSnack(FormGroup form, SnackV2 snack)
-    {
-        form.GetControl<string>("name").SetValue(snack.Name);
-        form.GetControl<double>("price").SetValue(snack.Price);
-        form.GetControl<int>("quantity").SetValue(snack.Quantity);
-    }
-
-    private SnackV2 GetSnackFromForm()
-    {
-        var selectedSnack = _stateSubject.Value.SelectedSnack ?? new SnackV2();
-        var snack = new SnackV2(selectedSnack)
-        {
-            Name = _stateSubject.Value.Form.GetControl<string>("name").CurrentValue,
-            Price = _stateSubject.Value.Form.GetControl<double>("price").CurrentValue,
-            Quantity = _stateSubject.Value.Form.GetControl<int>("quantity").CurrentValue
-        };
-
-        return snack;
     }
 
     // --- Dispose

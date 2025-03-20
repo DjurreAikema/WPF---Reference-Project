@@ -5,6 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:ui="clr-namespace:WpfApp1.Windows.Window8.UI"
         xmlns:ui1="clr-namespace:WpfApp1.Shared.UI"
+        xmlns:ui2="clr-namespace:WpfApp1.Shared.FormBuilder.UI"
         mc:Ignorable="d"
         Title="Window Eight - FormBuilder Demo" Height="450" Width="800"
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
@@ -28,15 +29,16 @@
                                 AddSnack="Grid_OnAddSnack"
                                 Reload="Grid_OnReload" />
 
-            <ui:SnackDetailsEight Grid.Row="0" Grid.Column="1"
+            <!-- Using the new dynamic form control -->
+            <ui2:DynamicFormControl Grid.Row="0" Grid.Column="1"
                                   TriggerDispose="{Binding TriggerDispose}"
-                                  SelectedSnackObs="{Binding ViewModel.SelectedSnackObs}"
                                   FormObs="{Binding ViewModel.FormObs}"
-                                  FormValidObs="{Binding ViewModel.FormValidObs}"
-                                  FormDirtyObs="{Binding ViewModel.FormDirtyObs}"
-                                  SnackSaved="Details_OnSnackSaved"
-                                  SnackDeleted="Details_OnSnackDeleted"
-                                  FormSubmitted="Details_OnFormSubmitted" />
+                                  FormTitle="Snack Details"
+                                  SubmitButtonText="Save"
+                                  CancelButtonText="Cancel"
+                                  FormSubmitted="Form_Submitted"
+                                  FormCancelled="Form_Cancelled"
+                                  Margin="10" />
         </Grid>
 
         <!-- Loading Spinner -->
@@ -44,7 +46,5 @@
 
         <!-- Notification Control -->
         <ui1:NotificationControl NotificationsObs="{Binding ViewModel.NotificationsObs}" />
-
     </Grid>
-
 </Window>

@@ -1,4 +1,5 @@
 using System.Reactive;
+using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using WpfApp1.Shared.Classes;
 
@@ -28,16 +29,19 @@ public partial class WindowEight
 
     private void Grid_OnReload() => ViewModel.Reload.OnNext(Unit.Default);
 
-    // --- Details
-    private void Details_OnSnackSaved(SnackV2 snack)
+    // --- Form
+    private void Form_Submitted() => ViewModel.SaveForm.OnNext(Unit.Default);
+
+    private void Form_Cancelled()
     {
-        if (snack.Id is 0 or null)
-            ViewModel.Create.OnNext(snack);
+        // Revert form changes by refreshing from the current snack
+        if (ViewModel.SelectedSnackObs.FirstAsync().Wait() != null)
+        {
+            ViewModel.SelectedSnackChanged.OnNext(ViewModel.SelectedSnackObs.FirstAsync().Wait());
+        }
         else
-            ViewModel.Update.OnNext(snack);
+        {
+            ViewModel.SelectedSnackChanged.OnNext(new SnackV2());
+        }
     }
-
-    private void Details_OnSnackDeleted(int snackId) => ViewModel.Delete.OnNext(snackId);
-
-    private void Details_OnFormSubmitted() => ViewModel.SaveForm.OnNext(Unit.Default);
 }

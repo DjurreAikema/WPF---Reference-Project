@@ -35,9 +35,13 @@ public class FormGroup : IDisposable
     public bool IsDirty => _dirty.Value;
     public bool IsTouched => _touched.Value;
 
+    // Get all control names
+    public IEnumerable<string> ControlNames => _fields.Keys;
+
     // Methods
     public FormField<T> GetControl<T>(string name)
     {
+        name = name.ToLowerInvariant();
         if (!_fields.ContainsKey(name))
         {
             throw new KeyNotFoundException($"Form control '{name}' not found.");
@@ -48,6 +52,7 @@ public class FormGroup : IDisposable
 
     public object GetControlDynamic(string name)
     {
+        name = name.ToLowerInvariant();
         if (!_fields.ContainsKey(name))
         {
             throw new KeyNotFoundException($"Form control '{name}' not found.");
@@ -56,7 +61,47 @@ public class FormGroup : IDisposable
         return _fields[name];
     }
 
-    public Dictionary<string, object> GetValue()
+    public bool HasControl(string name)
+    {
+        name = name.ToLowerInvariant();
+        return _fields.ContainsKey(name);
+    }
+
+    public T GetValue<T>(string name)
+    {
+        name = name.ToLowerInvariant();
+        var control = GetControl<T>(name);
+        return control.CurrentValue;
+    }
+
+    public object GetValueDynamic(string name)
+    {
+        name = name.ToLowerInvariant();
+        var control = GetControlDynamic(name);
+
+        // Use reflection to get the CurrentValue property
+        var valueProperty = control.GetType().GetProperty("CurrentValue");
+        return valueProperty?.GetValue(control);
+    }
+
+    public void SetValue<T>(string name, T value)
+    {
+        name = name.ToLowerInvariant();
+        var control = GetControl<T>(name);
+        control.SetValue(value);
+    }
+
+    public void SetValueDynamic(string name, object value)
+    {
+        name = name.ToLowerInvariant();
+        var control = GetControlDynamic(name);
+
+        // Use reflection to call the SetValue method
+        var setValue = control.GetType().GetMethod("SetValue");
+        setValue?.Invoke(control, new[] {value});
+    }
+
+    public Dictionary<string, object> GetValues()
     {
         var result = new Dictionary<string, object>();
 

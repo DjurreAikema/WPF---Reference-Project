@@ -4,7 +4,7 @@ using System.Reactive.Subjects;
 
 namespace WpfApp1.Shared.FormBuilder;
 
-public class FormField<T>
+public class FormField<T> : IDisposable
 {
     private readonly BehaviorSubject<T> _value;
     private readonly BehaviorSubject<bool> _valid = new(true);
@@ -47,8 +47,11 @@ public class FormField<T>
     // Methods
     public void SetValue(T value)
     {
-        _dirty.OnNext(true);
-        _value.OnNext(value);
+        if (!EqualityComparer<T>.Default.Equals(_value.Value, value))
+        {
+            _dirty.OnNext(true);
+            _value.OnNext(value);
+        }
     }
 
     public void MarkAsTouched()

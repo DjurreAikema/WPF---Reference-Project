@@ -1,0 +1,79 @@
+<abstract:BDumbComponent x:Class="WpfApp1.Shared.FormBuilder.UI.DynamicFormControl"
+                         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                         xmlns:abstract="clr-namespace:WpfApp1.Shared.Abstract"
+                         xmlns:ui="clr-namespace:WpfApp1.Windows.Window8.UI"
+                         xmlns:ui1="clr-namespace:WpfApp1.Shared.FormBuilder.UI"
+                         mc:Ignorable="d">
+
+    <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=ui1:DynamicFormControl}}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Form Title -->
+        <TextBlock Grid.Row="0"
+                   Text="{Binding FormTitle}"
+                   FontWeight="Bold"
+                   FontSize="16"
+                   Margin="0,0,0,10" />
+
+        <!-- Form Fields Container -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <ItemsControl x:Name="FieldsContainer" ItemsSource="{Binding FormFields}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="0,0,0,10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <!-- Field Label -->
+                            <TextBlock Grid.Row="0"
+                                       Text="{Binding Label}"
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,2" />
+
+                            <!-- Field Control -->
+                            <ui1:FormFieldControl Grid.Row="1"
+                                                  FormField="{Binding Control}" />
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <!-- Form Status and Actions -->
+        <Grid Grid.Row="2" Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Form Status -->
+            <TextBlock Grid.Column="0"
+                       Text="{Binding FormStatusText}"
+                       VerticalAlignment="Center" />
+
+            <!-- Submit Button -->
+            <Button Grid.Column="1"
+                    Content="{Binding SubmitButtonText}"
+                    Click="Submit_Click"
+                    IsEnabled="{Binding IsFormValid}"
+                    Padding="15,5"
+                    Margin="0,0,10,0" />
+
+            <!-- Cancel Button -->
+            <Button Grid.Column="2"
+                    Content="{Binding CancelButtonText}"
+                    Click="Cancel_Click"
+                    Padding="15,5" />
+        </Grid>
+    </Grid>
+</abstract:BDumbComponent>
