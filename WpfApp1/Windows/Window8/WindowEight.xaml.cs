@@ -31,8 +31,6 @@ public partial class WindowEight
     // --- Details
     private void Details_OnSnackSaved(SnackV2 snack)
     {
-        Console.WriteLine($"Saving snack: {snack.Name}, ID: {snack.Id}");
-
         if (snack.Id is 0 or null)
             ViewModel.Create.OnNext(snack);
         else

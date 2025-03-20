@@ -45,13 +45,7 @@ public partial class SnacksGridEight
         };
     }
 
-    private void New_OnClick(object sender, RoutedEventArgs e)
-    {
-        AddSnack?.Invoke();
-    }
+    private void New_OnClick(object sender, RoutedEventArgs e) => AddSnack?.Invoke();
 
-    private void Reload_OnClick(object sender, RoutedEventArgs e)
-    {
-        Reload?.Invoke();
-    }
+    private void Reload_OnClick(object sender, RoutedEventArgs e) => Reload?.Invoke();
 }
