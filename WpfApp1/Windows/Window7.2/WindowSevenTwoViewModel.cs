@@ -13,6 +13,7 @@ public record WindowSevenTwoState
     public List<SnackV2> Snacks { get; init; } = [];
     public SnackV2? SelectedSnack { get; init; }
     public bool Loading { get; init; } = true;
+    public bool InProgress { get; init; } = false;
 }
 
 public class WindowSevenTwoViewModel : IDisposable
@@ -55,6 +56,20 @@ public class WindowSevenTwoViewModel : IDisposable
             .NotifyOnSuccessAndError(_notifications,
                 "Snack added successfully.",
                 e => $"Error creating snack: {e.Message}"));
+
+    private IObservable<SnackV2?> SnackCreatedObs2 => Create
+        .Synchronize()
+        .Do(_ => _stateSubject.OnNext(_stateSubject.Value with {InProgress = true}))
+        .SelectMany(obj => Observable.FromAsync(() => _snackService.AddSnackAsync(obj)))
+        .Do(
+            _ => { }, // On next (success) - do nothing here, handled by NotifyOnSuccess
+            _ => { }, // On error - do nothing here, handled by NotifyOnError
+            () => _stateSubject.OnNext(_stateSubject.Value with {InProgress = false}) // On complete
+        )
+        .NotifyOnSuccessAndError(_notifications,
+            "Snack added successfully.",
+            e => $"Error creating snack: {e.Message}");
+
 
     // Update
     private IObservable<SnackV2?> SnackUpdatedObs => Update.SelectMany(obj =>
@@ -101,7 +116,7 @@ public class WindowSevenTwoViewModel : IDisposable
             }));
 
         // SnackCreated reducer
-        _disposables.Add(SnackCreatedObs
+        _disposables.Add(SnackCreatedObs2
             .ObserveOnCurrentSynchronizationContext()
             .Subscribe(snack =>
             {
