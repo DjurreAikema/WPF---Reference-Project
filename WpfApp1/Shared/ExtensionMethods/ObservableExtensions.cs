@@ -1,4 +1,5 @@
-﻿using System.Reactive.Linq;
+﻿using System.Reactive;
+using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using WpfApp1.Shared.Classes;
 
@@ -23,18 +24,28 @@ public static class ObservableExtensions
         return source.Do(_ => notifications.OnNext(new NotificationMessage(successMessage, true)));
     }
 
-    public static IObservable<T> NotifyOnError<T>(
+    private static IObservable<T> NotifyOnError<T>(
         this IObservable<T> source,
         Subject<NotificationMessage> notifications,
         Func<Exception, string> errorMessageFactory,
         T? fallbackValue = default)
     {
-        return source.Catch((Exception e) =>
-        {
-            var errorMessage = errorMessageFactory(e);
-            notifications.OnNext(new NotificationMessage(errorMessage, false));
-            return Observable.Return(fallbackValue)!;
-        });
+        // The key fix is using Materialize/Dematerialize pattern to prevent
+        // the error from terminating the sequence
+        return source
+            .Materialize()
+            .Select(notification => {
+                if (notification.Kind == NotificationKind.OnError)
+                {
+                    var errorMessage = errorMessageFactory(notification.Exception);
+                    notifications.OnNext(new NotificationMessage(errorMessage, false));
+
+                    // Return OnNext with fallback value instead of error
+                    return Notification.CreateOnNext(fallbackValue);
+                }
+                return notification;
+            })
+            .Dematerialize();
     }
 
     public static IObservable<T> NotifyOnSuccessAndError<T>(

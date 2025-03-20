@@ -22,32 +22,22 @@ public partial class WindowSevenTwo
     }
 
     // --- Grid
-    private void SnacksGrid_SnackSelected(SnackV2 snack)
-    {
-        ViewModel.SelectedSnackChanged.OnNext(snack);
-    }
+    private void Grid_SnackSelected(SnackV2 snack) => ViewModel.SelectedSnackChanged.OnNext(snack);
 
-    private void SnacksGridSix_OnAddSnack()
-    {
-        ViewModel.SelectedSnackChanged.OnNext(new SnackV2());
-    }
+    private void Grid_OnAddSnack() => ViewModel.SelectedSnackChanged.OnNext(new SnackV2());
+
+    private void Grid_OnReload() => ViewModel.Reload.OnNext(Unit.Default);
 
     // --- Details
-    private void SnackDetailsSix_OnSnackSaved(SnackV2 snack)
+    private void Details_OnSnackSaved(SnackV2 snack)
     {
+        Console.WriteLine($"Saving snack: {snack.Name}, ID: {snack.Id}");
+
         if (snack.Id is 0 or null)
             ViewModel.Create.OnNext(snack);
         else
             ViewModel.Update.OnNext(snack);
     }
 
-    private void SnackDetailsSix_OnSnackDeleted(int snackId)
-    {
-        ViewModel.Delete.OnNext(snackId);
-    }
-
-    private void SnacksGridSix_OnReload()
-    {
-        ViewModel.Reload.OnNext(Unit.Default);
-    }
+    private void Details_OnSnackDeleted(int snackId) => ViewModel.Delete.OnNext(snackId);
 }

@@ -24,15 +24,15 @@
             <ui:SnacksGridSevenTwo Grid.RowSpan="2" Grid.Column="0"
                                    TriggerDispose="{Binding TriggerDispose}"
                                    SnacksObs="{Binding ViewModel.SnacksObs}"
-                                   SnackSelected="SnacksGrid_SnackSelected"
-                                   AddSnack="SnacksGridSix_OnAddSnack"
-                                   Reload="SnacksGridSix_OnReload" />
+                                   SnackSelected="Grid_SnackSelected"
+                                   AddSnack="Grid_OnAddSnack"
+                                   Reload="Grid_OnReload" />
 
             <ui:SnackDetailsSevenTwo Grid.Row="0" Grid.Column="1"
                                      TriggerDispose="{Binding TriggerDispose}"
                                      SelectedSnackObs="{Binding ViewModel.SelectedSnackObs}"
-                                     SnackSaved="SnackDetailsSix_OnSnackSaved"
-                                     SnackDeleted="SnackDetailsSix_OnSnackDeleted" />
+                                     SnackSaved="Details_OnSnackSaved"
+                                     SnackDeleted="Details_OnSnackDeleted" />
         </Grid>
 
         <!-- Loading Spinner -->

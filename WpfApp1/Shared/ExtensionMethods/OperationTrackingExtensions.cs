@@ -1,3 +1,4 @@
+using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using WpfApp1.Shared.Abstract;
@@ -19,6 +20,13 @@ public static class OperationTrackingExtensions
             .Synchronize()
             .Do(_ => stateSubject.OnNext(stateSubject.Value.WithInProgress(true)))
             .SelectMany(obj => Observable.FromAsync(() => asyncOperation(obj))
-                .Finally(() => stateSubject.OnNext(stateSubject.Value.WithInProgress(false))));
+                .Materialize() // Convert OnError to OnNext(Notification)
+                .Do(notification => {
+                    if (notification.Kind == NotificationKind.OnError) {
+                        stateSubject.OnNext(stateSubject.Value.WithInProgress(false));
+                    }
+                })
+                .Finally(() => stateSubject.OnNext(stateSubject.Value.WithInProgress(false)))
+                .Dematerialize()); // Convert back to regular notifications
     }
 }

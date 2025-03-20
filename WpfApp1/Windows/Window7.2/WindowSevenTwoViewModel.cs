@@ -15,7 +15,7 @@ public record WindowSevenTwoState : BaseState<WindowSevenTwoState>
     public SnackV2? SelectedSnack { get; init; }
 
     public override WindowSevenTwoState WithInProgress(bool inProgress) =>
-        this with { InProgress = inProgress };
+        this with {InProgress = inProgress};
 }
 
 public class WindowSevenTwoViewModel : IDisposable
@@ -53,17 +53,14 @@ public class WindowSevenTwoViewModel : IDisposable
                     new List<SnackV2>()));
 
     // Create
-    private IObservable<SnackV2?> SnackCreatedObs => Create.SelectMany(obj =>
-        Observable.FromAsync(async () => await _snackService.AddSnackAsync(obj))
-            .NotifyOnSuccessAndError(_notifications,
-                "Snack added successfully.",
-                e => $"Error creating snack: {e.Message}"));
-
-    private IObservable<SnackV2?> SnackCreatedObs2 => Create
-        .TrackAsyncOperation(_stateSubject, obj => _snackService.AddSnackAsync(obj))
-        .NotifyOnSuccessAndError(_notifications,
+    private IObservable<SnackV2?> SnackCreatedObs => Create
+        .ExecuteAsyncOperation(
+            _stateSubject,
+            obj => _snackService.AddSnackAsync(obj),
+            _notifications,
             "Snack added successfully.",
-            e => $"Error creating snack: {e.Message}");
+            e => $"Error creating snack: {e.Message}"
+        );
 
 
     // Update
@@ -86,7 +83,7 @@ public class WindowSevenTwoViewModel : IDisposable
         _snackService = new SnackServiceV2
         {
             SimulateFailures = true,
-            FailureProbability = 0.3,
+            FailureProbability = 0.8,
             FailureProbabilityOnLoad = 0.3
         };
 
@@ -108,18 +105,28 @@ public class WindowSevenTwoViewModel : IDisposable
             }));
 
         // SnackCreated reducer
-        _disposables.Add(SnackCreatedObs2
+        _disposables.Add(SnackCreatedObs
             .ObserveOnCurrentSynchronizationContext()
             .Subscribe(snack =>
             {
-                if (snack is null) return;
+                if (snack is null)
+                {
+                    _stateSubject.OnNext(_stateSubject.Value with
+                    {
+                        SelectedSnack = null,
+                        InProgress = false
+                    });
+                    return;
+                }
+
                 var snacks = _stateSubject.Value.Snacks;
                 snacks.Add(snack);
 
                 _stateSubject.OnNext(_stateSubject.Value with
                 {
                     Snacks = snacks,
-                    SelectedSnack = snack
+                    SelectedSnack = snack,
+                    InProgress = false
                 });
             }));
 
