@@ -44,13 +44,13 @@ public class WindowSevenTwoViewModel : IDisposable
     public readonly Subject<int> Delete = new();
 
     // Load
-    private IObservable<List<SnackV2>> SnacksLoadedObs =>
+    private IObservable<List<SnackV2>?> SnacksLoadedObs =>
         Reload.StartWith(Unit.Default)
-            .SelectMany(_ => Observable.FromAsync(_snackService.GetAllSnacksAsync)
-                .NotifyOnSuccessAndError(_notifications,
-                    "Snacks loaded successfully.",
-                    e => $"Error loading snacks: {e.Message}",
-                    new List<SnackV2>()));
+            .ExecuteAsyncOperation(
+                _stateSubject,
+                _ => _snackService.GetAllSnacksAsync(),
+                _notifications, "Snacks loaded successfully.", e => $"Error loading snacks: {e.Message}", []
+            );
 
     // Create
     private IObservable<SnackV2?> SnackCreatedObs => Create
@@ -90,19 +90,32 @@ public class WindowSevenTwoViewModel : IDisposable
         // SelectedSnackChanged reducer
         _disposables.Add(SelectedSnackChanged
             .ObserveOnCurrentSynchronizationContext()
-            .Subscribe(snack => { _stateSubject.OnNext(_stateSubject.Value with {SelectedSnack = snack}); }));
+            .Subscribe(
+                snack => { _stateSubject.OnNext(_stateSubject.Value with {SelectedSnack = snack}); },
+                error => Console.WriteLine($"Unexpected error in SelectedSnackChanged: {error.Message}")
+            ));
 
         // SnacksLoaded reducer
         _disposables.Add(SnacksLoadedObs
             .ObserveOnCurrentSynchronizationContext()
             .Subscribe(snacks =>
-            {
-                _stateSubject.OnNext(_stateSubject.Value with
                 {
-                    Snacks = snacks,
-                    Loading = false
-                });
-            }));
+                    if (snacks is null) return;
+
+                    _stateSubject.OnNext(_stateSubject.Value with
+                    {
+                        Snacks = [..snacks],
+                        Loading = false
+                    });
+                },
+                error =>
+                {
+                    Console.WriteLine($"Unhandled error in SnacksLoaded reducer: {error.Message}");
+                    _stateSubject.OnNext(_stateSubject.Value with
+                    {
+                        Loading = false
+                    });
+                }));
 
         // SnackCreated reducer
         _disposables.Add(SnackCreatedObs
@@ -119,7 +132,6 @@ public class WindowSevenTwoViewModel : IDisposable
                         return;
                     }
 
-                    // Create a defensive copy of the list
                     var snacks = new List<SnackV2>(_stateSubject.Value.Snacks) {snack};
 
                     _stateSubject.OnNext(_stateSubject.Value with
@@ -131,7 +143,7 @@ public class WindowSevenTwoViewModel : IDisposable
                 },
                 error =>
                 {
-                    Console.WriteLine($"Unhandled error in subscriber: {error.Message}");
+                    Console.WriteLine($"Unhandled error in SnackCreated reducer: {error.Message}");
                     _stateSubject.OnNext(_stateSubject.Value with
                     {
                         SelectedSnack = null,
@@ -159,7 +171,7 @@ public class WindowSevenTwoViewModel : IDisposable
                 },
                 error =>
                 {
-                    Console.WriteLine($"Unhandled error in subscriber: {error.Message}");
+                    Console.WriteLine($"Unhandled error in SnackUpdated reducer: {error.Message}");
                     _stateSubject.OnNext(_stateSubject.Value with
                     {
                         SelectedSnack = null,
@@ -186,7 +198,7 @@ public class WindowSevenTwoViewModel : IDisposable
                 },
                 error =>
                 {
-                    Console.WriteLine($"Unhandled error in subscriber: {error.Message}");
+                    Console.WriteLine($"Unhandled error in SnackDeleted reducer: {error.Message}");
                     _stateSubject.OnNext(_stateSubject.Value with
                     {
                         SelectedSnack = null,
@@ -197,8 +209,5 @@ public class WindowSevenTwoViewModel : IDisposable
     }
 
     // --- Dispose
-    public void Dispose()
-    {
-        _disposables.Dispose();
-    }
+    public void Dispose() => _disposables.Dispose();
 }
