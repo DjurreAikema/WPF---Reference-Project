@@ -36,6 +36,9 @@ public class WindowSevenTwoViewModel : IDisposable
     private readonly Subject<NotificationMessage> _notifications = new();
     public IObservable<NotificationMessage> NotificationsObs => _notifications.AsObservable();
 
+    // --- Track original snack states for error recovery
+    private SnackV2? _originalBeforeOperation;
+
     // --- Sources
     public readonly Subject<SnackV2> SelectedSnackChanged = new();
     public readonly Subject<SnackV2> Create = new();
@@ -54,6 +57,7 @@ public class WindowSevenTwoViewModel : IDisposable
 
     // Create
     private IObservable<SnackV2?> SnackCreatedObs => Create
+        .Do(snack => _originalBeforeOperation = new SnackV2(snack))
         .ExecuteAsyncOperation(
             _stateSubject,
             obj => _snackService.AddSnackAsync(obj),
@@ -63,6 +67,7 @@ public class WindowSevenTwoViewModel : IDisposable
 
     // Update
     private IObservable<SnackV2?> SnackUpdatedObs => Update
+        .Do(snack => _originalBeforeOperation = new SnackV2(snack))
         .ExecuteAsyncOperation(
             _stateSubject,
             obj => _snackService.UpdateSnackAsync(obj),
@@ -126,7 +131,7 @@ public class WindowSevenTwoViewModel : IDisposable
                     {
                         _stateSubject.OnNext(_stateSubject.Value with
                         {
-                            SelectedSnack = null,
+                            SelectedSnack = _originalBeforeOperation,
                             InProgress = false
                         });
                         return;
@@ -146,7 +151,7 @@ public class WindowSevenTwoViewModel : IDisposable
                     Console.WriteLine($"Unhandled error in SnackCreated reducer: {error.Message}");
                     _stateSubject.OnNext(_stateSubject.Value with
                     {
-                        SelectedSnack = null,
+                        SelectedSnack = _originalBeforeOperation,
                         InProgress = false
                     });
                 }
@@ -157,7 +162,16 @@ public class WindowSevenTwoViewModel : IDisposable
             .ObserveOnCurrentSynchronizationContext()
             .Subscribe(updatedSnack =>
                 {
-                    if (updatedSnack is null) return;
+                    if (updatedSnack is null)
+                    {
+                        _stateSubject.OnNext(_stateSubject.Value with
+                        {
+                            SelectedSnack = _originalBeforeOperation,
+                            InProgress = false
+                        });
+                        return;
+                    }
+
                     var snacks = new List<SnackV2>(_stateSubject.Value.Snacks);
                     var index = snacks.FindIndex(s => s.Id == updatedSnack.Id);
                     if (index < 0) return;
@@ -174,7 +188,7 @@ public class WindowSevenTwoViewModel : IDisposable
                     Console.WriteLine($"Unhandled error in SnackUpdated reducer: {error.Message}");
                     _stateSubject.OnNext(_stateSubject.Value with
                     {
-                        SelectedSnack = null,
+                        SelectedSnack = _originalBeforeOperation,
                         InProgress = false
                     });
                 }
@@ -201,7 +215,6 @@ public class WindowSevenTwoViewModel : IDisposable
                     Console.WriteLine($"Unhandled error in SnackDeleted reducer: {error.Message}");
                     _stateSubject.OnNext(_stateSubject.Value with
                     {
-                        SelectedSnack = null,
                         InProgress = false
                     });
                 }
