@@ -23,18 +23,43 @@ public class FormModelBuilder
             if (!IsSupportedType(property.PropertyType))
                 continue;
 
-            // Get the property value
-            var value = property.GetValue(model);
+            try
+            {
+                // Get the property value
+                var value = property.GetValue(model);
 
-            // Create validators from attributes
-            var validators = CreateValidatorsFromAttributes(property);
+                // Create a form control with the property value and no validators initially
+                var formControlType = typeof(FormField<>).MakeGenericType(property.PropertyType);
+                var formControl = Activator.CreateInstance(formControlType, new object[] {value, null});
 
-            // Create a form control with the property value and validators
-            var formControlType = typeof(FormField<>).MakeGenericType(property.PropertyType);
-            var formControl = Activator.CreateInstance(formControlType, value, validators);
+                // Create validators from attributes
+                var validators = CreateValidatorsFromAttributes(property);
 
-            // Add the control to the dictionary
-            controls.Add(property.Name.ToLowerInvariant(), formControl);
+                // Add validators one by one if needed
+                if (validators.Count > 0)
+                {
+                    var addValidatorMethod = formControlType.GetMethod("AddValidator");
+                    foreach (var validator in validators)
+                    {
+                        try
+                        {
+                            addValidatorMethod.Invoke(formControl, new object[] {validator});
+                        }
+                        catch
+                        {
+                            // Ignore invalid validators
+                        }
+                    }
+                }
+
+                // Add the control to the dictionary
+                controls.Add(property.Name.ToLowerInvariant(), formControl);
+            }
+            catch (Exception ex)
+            {
+                // Skip properties that cause exceptions
+                Console.WriteLine($"Skipping property {property.Name} due to error: {ex.Message}");
+            }
         }
 
         return new FormGroup(controls);

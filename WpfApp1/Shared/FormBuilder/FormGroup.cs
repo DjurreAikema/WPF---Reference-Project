@@ -116,14 +116,59 @@ public class FormGroup : IDisposable
     }
 
     public void Reset()
+{
+    foreach (var field in _fields.Values)
     {
-        foreach (var field in _fields.Values)
+        try
         {
-            // Use reflection to call Reset()
-            var resetMethod = field.GetType().GetMethod("Reset");
-            resetMethod?.Invoke(field, new object[] { });
+            // Get the field's type
+            var fieldType = field.GetType();
+
+            // Get the Reset method with its parameter information
+            var resetMethod = fieldType.GetMethod("Reset");
+
+            if (resetMethod != null)
+            {
+                // Get parameters info
+                var parameters = resetMethod.GetParameters();
+
+                if (parameters.Length == 0)
+                {
+                    // No parameters needed
+                    resetMethod.Invoke(field, null);
+                }
+                else
+                {
+                    // Create default parameter values for optional parameters
+                    object[] paramValues = new object[parameters.Length];
+                    for (int i = 0; i < parameters.Length; i++)
+                    {
+                        // For optional parameters or parameters with default values,
+                        // we use Type.Missing or default values
+                        if (parameters[i].IsOptional || parameters[i].HasDefaultValue)
+                        {
+                            paramValues[i] = parameters[i].DefaultValue;
+                        }
+                        else
+                        {
+                            // For non-optional parameters, provide a default value based on type
+                            paramValues[i] = parameters[i].ParameterType.IsValueType ?
+                                Activator.CreateInstance(parameters[i].ParameterType) : null;
+                        }
+                    }
+
+                    // Invoke with parameters
+                    resetMethod.Invoke(field, paramValues);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            // Log but don't crash on Reset errors
+            Console.WriteLine($"Error resetting field: {ex.Message}");
         }
     }
+}
 
     public void MarkAllAsTouched()
     {

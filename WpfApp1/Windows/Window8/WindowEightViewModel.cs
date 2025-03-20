@@ -121,7 +121,7 @@ public class WindowEightViewModel : IDisposable
         _snackService = new SnackServiceV2
         {
             SimulateFailures = true,
-            FailureProbability = 0.8,
+            FailureProbability = 0.3,
             FailureProbabilityOnLoad = 0.3
         };
 
