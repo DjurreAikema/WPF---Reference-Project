@@ -5,15 +5,16 @@ using System.Reactive.Subjects;
 using WpfApp1.Shared.Classes;
 using WpfApp1.Shared.DataAccess;
 using WpfApp1.Shared.ExtensionMethods;
+using WpfApp1.Shared.Interfaces;
 
 namespace WpfApp1.Windows.Window7._2;
 
-public record WindowSevenTwoState
+public record WindowSevenTwoState : IBaseState
 {
     public List<SnackV2> Snacks { get; init; } = [];
     public SnackV2? SelectedSnack { get; init; }
     public bool Loading { get; init; } = true;
-    public bool InProgress { get; init; } = false;
+    public bool InProgress { get; init; }
 }
 
 public class WindowSevenTwoViewModel : IDisposable
@@ -98,10 +99,7 @@ public class WindowSevenTwoViewModel : IDisposable
         // SelectedSnackChanged reducer
         _disposables.Add(SelectedSnackChanged
             .ObserveOnCurrentSynchronizationContext()
-            .Subscribe(snack =>
-            {
-                _stateSubject.OnNext(_stateSubject.Value with {SelectedSnack = snack});
-            }));
+            .Subscribe(snack => { _stateSubject.OnNext(_stateSubject.Value with {SelectedSnack = snack}); }));
 
         // SnacksLoaded reducer
         _disposables.Add(SnacksLoadedObs
