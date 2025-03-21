@@ -31,15 +31,15 @@
 
             <!-- Using the new dynamic form control -->
             <ui2:DynamicFormControl Grid.Row="0" Grid.Column="1"
-                                  TriggerDispose="{Binding TriggerDispose}"
-                                  FormObs="{Binding ViewModel.FormObs}"
-                                  FormTitle="Snack Details"
-                                  SubmitButtonText="Save"
-                                  CancelButtonText="Cancel"
-                                  FormSubmitted="Form_Submitted"
-                                  FormCancelled="Form_Cancelled"
-                                  FormDeleteRequested="Form_DeleteRequested"
-                                  Margin="10" />
+                                    TriggerDispose="{Binding TriggerDispose}"
+                                    FormObs="{Binding ViewModel.FormObs}"
+                                    FormTitle="Snack Details"
+                                    SubmitButtonText="Save"
+                                    CancelButtonText="Cancel"
+                                    FormSubmitted="Form_Submitted"
+                                    FormCancelled="Form_Cancelled"
+                                    FormDeleteRequested="Form_DeleteRequested"
+                                    Margin="10" />
         </Grid>
 
         <!-- Loading Spinner -->

@@ -32,18 +32,18 @@
 
             <Label Content="Name:" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" />
             <ui1:FormFieldControl Grid.Row="0" Grid.Column="1"
-                                FormField="{Binding NameField}"
-                                Margin="0,0,0,10" />
+                                  FormField="{Binding NameField}"
+                                  Margin="0,0,0,10" />
 
             <Label Content="Price:" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" />
             <ui1:FormFieldControl Grid.Row="1" Grid.Column="1"
-                                FormField="{Binding PriceField}"
-                                Margin="0,0,0,10" />
+                                  FormField="{Binding PriceField}"
+                                  Margin="0,0,0,10" />
 
             <Label Content="Quantity:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" />
             <ui1:FormFieldControl Grid.Row="2" Grid.Column="1"
-                                FormField="{Binding QuantityField}"
-                                Margin="0,0,0,10" />
+                                  FormField="{Binding QuantityField}"
+                                  Margin="0,0,0,10" />
         </Grid>
 
         <!-- Form Controls -->

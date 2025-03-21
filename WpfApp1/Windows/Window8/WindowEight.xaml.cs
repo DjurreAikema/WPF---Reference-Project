@@ -44,13 +44,6 @@ public partial class WindowEight
     private void Form_Cancelled()
     {
         // Revert form changes by refreshing from the current snack
-        if (ViewModel.SelectedSnackObs.FirstAsync().Wait() != null)
-        {
-            ViewModel.SelectedSnackChanged.OnNext(ViewModel.SelectedSnackObs.FirstAsync().Wait());
-        }
-        else
-        {
-            ViewModel.SelectedSnackChanged.OnNext(new SnackV2());
-        }
+        ViewModel.SelectedSnackChanged.OnNext(ViewModel.SelectedSnackObs.FirstAsync().Wait() ?? new SnackV2());
     }
 }

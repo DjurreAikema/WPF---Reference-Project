@@ -14,7 +14,7 @@ public record WindowEightState : BaseState<WindowEightState>
 {
     public List<SnackV2> Snacks { get; init; } = [];
     public SnackV2? SelectedSnack { get; init; }
-    public FormGroup Form { get; init; }
+    public FormGroup Form { get; init; } = FormBuilder.FromModel(new SnackV2());
 
     public override WindowEightState WithInProgress(bool inProgress) =>
         this with {InProgress = inProgress};
@@ -45,7 +45,7 @@ public class WindowEightViewModel : IDisposable
     private SnackV2? _originalBeforeOperation;
 
     // --- Sources
-    public readonly Subject<SnackV2> SelectedSnackChanged = new();
+    public readonly Subject<SnackV2?> SelectedSnackChanged = new();
     public readonly Subject<SnackV2> Create = new();
     public readonly Subject<SnackV2> Update = new();
     public readonly Subject<Unit> Reload = new();
@@ -131,16 +131,8 @@ public class WindowEightViewModel : IDisposable
             .Subscribe(
                 snack =>
                 {
-                    // Update the form with the selected snack's values
-                    if (snack != null)
-                    {
-                        FormModelBuilder.UpdateFormFromModel(_stateSubject.Value.Form, snack);
-                    }
-                    else
-                    {
-                        // Reset form with an empty snack
-                        FormModelBuilder.UpdateFormFromModel(_stateSubject.Value.Form, new SnackV2());
-                    }
+                    // Dont like this because it breaks the pattern
+                    FormModelBuilder.UpdateFormFromModel(_stateSubject.Value.Form, snack ?? new SnackV2());
 
                     _stateSubject.OnNext(_stateSubject.Value with
                     {
@@ -188,6 +180,7 @@ public class WindowEightViewModel : IDisposable
                         // Restore form to original values
                         if (_originalBeforeOperation != null)
                         {
+                            // Dont like this because it breaks the pattern
                             FormModelBuilder.UpdateFormFromModel(_stateSubject.Value.Form, _originalBeforeOperation);
                         }
 
@@ -203,7 +196,7 @@ public class WindowEightViewModel : IDisposable
                         InProgress = false
                     });
 
-                    // Reset form dirty state
+                    // Reset form dirty state. Dont like this because it breaks the pattern
                     _stateSubject.Value.Form.Reset();
                     FormModelBuilder.UpdateFormFromModel(_stateSubject.Value.Form, snack);
                 },
@@ -216,7 +209,7 @@ public class WindowEightViewModel : IDisposable
                         InProgress = false
                     });
 
-                    // Restore form to original values
+                    // Restore form to original values. Dont like this because it breaks the pattern
                     if (_originalBeforeOperation != null)
                     {
                         FormModelBuilder.UpdateFormFromModel(_stateSubject.Value.Form, _originalBeforeOperation);
@@ -237,7 +230,7 @@ public class WindowEightViewModel : IDisposable
                             InProgress = false
                         });
 
-                        // Restore form to original values
+                        // Restore form to original values. Dont like this because it breaks the pattern
                         if (_originalBeforeOperation != null)
                         {
                             FormModelBuilder.UpdateFormFromModel(_stateSubject.Value.Form, _originalBeforeOperation);
@@ -257,7 +250,7 @@ public class WindowEightViewModel : IDisposable
                         SelectedSnack = updatedSnack
                     });
 
-                    // Reset form dirty state
+                    // Reset form dirty state. Dont like this because it breaks the pattern
                     _stateSubject.Value.Form.Reset();
                     FormModelBuilder.UpdateFormFromModel(_stateSubject.Value.Form, updatedSnack);
                 },
@@ -270,7 +263,7 @@ public class WindowEightViewModel : IDisposable
                         InProgress = false
                     });
 
-                    // Restore form to original values
+                    // Restore form to original values. Dont like this because it breaks the pattern
                     if (_originalBeforeOperation != null)
                     {
                         FormModelBuilder.UpdateFormFromModel(_stateSubject.Value.Form, _originalBeforeOperation);
@@ -294,7 +287,7 @@ public class WindowEightViewModel : IDisposable
                         SelectedSnack = null
                     });
 
-                    // Reset form with empty snack
+                    // Reset form with empty snack. Dont like this because it breaks the pattern
                     _stateSubject.Value.Form.Reset();
                     FormModelBuilder.UpdateFormFromModel(_stateSubject.Value.Form, new SnackV2());
                 },
