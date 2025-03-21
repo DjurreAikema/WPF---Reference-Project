@@ -12,6 +12,7 @@ public class FormModelBuilder
     {
         var controls = new Dictionary<string, object>();
         var properties = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+        var orderedProperties = new List<(PropertyInfo Property, FormPropertyAttribute? Attribute)>();
 
         foreach (var property in properties)
         {
@@ -23,6 +24,25 @@ public class FormModelBuilder
             if (!IsSupportedType(property.PropertyType))
                 continue;
 
+            // Get FormProperty attribute if exists
+            var formAttr = property.GetCustomAttribute<FormPropertyAttribute>();
+
+            // Skip explicitly excluded properties
+            if (formAttr?.Excluded == true)
+                continue;
+
+            // Add to ordered list
+            orderedProperties.Add((property, formAttr));
+        }
+
+        // Sort by Order property in attribute, then by property name
+        orderedProperties = orderedProperties
+            .OrderBy(p => p.Attribute?.Order ?? 999)
+            .ThenBy(p => p.Property.Name)
+            .ToList();
+
+        foreach (var (property, formAttr) in orderedProperties)
+        {
             try
             {
                 // Get the property value
@@ -52,8 +72,11 @@ public class FormModelBuilder
                     }
                 }
 
+                // Use lowercase property name as key for consistency
+                var propertyKey = property.Name.ToLowerInvariant();
+
                 // Add the control to the dictionary
-                controls.Add(property.Name.ToLowerInvariant(), formControl);
+                controls.Add(propertyKey, formControl);
             }
             catch (Exception ex)
             {
@@ -80,6 +103,10 @@ public class FormModelBuilder
 
             // Skip complex types
             if (!IsSupportedType(property.PropertyType))
+                continue;
+
+            // Skip properties with FormExclude attribute
+            if (property.GetCustomAttribute<FormPropertyAttribute>()?.Excluded == true)
                 continue;
 
             var formFieldName = property.Name.ToLowerInvariant();
@@ -138,6 +165,10 @@ public class FormModelBuilder
 
             // Skip complex types
             if (!IsSupportedType(property.PropertyType))
+                continue;
+
+            // Skip properties with FormExclude attribute
+            if (property.GetCustomAttribute<FormPropertyAttribute>()?.Excluded == true)
                 continue;
 
             var formFieldName = property.Name.ToLowerInvariant();

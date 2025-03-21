@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Reflection;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -8,6 +9,8 @@ namespace WpfApp1.Shared.FormBuilder.UI
     {
         public string Name { get; set; }
         public string Label { get; set; }
+        public string Description { get; set; }
+        public int Order { get; set; }
         public object Control { get; set; }
     }
 
@@ -106,17 +109,53 @@ namespace WpfApp1.Shared.FormBuilder.UI
             foreach (var controlName in Form.ControlNames)
             {
                 var control = Form.GetControlDynamic(controlName);
+                var propertyInfo = GetPropertyInfoFromControlName(controlName);
 
-                // Create a user-friendly label from the control name
-                var label = MakeReadableLabel(controlName);
+                // Get FormProperty attribute if it exists
+                var formAttr = propertyInfo?.GetCustomAttribute<FormPropertyAttribute>();
+
+                // Create a user-friendly label from the control name or attribute
+                var label = formAttr?.Label;
+                if (string.IsNullOrEmpty(label))
+                {
+                    label = MakeReadableLabel(controlName);
+                }
+
+                var description = formAttr?.Description ?? string.Empty;
+                var order = formAttr?.Order ?? 999;
 
                 FormFields.Add(new FormFieldInfo
                 {
                     Name = controlName,
                     Label = label,
+                    Description = description,
+                    Order = order,
                     Control = control
                 });
             }
+
+            // Sort by Order property
+            FormFields = new ObservableCollection<FormFieldInfo>(
+                FormFields.OrderBy(f => f.Order).ToList()
+            );
+        }
+
+        private PropertyInfo GetPropertyInfoFromControlName(string controlName)
+        {
+            if (Form == null) return null;
+
+            // Find the model type that was used to create this form
+            var modelType = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(a => a.GetTypes())
+                .FirstOrDefault(t =>
+                    t.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                    .Any(p => p.Name.ToLowerInvariant() == controlName.ToLowerInvariant()));
+
+            if (modelType == null) return null;
+
+            // Find the matching property
+            return modelType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .FirstOrDefault(p => p.Name.ToLowerInvariant() == controlName.ToLowerInvariant());
         }
 
         private string MakeReadableLabel(string name)
