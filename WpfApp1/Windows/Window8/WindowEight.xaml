@@ -38,6 +38,7 @@
                                   CancelButtonText="Cancel"
                                   FormSubmitted="Form_Submitted"
                                   FormCancelled="Form_Cancelled"
+                                  FormDeleteRequested="Form_DeleteRequested"
                                   Margin="10" />
         </Grid>
 

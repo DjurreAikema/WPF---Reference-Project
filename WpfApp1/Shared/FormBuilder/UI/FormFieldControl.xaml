@@ -5,16 +5,33 @@
                          xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                          xmlns:abstract="clr-namespace:WpfApp1.Shared.Abstract"
                          xmlns:ui="clr-namespace:WpfApp1.Shared.FormBuilder.UI"
+                         xmlns:conv="clr-namespace:WpfApp1.Shared.Converters"
                          mc:Ignorable="d">
 
-    <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=ui:FormFieldControl}}">
+    <abstract:BDumbComponent.Resources>
+        <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </abstract:BDumbComponent.Resources>
+
+    <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=ui:FormFieldControl}}"
+          Grid.IsSharedSizeScope="True">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumn" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
+        <!-- Label with Required Indicator -->
+        <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal" Margin="0,0,15,0">
+            <TextBlock Text="*" Foreground="IndianRed" Visibility="{Binding IsRequired, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0,0,3,0" />
+            <TextBlock Text="{Binding Label}" VerticalAlignment="Center" />
+        </StackPanel>
+
         <!-- Input Field -->
-        <TextBox Grid.Row="0"
+        <TextBox Grid.Row="0" Grid.Column="1"
                  Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  VerticalContentAlignment="Center"
                  Height="22"
@@ -22,8 +39,8 @@
                  BorderThickness="1"
                  BorderBrush="{Binding ValidationBrush}"/>
 
-        <!-- Error Message -->
-        <TextBlock Grid.Row="1"
+        <!-- Error Message - Spans both columns -->
+        <TextBlock Grid.Row="1" Grid.Column="1"
                    Text="{Binding ErrorMessage}"
                    Foreground="IndianRed"
                    Visibility="{Binding ErrorVisibility}"

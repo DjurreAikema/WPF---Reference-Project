@@ -29,8 +29,7 @@
     </abstract:BDumbComponent.Resources>
 
     <GroupBox Header="{Binding FormTitle, RelativeSource={RelativeSource AncestorType=ui:DynamicFormControl}}"
-              Style="{StaticResource FormGroupBoxStyle}"
-              Grid.IsSharedSizeScope="True">
+              Style="{StaticResource FormGroupBoxStyle}">
         <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=ui:DynamicFormControl}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
@@ -39,51 +38,25 @@
 
             <!-- Form Fields Container -->
             <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
-                <ItemsControl x:Name="FieldsContainer" ItemsSource="{Binding FormFields}" Margin="5">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Margin="0,0,0,8" Grid.IsSharedSizeScope="True">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" SharedSizeGroup="SharedFieldLabel" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-
-                                <!-- Required Field Marker -->
-                                <TextBlock Grid.Column="0"
-                                           Text="*"
-                                           Foreground="IndianRed"
-                                           VerticalAlignment="Center"
-                                           Visibility="{Binding IsRequired, Converter={StaticResource BoolToVisibilityConverter}}" />
-
-                                <!-- Field Label -->
-                                <TextBlock Grid.Column="1"
-                                           Text="{Binding Label}"
-                                           Margin="5"
-                                           VerticalAlignment="Center" />
-
-                                <!-- Field Control -->
-                                <ui:FormFieldControl Grid.Column="2"
-                                                     FormField="{Binding Control}"
-                                                     Margin="5,0,0,0" />
-
-                                <!-- Field Description (if any) -->
-                                <TextBlock Grid.Column="2"
-                                           Text="{Binding Description}"
-                                           Foreground="#666666"
-                                           FontSize="11"
-                                           Margin="5,2,0,0"
-                                           Visibility="{Binding Description, Converter={StaticResource StringToVisibilityConverter}}" />
-                            </Grid>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                <StackPanel x:Name="FieldsContainer" Margin="5">
+                    <ItemsControl ItemsSource="{Binding FormFields}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <ui:FormFieldControl FormField="{Binding Control}"
+                                                 Label="{Binding Label}"
+                                                 IsRequired="{Binding IsRequired}"
+                                                 Margin="0,0,0,12" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
             </ScrollViewer>
 
             <!-- Form Status and Actions -->
             <Grid Grid.Row="1" Margin="5,8,5,5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
@@ -95,8 +68,17 @@
                            Foreground="#666666"
                            FontStyle="Italic" />
 
-                <!-- Submit Button -->
+                <!-- Delete Button - Only visible when HasId is true -->
                 <Button Grid.Column="1"
+                        Content="Delete"
+                        Click="Delete_Click"
+                        IsEnabled="{Binding HasId}"
+                        Visibility="{Binding HasId, Converter={StaticResource BoolToVisibilityConverter}}"
+                        Padding="15,5"
+                        Margin="0,0,10,0" />
+
+                <!-- Submit Button -->
+                <Button Grid.Column="2"
                         Content="{Binding SubmitButtonText}"
                         Click="Submit_Click"
                         IsEnabled="{Binding IsFormValid}"
@@ -104,7 +86,7 @@
                         Margin="0,0,10,0" />
 
                 <!-- Cancel Button -->
-                <Button Grid.Column="2"
+                <Button Grid.Column="3"
                         Content="{Binding CancelButtonText}"
                         Click="Cancel_Click"
                         Padding="15,5" />

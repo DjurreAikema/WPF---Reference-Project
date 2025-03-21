@@ -32,6 +32,15 @@ public partial class WindowEight
     // --- Form
     private void Form_Submitted() => ViewModel.SaveForm.OnNext(Unit.Default);
 
+    private void Form_DeleteRequested()
+    {
+        var currentSnack = ViewModel.SelectedSnackObs.FirstAsync().Wait();
+        if (currentSnack is {Id: > 0})
+        {
+            ViewModel.Delete.OnNext(currentSnack.Id.Value);
+        }
+    }
+
     private void Form_Cancelled()
     {
         // Revert form changes by refreshing from the current snack

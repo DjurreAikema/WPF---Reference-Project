@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Windows;
@@ -8,11 +9,11 @@ namespace WpfApp1.Shared.FormBuilder.UI
 {
     public class FormFieldInfo
     {
-        public string Name { get; set; }
-        public string Label { get; set; }
-        public string Description { get; set; }
+        public string? Name { get; set; }
+        public string? Label { get; set; }
+        public string? Description { get; set; }
         public int Order { get; set; }
-        public object Control { get; set; }
+        public object? Control { get; set; }
         public bool IsRequired { get; set; }
     }
 
@@ -35,41 +36,52 @@ namespace WpfApp1.Shared.FormBuilder.UI
             nameof(CancelButtonText), typeof(string), typeof(DynamicFormControl),
             new PropertyMetadata("Cancel"));
 
+        public static readonly DependencyProperty HasIdProperty = DependencyProperty.Register(
+            nameof(HasId), typeof(bool), typeof(DynamicFormControl),
+            new PropertyMetadata(false));
+
         // --- Properties
         public IObservable<FormGroup> FormObs
         {
-            get => (IObservable<FormGroup>)GetValue(FormObsProperty);
+            get => (IObservable<FormGroup>) GetValue(FormObsProperty);
             set => SetValue(FormObsProperty, value);
         }
 
         public string FormTitle
         {
-            get => (string)GetValue(FormTitleProperty);
+            get => (string) GetValue(FormTitleProperty);
             set => SetValue(FormTitleProperty, value);
         }
 
         public string SubmitButtonText
         {
-            get => (string)GetValue(SubmitButtonTextProperty);
+            get => (string) GetValue(SubmitButtonTextProperty);
             set => SetValue(SubmitButtonTextProperty, value);
         }
 
         public string CancelButtonText
         {
-            get => (string)GetValue(CancelButtonTextProperty);
+            get => (string) GetValue(CancelButtonTextProperty);
             set => SetValue(CancelButtonTextProperty, value);
+        }
+
+        public bool HasId
+        {
+            get => (bool) GetValue(HasIdProperty);
+            set => SetValue(HasIdProperty, value);
         }
 
         // --- Internal properties
         [ObservableProperty] private FormGroup _form;
-        [ObservableProperty] private ObservableCollection<FormFieldInfo> _formFields = new();
-        [ObservableProperty] private bool _isFormValid = false;
-        [ObservableProperty] private bool _isFormDirty = false;
+        [ObservableProperty] private ObservableCollection<FormFieldInfo> _formFields = [];
+        [ObservableProperty] private bool _isFormValid;
+        [ObservableProperty] private bool _isFormDirty;
         [ObservableProperty] private string _formStatusText = "Ready";
 
         // --- Events
         public event Action FormSubmitted;
         public event Action FormCancelled;
+        public event Action FormDeleteRequested;
 
         public DynamicFormControl()
         {
@@ -82,7 +94,7 @@ namespace WpfApp1.Shared.FormBuilder.UI
             if (d is not DynamicFormControl control || e.NewValue == null) return;
 
             // Set up subscriptions to the form
-            control.Disposables.Add(((IObservable<FormGroup>)e.NewValue).Subscribe(form =>
+            control.Disposables.Add(((IObservable<FormGroup>) e.NewValue).Subscribe(form =>
             {
                 control.Form = form;
                 control.BuildFormFields();
@@ -99,6 +111,28 @@ namespace WpfApp1.Shared.FormBuilder.UI
                     control.IsFormDirty = dirty;
                     control.UpdateFormStatus();
                 }));
+
+                // Detect if we have an ID field that's not null/empty
+                if (!form.HasControl("id")) return;
+                try
+                {
+                    var idValue = form.GetValueDynamic("id");
+                    switch (idValue)
+                    {
+                        case null:
+                            return;
+                        // Check if it's an int/long greater than 0 or a non-empty string
+                        case > 0:
+                        case long and > 0:
+                        case string stringId when !string.IsNullOrEmpty(stringId):
+                            control.HasId = true;
+                            break;
+                    }
+                }
+                catch
+                {
+                    control.HasId = false;
+                }
             }));
         }
 
@@ -117,7 +151,7 @@ namespace WpfApp1.Shared.FormBuilder.UI
                 var formAttr = propertyInfo?.GetCustomAttribute<FormPropertyAttribute>();
 
                 // Check for Required validation attribute or RequiredValidator
-                bool isRequired = IsFieldRequired(propertyInfo, control);
+                var isRequired = IsFieldRequired(propertyInfo, control);
 
                 // Create a user-friendly label from the control name or attribute
                 var label = formAttr?.Label;
@@ -126,14 +160,15 @@ namespace WpfApp1.Shared.FormBuilder.UI
                     label = MakeReadableLabel(controlName);
                 }
 
-                var description = formAttr?.Description ?? string.Empty;
                 var order = formAttr?.Order ?? 999;
+
+                // Skip the ID field as we handle it specially
+                if (controlName.ToLowerInvariant() == "id") continue;
 
                 FormFields.Add(new FormFieldInfo
                 {
                     Name = controlName,
                     Label = label,
-                    Description = description,
                     Order = order,
                     Control = control,
                     IsRequired = isRequired
@@ -149,7 +184,7 @@ namespace WpfApp1.Shared.FormBuilder.UI
         private bool IsFieldRequired(PropertyInfo propertyInfo, object control)
         {
             // Check for Required validation attribute
-            if (propertyInfo?.GetCustomAttributes<RequiredAttribute>(true).Any() == true)
+            if (propertyInfo.GetCustomAttributes<RequiredAttribute>(true).Any())
             {
                 return true;
             }
@@ -161,8 +196,7 @@ namespace WpfApp1.Shared.FormBuilder.UI
                 var validatorsField = control.GetType().GetField("_validators", BindingFlags.NonPublic | BindingFlags.Instance);
                 if (validatorsField != null)
                 {
-                    var validators = validatorsField.GetValue(control) as System.Collections.IList;
-                    if (validators != null)
+                    if (validatorsField.GetValue(control) is IList validators)
                     {
                         // Check if any validators are RequiredValidator
                         foreach (var validator in validators)
@@ -192,7 +226,7 @@ namespace WpfApp1.Shared.FormBuilder.UI
                 .SelectMany(a => a.GetTypes())
                 .FirstOrDefault(t =>
                     t.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                    .Any(p => p.Name.ToLowerInvariant() == controlName.ToLowerInvariant()));
+                        .Any(p => string.Equals(p.Name, controlName, StringComparison.InvariantCultureIgnoreCase)));
 
             if (modelType == null) return null;
 
@@ -213,12 +247,13 @@ namespace WpfApp1.Shared.FormBuilder.UI
             var result = new System.Text.StringBuilder(name.Length * 2);
             result.Append(char.ToUpper(name[0]));
 
-            for (int i = 1; i < name.Length; i++)
+            for (var i = 1; i < name.Length; i++)
             {
                 if (char.IsUpper(name[i]))
                 {
                     result.Append(' ');
                 }
+
                 result.Append(name[i]);
             }
 
@@ -227,27 +262,28 @@ namespace WpfApp1.Shared.FormBuilder.UI
 
         private void UpdateFormStatus()
         {
-            FormStatusText = IsFormValid ?
-                (IsFormDirty ? "Modified - Ready to save" : "No changes") :
-                "Please correct highlighted fields before saving";
+            FormStatusText = IsFormValid ? (IsFormDirty ? "Modified - Ready to save" : "No changes") : "Please correct highlighted fields before saving";
         }
 
         private void Submit_Click(object sender, RoutedEventArgs e)
         {
-            if (Form != null)
-            {
-                Form.MarkAllAsTouched();
+            if (Form == null) return;
+            Form.MarkAllAsTouched();
 
-                if (Form.IsValid)
-                {
-                    FormSubmitted?.Invoke();
-                }
+            if (Form.IsValid)
+            {
+                FormSubmitted?.Invoke();
             }
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            FormCancelled?.Invoke();
+            FormCancelled.Invoke();
+        }
+
+        private void Delete_Click(object sender, RoutedEventArgs e)
+        {
+            FormDeleteRequested.Invoke();
         }
     }
 }

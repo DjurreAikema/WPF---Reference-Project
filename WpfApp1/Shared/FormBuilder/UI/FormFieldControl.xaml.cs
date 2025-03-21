@@ -11,6 +11,14 @@ public partial class FormFieldControl
         nameof(FormField), typeof(object), typeof(FormFieldControl),
         new PropertyMetadata(null, OnFormFieldChanged));
 
+    public static readonly DependencyProperty LabelProperty = DependencyProperty.Register(
+        nameof(Label), typeof(string), typeof(FormFieldControl),
+        new PropertyMetadata(""));
+
+    public static readonly DependencyProperty IsRequiredProperty = DependencyProperty.Register(
+        nameof(IsRequired), typeof(bool), typeof(FormFieldControl),
+        new PropertyMetadata(false));
+
     public static readonly DependencyProperty FieldValueProperty = DependencyProperty.Register(
         nameof(FieldValue), typeof(object), typeof(FormFieldControl),
         new PropertyMetadata(null, OnFieldValueChanged));
@@ -28,6 +36,18 @@ public partial class FormFieldControl
     {
         get => GetValue(FormFieldProperty);
         set => SetValue(FormFieldProperty, value);
+    }
+
+    public string Label
+    {
+        get => (string)GetValue(LabelProperty);
+        set => SetValue(LabelProperty, value);
+    }
+
+    public bool IsRequired
+    {
+        get => (bool)GetValue(IsRequiredProperty);
+        set => SetValue(IsRequiredProperty, value);
     }
 
     public object FieldValue
