@@ -5,157 +5,110 @@
                          xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                          xmlns:abstract="clr-namespace:WpfApp1.Shared.Abstract"
                          xmlns:ui="clr-namespace:WpfApp1.Shared.FormBuilder.UI"
-                         xmlns:converters="clr-namespace:WpfApp1.Shared.Converters"
+                         xmlns:conv="clr-namespace:WpfApp1.Shared.Converters"
                          mc:Ignorable="d">
 
     <abstract:BDumbComponent.Resources>
-        <!-- Form Field Style -->
-        <Style x:Key="FormFieldStyle" TargetType="Grid">
-            <Setter Property="Margin" Value="0,0,0,15" />
-        </Style>
+        <conv:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
+        <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
 
-        <!-- Field Label Style -->
-        <Style x:Key="FieldLabelStyle" TargetType="TextBlock">
-            <Setter Property="FontWeight" Value="SemiBold" />
-            <Setter Property="Margin" Value="0,0,0,4" />
-            <Setter Property="Foreground" Value="#333333" />
-        </Style>
-
-        <!-- Button Style -->
-        <Style x:Key="FormButtonStyle" TargetType="Button">
-            <Setter Property="Padding" Value="15,8" />
-            <Setter Property="Margin" Value="0,0,10,0" />
-            <Setter Property="MinWidth" Value="80" />
-            <Setter Property="Background" Value="#0078D4" />
-            <Setter Property="Foreground" Value="White" />
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="4">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Background" Value="#CCCCCC" />
-                </Trigger>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#106EBE" />
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" Value="#005A9E" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <!-- Secondary Button Style -->
-        <Style x:Key="SecondaryFormButtonStyle" TargetType="Button" BasedOn="{StaticResource FormButtonStyle}">
-            <Setter Property="Background" Value="#EEEEEE" />
-            <Setter Property="Foreground" Value="#333333" />
+        <Style x:Key="FormGroupBoxStyle" TargetType="GroupBox">
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="Padding" Value="8" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="BorderBrush" Value="#CCCCCC" />
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#DDDDDD" />
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" Value="#CCCCCC" />
-                </Trigger>
-            </Style.Triggers>
+            <Setter Property="Background" Value="WhiteSmoke" />
+            <Setter Property="HeaderTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" FontWeight="Bold" FontSize="14" Margin="4" />
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
-
-        <!-- Form Status Text Style -->
-        <Style x:Key="FormStatusTextStyle" TargetType="TextBlock">
-            <Setter Property="Margin" Value="0,5,0,0" />
-            <Setter Property="FontStyle" Value="Italic" />
-            <Setter Property="Foreground" Value="#666666" />
-        </Style>
-
-        <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
     </abstract:BDumbComponent.Resources>
 
-    <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=ui:DynamicFormControl}}"
-          Background="White"
-          Margin="5">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-
-        <!-- Form Title -->
-        <TextBlock Grid.Row="0"
-                   Text="{Binding FormTitle}"
-                   FontWeight="Bold"
-                   FontSize="18"
-                   Margin="0,0,0,15"
-                   Foreground="#333333" />
-
-        <!-- Form Fields Container -->
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-            <ItemsControl x:Name="FieldsContainer" ItemsSource="{Binding FormFields}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Margin="0,0,0,15" Style="{StaticResource FormFieldStyle}">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-
-                            <!-- Field Label -->
-                            <TextBlock Grid.Row="0"
-                                       Text="{Binding Label}"
-                                       Style="{StaticResource FieldLabelStyle}" />
-
-                            <!-- Field Control -->
-                            <ui:FormFieldControl Grid.Row="1"
-                                                 FormField="{Binding Control}" />
-
-                            <!-- Field Description (if any) -->
-                            <TextBlock Grid.Row="2"
-                                       Text="{Binding Description}"
-                                       Foreground="#666666"
-                                       FontSize="12"
-                                       Margin="0,2,0,0"
-                                       Visibility="{Binding Description, Converter={StaticResource StringToVisibilityConverter}}" />
-                        </Grid>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
-
-        <!-- Form Status and Actions -->
-        <Grid Grid.Row="2" Margin="0,15,0,0">
+    <GroupBox Header="{Binding FormTitle, RelativeSource={RelativeSource AncestorType=ui:DynamicFormControl}}"
+              Style="{StaticResource FormGroupBoxStyle}"
+              Grid.IsSharedSizeScope="True">
+        <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=ui:DynamicFormControl}}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <!-- Action Buttons -->
-            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
+            <!-- Form Fields Container -->
+            <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
+                <ItemsControl x:Name="FieldsContainer" ItemsSource="{Binding FormFields}" Margin="5">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="0,0,0,8" Grid.IsSharedSizeScope="True">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="SharedFieldLabel" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Required Field Marker -->
+                                <TextBlock Grid.Column="0"
+                                           Text="*"
+                                           Foreground="IndianRed"
+                                           VerticalAlignment="Center"
+                                           Visibility="{Binding IsRequired, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                                <!-- Field Label -->
+                                <TextBlock Grid.Column="1"
+                                           Text="{Binding Label}"
+                                           Margin="5"
+                                           VerticalAlignment="Center" />
+
+                                <!-- Field Control -->
+                                <ui:FormFieldControl Grid.Column="2"
+                                                     FormField="{Binding Control}"
+                                                     Margin="5,0,0,0" />
+
+                                <!-- Field Description (if any) -->
+                                <TextBlock Grid.Column="2"
+                                           Text="{Binding Description}"
+                                           Foreground="#666666"
+                                           FontSize="11"
+                                           Margin="5,2,0,0"
+                                           Visibility="{Binding Description, Converter={StaticResource StringToVisibilityConverter}}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+
+            <!-- Form Status and Actions -->
+            <Grid Grid.Row="1" Margin="5,8,5,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Form Status -->
+                <TextBlock Grid.Column="0"
+                           Text="{Binding FormStatusText}"
+                           VerticalAlignment="Center"
+                           Foreground="#666666"
+                           FontStyle="Italic" />
+
                 <!-- Submit Button -->
-                <Button Content="{Binding SubmitButtonText}"
+                <Button Grid.Column="1"
+                        Content="{Binding SubmitButtonText}"
                         Click="Submit_Click"
                         IsEnabled="{Binding IsFormValid}"
-                        Style="{StaticResource FormButtonStyle}" />
+                        Padding="15,5"
+                        Margin="0,0,10,0" />
 
                 <!-- Cancel Button -->
-                <Button Content="{Binding CancelButtonText}"
+                <Button Grid.Column="2"
+                        Content="{Binding CancelButtonText}"
                         Click="Cancel_Click"
-                        Style="{StaticResource SecondaryFormButtonStyle}" />
-            </StackPanel>
-
-            <!-- Form Status -->
-            <TextBlock Grid.Row="1"
-                       Text="{Binding FormStatusText}"
-                       Style="{StaticResource FormStatusTextStyle}" />
+                        Padding="15,5" />
+            </Grid>
         </Grid>
-    </Grid>
+    </GroupBox>
 </abstract:BDumbComponent>

@@ -7,54 +7,28 @@
                          xmlns:ui="clr-namespace:WpfApp1.Shared.FormBuilder.UI"
                          mc:Ignorable="d">
 
-    <abstract:BDumbComponent.Resources>
-        <!-- Text Box Style -->
-        <Style x:Key="FormTextBoxStyle" TargetType="TextBox">
-            <Setter Property="Height" Value="30" />
-            <Setter Property="Padding" Value="8,5" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="BorderBrush" Value="#CCCCCC" />
-            <Setter Property="Background" Value="White" />
-            <Setter Property="VerticalContentAlignment" Value="Center" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="TextBox">
-                        <Border Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="3">
-                            <ScrollViewer x:Name="PART_ContentHost"
-                                          Margin="{TemplateBinding Padding}"
-                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <!-- Error Text Style -->
-        <Style x:Key="ErrorTextStyle" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="#D83B01" />
-            <Setter Property="FontSize" Value="12" />
-            <Setter Property="TextWrapping" Value="Wrap" />
-            <Setter Property="Margin" Value="0,4,0,0" />
-        </Style>
-    </abstract:BDumbComponent.Resources>
-
     <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=ui:FormFieldControl}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
+        <!-- Input Field -->
         <TextBox Grid.Row="0"
-                 Style="{StaticResource FormTextBoxStyle}"
                  Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 VerticalContentAlignment="Center"
+                 Height="22"
+                 Padding="4,0"
+                 BorderThickness="1"
                  BorderBrush="{Binding ValidationBrush}"/>
 
+        <!-- Error Message -->
         <TextBlock Grid.Row="1"
-                   Style="{StaticResource ErrorTextStyle}"
                    Text="{Binding ErrorMessage}"
-                   Visibility="{Binding ErrorVisibility}"/>
+                   Foreground="IndianRed"
+                   Visibility="{Binding ErrorVisibility}"
+                   TextWrapping="Wrap"
+                   Margin="0,2,0,0"
+                   FontSize="11"/>
     </Grid>
 </abstract:BDumbComponent>

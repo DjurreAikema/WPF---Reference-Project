@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
+using WpfApp1.Shared.FormBuilder.Validators;
 
 namespace WpfApp1.Shared.FormBuilder.UI
 {
@@ -12,6 +13,7 @@ namespace WpfApp1.Shared.FormBuilder.UI
         public string Description { get; set; }
         public int Order { get; set; }
         public object Control { get; set; }
+        public bool IsRequired { get; set; }
     }
 
     public partial class DynamicFormControl
@@ -27,7 +29,7 @@ namespace WpfApp1.Shared.FormBuilder.UI
 
         public static readonly DependencyProperty SubmitButtonTextProperty = DependencyProperty.Register(
             nameof(SubmitButtonText), typeof(string), typeof(DynamicFormControl),
-            new PropertyMetadata("Submit"));
+            new PropertyMetadata("Save"));
 
         public static readonly DependencyProperty CancelButtonTextProperty = DependencyProperty.Register(
             nameof(CancelButtonText), typeof(string), typeof(DynamicFormControl),
@@ -114,6 +116,9 @@ namespace WpfApp1.Shared.FormBuilder.UI
                 // Get FormProperty attribute if it exists
                 var formAttr = propertyInfo?.GetCustomAttribute<FormPropertyAttribute>();
 
+                // Check for Required validation attribute or RequiredValidator
+                bool isRequired = IsFieldRequired(propertyInfo, control);
+
                 // Create a user-friendly label from the control name or attribute
                 var label = formAttr?.Label;
                 if (string.IsNullOrEmpty(label))
@@ -130,7 +135,8 @@ namespace WpfApp1.Shared.FormBuilder.UI
                     Label = label,
                     Description = description,
                     Order = order,
-                    Control = control
+                    Control = control,
+                    IsRequired = isRequired
                 });
             }
 
@@ -138,6 +144,43 @@ namespace WpfApp1.Shared.FormBuilder.UI
             FormFields = new ObservableCollection<FormFieldInfo>(
                 FormFields.OrderBy(f => f.Order).ToList()
             );
+        }
+
+        private bool IsFieldRequired(PropertyInfo propertyInfo, object control)
+        {
+            // Check for Required validation attribute
+            if (propertyInfo?.GetCustomAttributes<RequiredAttribute>(true).Any() == true)
+            {
+                return true;
+            }
+
+            // Check for RequiredValidator in the control
+            try
+            {
+                // Get the validators from the form field
+                var validatorsField = control.GetType().GetField("_validators", BindingFlags.NonPublic | BindingFlags.Instance);
+                if (validatorsField != null)
+                {
+                    var validators = validatorsField.GetValue(control) as System.Collections.IList;
+                    if (validators != null)
+                    {
+                        // Check if any validators are RequiredValidator
+                        foreach (var validator in validators)
+                        {
+                            if (validator.GetType().Name == "RequiredValidator")
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                // Ignore any reflection errors
+            }
+
+            return false;
         }
 
         private PropertyInfo GetPropertyInfoFromControlName(string controlName)
@@ -185,8 +228,8 @@ namespace WpfApp1.Shared.FormBuilder.UI
         private void UpdateFormStatus()
         {
             FormStatusText = IsFormValid ?
-                (IsFormDirty ? "Modified - Ready to submit" : "No changes") :
-                "Please correct errors before submitting";
+                (IsFormDirty ? "Modified - Ready to save" : "No changes") :
+                "Please correct highlighted fields before saving";
         }
 
         private void Submit_Click(object sender, RoutedEventArgs e)
