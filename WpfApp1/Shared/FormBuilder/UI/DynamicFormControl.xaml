@@ -30,7 +30,8 @@
 
     <GroupBox Header="{Binding FormTitle, RelativeSource={RelativeSource AncestorType=ui:DynamicFormControl}}"
               Style="{StaticResource FormGroupBoxStyle}">
-        <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=ui:DynamicFormControl}}">
+        <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=ui:DynamicFormControl}}"
+              Grid.IsSharedSizeScope="True">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
@@ -38,7 +39,7 @@
 
             <!-- Form Fields Container -->
             <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
-                <StackPanel x:Name="FieldsContainer" Margin="5">
+                <StackPanel Margin="5">
                     <ItemsControl ItemsSource="{Binding FormFields}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>

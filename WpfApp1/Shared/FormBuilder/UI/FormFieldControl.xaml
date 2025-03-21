@@ -12,10 +12,9 @@
         <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </abstract:BDumbComponent.Resources>
 
-    <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=ui:FormFieldControl}}"
-          Grid.IsSharedSizeScope="True">
+    <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=ui:FormFieldControl}}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumn" />
+            <ColumnDefinition Width="Auto" SharedSizeGroup="FormLabelColumn" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
@@ -25,27 +24,29 @@
         </Grid.RowDefinitions>
 
         <!-- Label with Required Indicator -->
-        <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal" Margin="0,0,15,0">
-            <TextBlock Text="*" Foreground="IndianRed" Visibility="{Binding IsRequired, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0,0,3,0" />
+        <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal"
+                   HorizontalAlignment="Right" Margin="0,0,15,0">
+            <TextBlock Text="*" Foreground="IndianRed" Margin="0,0,3,0"
+                      Visibility="{Binding IsRequired, Converter={StaticResource BoolToVisibilityConverter}}" />
             <TextBlock Text="{Binding Label}" VerticalAlignment="Center" />
         </StackPanel>
 
         <!-- Input Field -->
         <TextBox Grid.Row="0" Grid.Column="1"
-                 Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                 VerticalContentAlignment="Center"
-                 Height="22"
-                 Padding="4,0"
-                 BorderThickness="1"
-                 BorderBrush="{Binding ValidationBrush}"/>
+                Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                VerticalContentAlignment="Center"
+                Height="22"
+                Padding="4,0"
+                BorderThickness="1"
+                BorderBrush="{Binding ValidationBrush}" />
 
-        <!-- Error Message - Spans both columns -->
+        <!-- Error Message - Below the input field -->
         <TextBlock Grid.Row="1" Grid.Column="1"
-                   Text="{Binding ErrorMessage}"
-                   Foreground="IndianRed"
-                   Visibility="{Binding ErrorVisibility}"
-                   TextWrapping="Wrap"
-                   Margin="0,2,0,0"
-                   FontSize="11"/>
+                  Text="{Binding ErrorMessage}"
+                  Foreground="IndianRed"
+                  Visibility="{Binding ErrorVisibility}"
+                  TextWrapping="Wrap"
+                  Margin="0,2,0,0"
+                  FontSize="11" />
     </Grid>
 </abstract:BDumbComponent>
