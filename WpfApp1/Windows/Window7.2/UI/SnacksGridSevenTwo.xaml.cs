@@ -1,5 +1,7 @@
 using System.Collections.ObjectModel;
+using System.Reactive.Disposables;
 using System.Windows;
+using System.Windows.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using WpfApp1.Shared.Classes;
 
@@ -35,11 +37,14 @@ public partial class SnacksGridSevenTwo
     {
         InitializeComponent();
 
-        // TODO: Does this get disposed of properly or is this a memory leak?
-        SnacksDataGrid.SelectionChanged += (_, _) =>
+        SelectionChangedEventHandler selectionChangedHandler = (_, _) =>
         {
             if (SnacksDataGrid.SelectedItem is SnackV2 selectedSnack) SnackSelected?.Invoke(selectedSnack);
         };
+
+        SnacksDataGrid.SelectionChanged += selectionChangedHandler;
+
+        Disposables.Add(Disposable.Create(() => { SnacksDataGrid.SelectionChanged -= selectionChangedHandler; }));
     }
 
     private void New_OnClick(object sender, RoutedEventArgs e) => AddSnack?.Invoke();
