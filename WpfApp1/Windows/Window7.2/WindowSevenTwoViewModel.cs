@@ -224,3 +224,17 @@ public class WindowSevenTwoViewModel : IDisposable
     // --- Dispose
     public void Dispose() => _disposables.Dispose();
 }
+
+// List of things to add/improve
+// - Cant use arrow keys to move through list
+// - Add combobox to form
+// - Add Stamdata to application (connect to combobox)
+// - Add a form array to snacks
+//      - Calculate a total from this form array
+// - Add locking to form
+// - Add unsaved changes handling
+// - Have a checkbox enable and disable part of the form
+// - Add validation to the form
+//      - Manage UI based on form state
+// - Save button should show why it cant save the form
+// - Refresh button
