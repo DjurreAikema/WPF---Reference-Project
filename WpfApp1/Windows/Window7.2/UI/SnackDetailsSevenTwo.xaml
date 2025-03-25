@@ -13,7 +13,7 @@
     </abstract:BDumbComponent.Resources>
 
     <StackPanel DataContext="{Binding RelativeSource={RelativeSource AncestorType=ui:SnackDetailsSevenTwo}}" Margin="10"
-                IsEnabled="{Binding }">
+                IsEnabled="{Binding SelectedSnack, Converter={StaticResource NullToBoolConverter}}">
         <Label Content="Snack details" />
 
         <Grid Margin="0 10">
@@ -30,19 +30,18 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
+            <!-- Form -->
             <Label Content="Name:" Grid.Column="0" HorizontalAlignment="Left" />
-            <TextBox Text="{Binding SelectedSnack.Name, Mode=TwoWay}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch"
-                     IsEnabled="{Binding SelectedSnack, Converter={StaticResource NullToBoolConverter}}" />
+            <TextBox Text="{Binding SelectedSnack.Name, Mode=TwoWay}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" />
 
-            <Label Content="Price:" Grid.Column="0" HorizontalAlignment="Left" Grid.Row="1" />
-            <TextBox Text="{Binding SelectedSnack.Price, Mode=TwoWay}" Grid.Column="1" HorizontalAlignment="Stretch" Grid.Row="1"
-                     IsEnabled="{Binding SelectedSnack, Converter={StaticResource NullToBoolConverter}}" />
+            <Label Content="Price:" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" />
+            <TextBox Text="{Binding SelectedSnack.Price, Mode=TwoWay}" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" />
 
-            <Label Content="Quantity:" Grid.Column="0" HorizontalAlignment="Left" Grid.Row="2" />
-            <TextBox Text="{Binding SelectedSnack.Quantity, Mode=TwoWay}" Grid.Column="1" HorizontalAlignment="Stretch" Grid.Row="2"
-                     IsEnabled="{Binding SelectedSnack, Converter={StaticResource NullToBoolConverter}}" />
+            <Label Content="Quantity:" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left" />
+            <TextBox Text="{Binding SelectedSnack.Quantity, Mode=TwoWay}" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch" />
         </Grid>
 
+        <!-- Buttons -->
         <StackPanel Orientation="Horizontal">
             <Button Content="Save" Click="Save_OnClick" Margin="0 0 10 0"
                     IsEnabled="{Binding SelectedSnack, Converter={StaticResource NullToBoolConverter}}" />

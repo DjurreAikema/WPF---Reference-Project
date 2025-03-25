@@ -13,10 +13,7 @@ public partial class SnacksGridSevenTwo
         new PropertyMetadata(null, (d, _) =>
         {
             if (d is not SnacksGridSevenTwo c) return;
-            c.Disposables.Add(c.SnacksObs.Subscribe(snacks =>
-            {
-                c.Snacks = new ObservableCollection<SnackV2>(snacks);
-            }));
+            c.Disposables.Add(c.SnacksObs.Subscribe(snacks => { c.Snacks = new ObservableCollection<SnackV2>(snacks); }));
         }));
 
     public IObservable<IEnumerable<SnackV2>> SnacksObs
@@ -30,7 +27,6 @@ public partial class SnacksGridSevenTwo
     public event Action? AddSnack;
     public event Action? Reload;
 
-
     // --- Internal Properties
     [ObservableProperty] private ObservableCollection<SnackV2>? _snacks;
 
@@ -39,19 +35,14 @@ public partial class SnacksGridSevenTwo
     {
         InitializeComponent();
 
+        // TODO: Does this get disposed of properly or is this a memory leak?
         SnacksDataGrid.SelectionChanged += (_, _) =>
         {
             if (SnacksDataGrid.SelectedItem is SnackV2 selectedSnack) SnackSelected?.Invoke(selectedSnack);
         };
     }
 
-    private void New_OnClick(object sender, RoutedEventArgs e)
-    {
-        AddSnack?.Invoke();
-    }
+    private void New_OnClick(object sender, RoutedEventArgs e) => AddSnack?.Invoke();
 
-    private void Reload_OnClick(object sender, RoutedEventArgs e)
-    {
-        Reload?.Invoke();
-    }
+    private void Reload_OnClick(object sender, RoutedEventArgs e) => Reload?.Invoke();
 }

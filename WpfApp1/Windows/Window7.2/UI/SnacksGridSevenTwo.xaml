@@ -22,10 +22,12 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
+            <!-- Buttons -->
             <Button Grid.Column="0" Content="Reload" Click="Reload_OnClick" Padding="3" />
             <Button Grid.Column="1" Content="New Snack" Click="New_OnClick" Padding="3" />
         </Grid>
 
+        <!-- List -->
         <ListBox Grid.Row="1" x:Name="SnacksDataGrid" ItemsSource="{Binding Snacks}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
