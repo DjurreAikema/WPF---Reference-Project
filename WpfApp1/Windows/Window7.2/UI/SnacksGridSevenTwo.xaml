@@ -28,8 +28,7 @@
         </Grid>
 
         <!-- Grid -->
-        <DataGrid Grid.Row="1"
-                  x:Name="SnacksDataGrid"
+        <DataGrid Grid.Row="1" x:Name="SnacksDataGrid"
                   ItemsSource="{Binding Snacks}"
                   AutoGenerateColumns="False" SelectionMode="Single" Focusable="True"
                   IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False" RowHeaderWidth="0"

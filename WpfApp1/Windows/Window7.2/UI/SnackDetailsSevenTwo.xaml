@@ -44,9 +44,11 @@
         <!-- Buttons -->
         <StackPanel Orientation="Horizontal">
             <Button Content="Save" Click="Save_OnClick" Margin="0 0 10 0"
+                    Style="{StaticResource PrimaryButton}"
                     IsEnabled="{Binding SelectedSnack, Converter={StaticResource NullToBoolConverter}}" />
 
             <Button Content="Delete" Click="Delete_OnClick"
+                    Style="{StaticResource DangerButton}"
                     IsEnabled="{Binding SelectedSnack, Converter={StaticResource NullToBoolConverter}}" />
         </StackPanel>
     </StackPanel>
