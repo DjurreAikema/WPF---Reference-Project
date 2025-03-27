@@ -226,15 +226,15 @@ public class WindowSevenTwoViewModel : IDisposable
 }
 
 // List of things to add/improve
-// - Cant use arrow keys to move through list
-// - Add combobox to form
-// - Add Stamdata to application (connect to combobox)
-// - Add a form array to snacks
+// 1 - Cant use arrow keys to move through list
+// 2 - Add combobox to form
+// 3 - Add Stamdata to application (connect to combobox)
+// 4 - Add a form array to snacks
 //      - Calculate a total from this form array
-// - Add locking to form
-// - Add unsaved changes handling
-// - Have a checkbox enable and disable part of the form
-// - Add validation to the form
+// 5 - Add locking to form
+// 6 - Add unsaved changes handling
+// 7 - Have a checkbox enable and disable part of the form
+// 8 - Add validation to the form
 //      - Manage UI based on form state
-// - Save button should show why it cant save the form
-// - Refresh button
+// 9 - Save button should show why it cant save the form
+// 10 - Refresh button

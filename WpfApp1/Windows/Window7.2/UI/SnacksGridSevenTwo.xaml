@@ -27,14 +27,20 @@
             <Button Grid.Column="1" Content="New Snack" Click="New_OnClick" Padding="3" />
         </Grid>
 
-        <!-- List -->
-        <ListBox Grid.Row="1" x:Name="SnacksDataGrid" ItemsSource="{Binding Snacks}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Name}" />
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+        <!-- Grid -->
+        <DataGrid Grid.Row="1"
+                  x:Name="SnacksDataGrid"
+                  ItemsSource="{Binding Snacks}"
+                  AutoGenerateColumns="False" SelectionMode="Single" Focusable="True"
+                  IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False" RowHeaderWidth="0"
+                  SelectionChanged="SnacksDataGrid_SelectionChanged">
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
+                <DataGridTextColumn Header="Price" Binding="{Binding Price, StringFormat=C}" Width="Auto" />
+                <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="Auto" />
+            </DataGrid.Columns>
+        </DataGrid>
 
     </Grid>
 

@@ -36,15 +36,12 @@ public partial class SnacksGridSevenTwo
     public SnacksGridSevenTwo()
     {
         InitializeComponent();
+    }
 
-        SelectionChangedEventHandler selectionChangedHandler = (_, _) =>
-        {
-            if (SnacksDataGrid.SelectedItem is SnackV2 selectedSnack) SnackSelected?.Invoke(selectedSnack);
-        };
-
-        SnacksDataGrid.SelectionChanged += selectionChangedHandler;
-
-        Disposables.Add(Disposable.Create(() => { SnacksDataGrid.SelectionChanged -= selectionChangedHandler; }));
+    private void SnacksDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (SnacksDataGrid.SelectedItem is not SnackV2 selectedSnack) return;
+        SnackSelected?.Invoke(selectedSnack);
     }
 
     private void New_OnClick(object sender, RoutedEventArgs e) => AddSnack?.Invoke();
