@@ -18,7 +18,7 @@ public class UnitSizeService
         return new AppDbContext(optionsBuilder.Options);
     }
 
-    public async Task<List<UnitSize>> GetAllUnitSizesAsync()
+    public async Task<List<UnitSize>> GetAllAsync()
     {
         if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbabilityOnLoad)
             throw new Exception("Simulated database failure during GetAllUnitSizesAsync");
@@ -27,7 +27,7 @@ public class UnitSizeService
         return await context.UnitSizes.ToListAsync();
     }
 
-    public async Task<UnitSize> AddUnitSizeAsync(UnitSize unitSize)
+    public async Task<UnitSize> AddAsync(UnitSize unitSize)
     {
         if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbability)
             throw new Exception("Simulated database failure during AddUnitSizeAsync");
@@ -38,7 +38,7 @@ public class UnitSizeService
         return unitSize;
     }
 
-    public async Task<UnitSize> UpdateUnitSizeAsync(UnitSize unitSize)
+    public async Task<UnitSize> UpdateAsync(UnitSize unitSize)
     {
         if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbability)
             throw new Exception("Simulated database failure during UpdateUnitSizeAsync");
@@ -49,7 +49,7 @@ public class UnitSizeService
         return unitSize;
     }
 
-    public async Task<UnitSize?> DeleteUnitSizeAsync(int id)
+    public async Task<UnitSize?> DeleteAsync(int id)
     {
         if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbability)
             throw new Exception("Simulated database failure during DeleteUnitSizeAsync");

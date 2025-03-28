@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using WpfApp2.Shared.Navigation;
 using WpfApp2.Views;
+using WpfApp2.Views.StamData;
 
 namespace WpfApp2;
 

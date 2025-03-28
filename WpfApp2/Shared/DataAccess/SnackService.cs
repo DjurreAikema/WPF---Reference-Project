@@ -18,7 +18,7 @@ public class SnackService
         return new AppDbContext(optionsBuilder.Options);
     }
 
-    public async Task<List<Snack>> GetAllSnacksAsync()
+    public async Task<List<Snack>> GetAllAsync()
     {
         if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbabilityOnLoad)
             throw new Exception("Simulated database failure during GetAllSnacksAsync");
@@ -27,7 +27,7 @@ public class SnackService
         return await context.Snacks.ToListAsync();
     }
 
-    public async Task<Snack> AddSnackAsync(Snack snack)
+    public async Task<Snack> AddAsync(Snack snack)
     {
         if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbability)
             throw new Exception("Simulated database failure during AddSnackAsync");
@@ -38,7 +38,7 @@ public class SnackService
         return snack;
     }
 
-    public async Task<Snack> UpdateSnackAsync(Snack snack)
+    public async Task<Snack> UpdateAsync(Snack snack)
     {
         if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbability)
             throw new Exception("Simulated database failure during UpdateSnackAsync");
@@ -49,7 +49,7 @@ public class SnackService
         return snack;
     }
 
-    public async Task<Snack?> DeleteSnackAsync(int id)
+    public async Task<Snack?> DeleteAsync(int id)
     {
         if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbability)
             throw new Exception("Simulated database failure during DeleteSnackAsync");

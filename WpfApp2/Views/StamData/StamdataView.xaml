@@ -1,4 +1,4 @@
-<UserControl x:Class="WpfApp2.Views.StamdataView"
+<UserControl x:Class="WpfApp2.Views.StamData.StamdataView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -52,10 +52,6 @@
             <Button Content="Manage Countries"
                     Style="{StaticResource ManageButtonStyle}"
                     Click="ManageCountries_Click"/>
-
-            <Button Content="Manage Unit Sizes"
-                    Style="{StaticResource ManageButtonStyle}"
-                    Click="ManageUnitSizes_Click"/>
         </WrapPanel>
     </Grid>
 </UserControl>

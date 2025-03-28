@@ -64,7 +64,6 @@ public class WindowSevenTwoViewModel : IDisposable
             _notifications, "Snack added successfully.", e => $"Error creating snack: {e.Message}"
         );
 
-
     // Update
     private IObservable<SnackV2?> SnackUpdatedObs => Update
         .Do(snack => _beforeOperation = new SnackV2(snack))

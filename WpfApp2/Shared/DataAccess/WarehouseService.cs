@@ -18,7 +18,7 @@ public class WarehouseService
         return new AppDbContext(optionsBuilder.Options);
     }
 
-    public async Task<List<Warehouse>> GetAllWarehousesAsync()
+    public async Task<List<Warehouse>> GetAllAsync()
     {
         if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbabilityOnLoad)
             throw new Exception("Simulated database failure during GetAllWarehousesAsync");
@@ -27,7 +27,7 @@ public class WarehouseService
         return await context.Warehouses.ToListAsync();
     }
 
-    public async Task<Warehouse> AddWarehouseAsync(Warehouse warehouse)
+    public async Task<Warehouse> AddAsync(Warehouse warehouse)
     {
         if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbability)
             throw new Exception("Simulated database failure during AddWarehouseAsync");
@@ -38,7 +38,7 @@ public class WarehouseService
         return warehouse;
     }
 
-    public async Task<Warehouse> UpdateWarehouseAsync(Warehouse warehouse)
+    public async Task<Warehouse> UpdateAsync(Warehouse warehouse)
     {
         if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbability)
             throw new Exception("Simulated database failure during UpdateWarehouseAsync");
@@ -49,7 +49,7 @@ public class WarehouseService
         return warehouse;
     }
 
-    public async Task<Warehouse?> DeleteWarehouseAsync(int id)
+    public async Task<Warehouse?> DeleteAsync(int id)
     {
         if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbability)
             throw new Exception("Simulated database failure during DeleteWarehouseAsync");

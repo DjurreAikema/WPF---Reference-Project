@@ -18,7 +18,7 @@ public class CountryService
         return new AppDbContext(optionsBuilder.Options);
     }
 
-    public async Task<List<Country>> GetAllCountriesAsync()
+    public async Task<List<Country>> GetAllAsync()
     {
         if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbabilityOnLoad)
             throw new Exception("Simulated database failure during GetAllCountrysAsync");
@@ -27,7 +27,7 @@ public class CountryService
         return await context.Countries.ToListAsync();
     }
 
-    public async Task<Country> AddCountryAsync(Country country)
+    public async Task<Country> AddAsync(Country country)
     {
         if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbability)
             throw new Exception("Simulated database failure during AddCountryAsync");
@@ -38,7 +38,7 @@ public class CountryService
         return country;
     }
 
-    public async Task<Country> UpdateCountryAsync(Country country)
+    public async Task<Country> UpdateAsync(Country country)
     {
         if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbability)
             throw new Exception("Simulated database failure during UpdateCountryAsync");
@@ -49,7 +49,7 @@ public class CountryService
         return country;
     }
 
-    public async Task<Country?> DeleteCountryAsync(int id)
+    public async Task<Country?> DeleteAsync(int id)
     {
         if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbability)
             throw new Exception("Simulated database failure during DeleteCountryAsync");

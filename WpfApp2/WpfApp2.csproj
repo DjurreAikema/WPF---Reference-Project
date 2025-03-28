@@ -31,11 +31,22 @@
           <XamlRuntime>Wpf</XamlRuntime>
           <SubType>Designer</SubType>
         </Page>
-        <Page Update="Views\StamData\CountriesManagementView.xaml">
+        <Page Update="Views\StamData\Countries\CountriesView.xaml">
           <Generator>MSBuild:Compile</Generator>
           <XamlRuntime>Wpf</XamlRuntime>
           <SubType>Designer</SubType>
         </Page>
+        <Page Update="Views\StamData\StamdataView.xaml">
+          <Generator>MSBuild:Compile</Generator>
+          <XamlRuntime>Wpf</XamlRuntime>
+          <SubType>Designer</SubType>
+        </Page>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Views\StamData\Countries\CountriesViewModel.cs">
+        <DependentUpon>CountriesView.xaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 
 </Project>
