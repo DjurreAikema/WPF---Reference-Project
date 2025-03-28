@@ -5,8 +5,45 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp2"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Inventory Management" Height="650" Width="1000">
 
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Left Sidebar -->
+        <Grid Grid.Column="0" Background="#F0F0F0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!-- Logo -->
+            <Border Grid.Row="0" BorderBrush="#CCCCCC" BorderThickness="1" Margin="10" CornerRadius="3">
+                <TextBlock Text="Logo" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" />
+            </Border>
+
+            <!-- Navigation Buttons -->
+            <StackPanel Grid.Row="1" Margin="10">
+                <Button Content="Stamdata"
+                        Style="{StaticResource SidebarButtonStyle}"
+                        Click="Stamdata_Click" />
+
+                <Button Content="Warehouses"
+                        Style="{StaticResource SidebarButtonStyle}"
+                        Click="Warehouses_Click" />
+
+                <Button Content="Snacks"
+                        Style="{StaticResource SidebarButtonStyle}"
+                        Click="Snacks_Click" />
+            </StackPanel>
+        </Grid>
+
+        <!-- Main Content Area -->
+        <Grid Grid.Column="1" Background="White">
+            <ContentControl x:Name="MainContentControl" Margin="10" />
+        </Grid>
     </Grid>
 </Window>
