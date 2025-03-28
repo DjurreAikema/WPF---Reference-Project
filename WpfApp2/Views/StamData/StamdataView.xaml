@@ -3,95 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:buttons="clr-namespace:WpfApp2.Shared.UI.Buttons"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
-
-    <UserControl.Resources>
-        <Style x:Key="ManageButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#444444" />
-            <Setter Property="Foreground" Value="White" />
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="Width" Value="200" />
-            <Setter Property="Height" Value="40" />
-            <Setter Property="Margin" Value="10" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                CornerRadius="3">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center" />
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#555555" />
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" Value="#666666" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <!-- Manage Button Composite Style -->
-        <Style x:Key="ManageButtonCompositeStyle" TargetType="Grid">
-            <Setter Property="Margin" Value="10" />
-            <Setter Property="Width" Value="230" />
-            <Setter Property="Height" Value="40" />
-        </Style>
-
-        <Style x:Key="ManageMainButtonStyle" TargetType="Button" BasedOn="{StaticResource ManageButtonStyle}">
-            <Setter Property="Margin" Value="0" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                CornerRadius="3,0,0,3">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center" />
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style x:Key="ManagePopupButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#333333" />
-            <Setter Property="Foreground" Value="White" />
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="Width" Value="30" />
-            <Setter Property="Height" Value="40" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                CornerRadius="0,3,3,0"
-                                BorderBrush="#444444"
-                                BorderThickness="1,0,0,0">
-                            <!-- Using a "pop out" or "external window" icon -->
-                            <Path Data="M4,4 L12,4 L12,12 L4,12 Z M6,2 L6,0 L14,0 L14,8 L12,8"
-                                  Fill="White"
-                                  Stretch="Uniform"
-                                  Width="10"
-                                  Height="10"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center" />
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#555555" />
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" Value="#666666" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-    </UserControl.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -105,25 +19,13 @@
 
         <!-- Content -->
         <WrapPanel Grid.Row="1" Orientation="Horizontal" Margin="10">
-            <!-- Composite Manage Countries Button -->
-            <Grid Style="{StaticResource ManageButtonCompositeStyle}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-
-                <Button Content="Manage Countries"
-                        Style="{StaticResource ManageMainButtonStyle}"
-                        Click="ManageCountries_Click" />
-
-                <Button Grid.Column="1"
-                        Style="{StaticResource ManagePopupButtonStyle}"
-                        Click="ManageCountriesPopup_Click">
-                    <Button.ToolTip>
-                        <ToolTip Content="Open in new window" />
-                    </Button.ToolTip>
-                </Button>
-            </Grid>
+            <buttons:CompositeNavigationButton
+                ButtonContent="Manage Countries"
+                GridStyle="{StaticResource ManageButtonCompositeStyle}"
+                MainButtonStyle="{StaticResource ManageMainButtonStyle}"
+                PopupButtonStyle="{StaticResource ManagePopupButtonStyle}"
+                MainButtonClick="ManageCountries_Click"
+                PopupButtonClick="ManageCountriesPopup_Click" />
         </WrapPanel>
     </Grid>
 </UserControl>

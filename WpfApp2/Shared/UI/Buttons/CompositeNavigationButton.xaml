@@ -1,0 +1,100 @@
+<UserControl x:Class="WpfApp2.Shared.UI.Buttons.CompositeNavigationButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:buttons="clr-namespace:WpfApp2.Shared.UI.Buttons"
+             mc:Ignorable="d"
+             d:DesignHeight="45" d:DesignWidth="230">
+
+    <UserControl.Resources>
+        <!-- Default styles if not provided -->
+        <Style x:Key="DefaultGridStyle" TargetType="Grid">
+            <Setter Property="Margin" Value="0" />
+        </Style>
+        <Style x:Key="DefaultMainButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#444444" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Height" Value="40" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="3,0,0,3">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#555555" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#666666" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="DefaultPopupButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#333333" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Width" Value="30" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="0,3,3,0"
+                                BorderBrush="#444444"
+                                BorderThickness="1,0,0,0">
+                            <Path Data="M4,4 L12,4 L12,12 L4,12 Z M6,2 L6,0 L14,0 L14,8 L12,8"
+                                  Fill="White"
+                                  Stretch="Uniform"
+                                  Width="10"
+                                  Height="10"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#555555" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#666666" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid x:Name="RootGrid"
+          Style="{Binding GridStyle, RelativeSource={RelativeSource AncestorType=buttons:CompositeNavigationButton},
+          FallbackValue={StaticResource DefaultGridStyle}}">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <Button x:Name="MainButton"
+                Content="{Binding ButtonContent, RelativeSource={RelativeSource AncestorType=buttons:CompositeNavigationButton}}"
+                Style="{Binding MainButtonStyle, RelativeSource={RelativeSource AncestorType=buttons:CompositeNavigationButton},
+                FallbackValue={StaticResource DefaultMainButtonStyle}}"
+                Click="MainButton_Click" />
+
+        <Button x:Name="PopupButton"
+                Grid.Column="1"
+                Style="{Binding PopupButtonStyle, RelativeSource={RelativeSource AncestorType=buttons:CompositeNavigationButton},
+                FallbackValue={StaticResource DefaultPopupButtonStyle}}"
+                Click="PopupButton_Click">
+            <Button.ToolTip>
+                <ToolTip
+                    Content="{Binding PopupTooltip, RelativeSource={RelativeSource AncestorType=buttons:CompositeNavigationButton},
+                    FallbackValue='Open in new window'}" />
+            </Button.ToolTip>
+        </Button>
+    </Grid>
+</UserControl>
