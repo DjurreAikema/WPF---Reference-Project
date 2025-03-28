@@ -1,4 +1,5 @@
 using System.Windows;
+using WpfApp2.Shared.Navigation;
 using WpfApp2.Views.StamData.Countries;
 
 namespace WpfApp2.Views.StamData;
@@ -18,5 +19,15 @@ public partial class StamdataView
 
         // Navigate to Countries Management view
         navigationService.NavigateTo(new CountriesView());
+    }
+
+    private void ManageCountriesPopup_Click(object sender, RoutedEventArgs e)
+    {
+        // Create a new instance of the CountriesView
+        var view = new CountriesView();
+
+        // Create and show a new window containing the view
+        var window = WindowFactory.CreateWindow(view, "Countries Management", 900, 600);
+        window.Show();
     }
 }
