@@ -14,10 +14,8 @@
         <converters:MultiBooleanAndConverter x:Key="MultiBooleanAndConverter" />
     </abstract:ADumbComponent.Resources>
 
-    <Border BorderBrush="#CCCCCC"
-            BorderThickness="1"
-            Margin="10"
-            Padding="10"
+    <Border BorderBrush="#CCCCCC" BorderThickness="1"
+            Margin="10" Padding="10"
             Background="#F9F9F9">
 
         <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:CountryDetails}}" Margin="10">
@@ -31,8 +29,7 @@
             <!-- Form Header -->
             <TextBlock Grid.Row="0"
                        Text="Country Details"
-                       FontSize="18"
-                       Margin="0,0,0,10" />
+                       FontSize="18" Margin="0,0,0,10" />
 
             <!-- Form Fields -->
             <Grid Grid.Row="1" IsEnabled="{Binding Selected, Converter={StaticResource NullToBoolConverter}}">

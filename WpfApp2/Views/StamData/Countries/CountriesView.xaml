@@ -55,9 +55,11 @@
         </StackPanel>
 
         <!-- Loading Spinner -->
-        <ui:ObsLoadingSpinner IsLoadingObs="{Binding Vm.LoadingObs}" />
+        <ui:ObsLoadingSpinner Grid.Row="0" Grid.RowSpan="3" Panel.ZIndex="100"
+                              IsLoadingObs="{Binding Vm.LoadingObs}" />
 
         <!-- Notification Control -->
-        <ui:NotificationControl NotificationsObs="{Binding Vm.NotificationsObs}" />
+        <ui:NotificationControl Grid.Row="0" Grid.RowSpan="3" Panel.ZIndex="100"
+                                NotificationsObs="{Binding Vm.NotificationsObs}" />
     </Grid>
 </UserControl>
