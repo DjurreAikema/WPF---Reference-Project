@@ -5,6 +5,7 @@ namespace WpfApp2.Shared.Classes;
 public class UnitSize
 {
     [Key] public int? Id { get; set; }
+    public int? SnackId { get; set; }
 
     public double Price { get; set; }
     public int Quantity { get; set; }
