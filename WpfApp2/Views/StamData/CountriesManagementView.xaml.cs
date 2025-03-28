@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using WpfApp2.Data;
 using WpfApp2.Shared.Classes;
 
-namespace WpfApp2.Views;
+namespace WpfApp2.Views.StamData;
 
 public partial class CountriesManagementView : UserControl, INotifyPropertyChanged
 {

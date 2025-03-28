@@ -1,5 +1,7 @@
 using System.Windows;
 using System.Windows.Controls;
+using WpfApp2.Views.StamData;
+using WpfApp2.Views.StamData.UnitSize;
 
 namespace WpfApp2.Views;
 
@@ -27,6 +29,6 @@ public partial class StamdataView : UserControl
         var navigationService = mainWindow.GetNavigationService();
 
         // Navigate to Unit Sizes Management view
-        navigationService.NavigateTo(new UnitSizesManagementView());
+        // navigationService.NavigateTo(new UnitSizesManagementView());
     }
 }
