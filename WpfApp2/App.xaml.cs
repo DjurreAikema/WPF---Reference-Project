@@ -16,6 +16,8 @@ public partial class App : Application
     {
         base.OnStartup(e);
 
+        SQLitePCL.Batteries.Init();
+
         var services = new ServiceCollection();
 
         // Configure DbContext with SQLite
