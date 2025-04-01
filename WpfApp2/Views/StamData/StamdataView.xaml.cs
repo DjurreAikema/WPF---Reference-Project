@@ -24,7 +24,7 @@ public partial class StamdataView
     private void ManageCountriesPopup_Click(object sender, RoutedEventArgs e)
     {
         // Create a new instance of the CountriesView
-        var view = new CountriesView();
+        var view = new CountriesView(isStandaloneWindow: true);
 
         // Create and show a new window containing the view
         var window = WindowFactory.CreateWindow(view, "Countries Management", 900, 600);

@@ -9,10 +9,15 @@ public partial class CountriesView
 {
     public CountriesViewModel Vm { get; } = new();
     public Subject<bool> TriggerDispose { get; set; } = new();
+    public bool IsStandaloneWindow { get; set; }
 
-    public CountriesView()
+    public CountriesView(bool isStandaloneWindow = false)
     {
         InitializeComponent();
+        IsStandaloneWindow = isStandaloneWindow;
+
+        // Hide back button if opened as standalone window
+        BackButton.Visibility = IsStandaloneWindow ? Visibility.Collapsed : Visibility.Visible;
 
         // Dispose of all subscriptions when the window is closed
         Unloaded += (_, _) =>

@@ -23,12 +23,11 @@ public class WindowFactory
             WindowStartupLocation = WindowStartupLocation.CenterScreen
         };
 
+        if (Application.Current.MainWindow == null) return window;
+
         // Add app icon and other settings if needed
-        if (Application.Current.MainWindow != null)
-        {
-            window.Owner = Application.Current.MainWindow;
-            window.Icon = Application.Current.MainWindow.Icon;
-        }
+        window.Owner = Application.Current.MainWindow;
+        window.Icon = Application.Current.MainWindow.Icon;
 
         return window;
     }
