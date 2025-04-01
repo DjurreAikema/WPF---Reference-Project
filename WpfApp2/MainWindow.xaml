@@ -3,43 +3,20 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WpfApp2"
+        xmlns:navigation="clr-namespace:WpfApp2.Shared.UI.Navigation"
         mc:Ignorable="d"
         Title="Inventory Management" Height="650" Width="1000">
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <!-- Left Sidebar -->
-        <Grid Grid.Column="0" Background="#F0F0F0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="80" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-
-            <!-- Logo -->
-            <Border Grid.Row="0" BorderBrush="#CCCCCC" BorderThickness="1" Margin="10" CornerRadius="3">
-                <TextBlock Text="Logo" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" />
-            </Border>
-
-            <!-- Navigation Buttons -->
-            <StackPanel Grid.Row="1" Margin="10">
-                <Button Content="Stamdata"
-                        Style="{StaticResource SidebarButtonStyle}"
-                        Click="Stamdata_Click" />
-
-                <Button Content="Warehouses"
-                        Style="{StaticResource SidebarButtonStyle}"
-                        Click="Warehouses_Click" />
-
-                <Button Content="Snacks"
-                        Style="{StaticResource SidebarButtonStyle}"
-                        Click="Snacks_Click" />
-            </StackPanel>
-        </Grid>
+        <!-- Sidebar -->
+        <navigation:Sidebar x:Name="MainSidebar"
+                            Grid.Column="0"
+                            NavigationRequested="MainSidebar_NavigationRequested" />
 
         <!-- Main Content Area -->
         <Grid Grid.Column="1" Background="White">

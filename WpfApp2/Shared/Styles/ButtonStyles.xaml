@@ -8,6 +8,39 @@
         <Setter Property="FontSize" Value="14" />
         <Setter Property="Height" Value="50" />
         <Setter Property="Margin" Value="0,5,0,0" />
+        <Setter Property="Padding" Value="10,0" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}"
+                            CornerRadius="3">
+                        <ContentPresenter Margin="{TemplateBinding Padding}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#555555" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="#666666" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Management Button Style (for views like StamdataView) -->
+    <Style x:Key="ManageButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="#444444" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Width" Value="200" />
+        <Setter Property="Height" Value="40" />
+        <Setter Property="Margin" Value="10" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">

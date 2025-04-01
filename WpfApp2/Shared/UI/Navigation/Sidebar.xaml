@@ -1,0 +1,87 @@
+<UserControl x:Class="WpfApp2.Shared.UI.Navigation.Sidebar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:nav="clr-namespace:WpfApp2.Shared.UI.Navigation"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="200">
+
+    <UserControl.Resources>
+        <!-- Animation Storyboards -->
+        <Storyboard x:Key="ExpandStoryboard">
+            <DoubleAnimation Storyboard.TargetName="SidebarGrid"
+                             Storyboard.TargetProperty="Width"
+                             From="60" To="200" Duration="0:0:0.2">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+
+        <Storyboard x:Key="CollapseStoryboard">
+            <DoubleAnimation Storyboard.TargetName="SidebarGrid"
+                             Storyboard.TargetProperty="Width"
+                             From="200" To="60" Duration="0:0:0.2">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+    </UserControl.Resources>
+
+    <Grid x:Name="SidebarGrid" Background="#F0F0F0" Width="200">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Header with Logo -->
+        <Border Grid.Row="0" BorderBrush="#CCCCCC" BorderThickness="1" Margin="10" CornerRadius="3" Height="60">
+            <Grid>
+                <TextBlock x:Name="LogoText"
+                           Text="Logo"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           FontSize="20" />
+                <!-- You could add an image here instead of text -->
+            </Grid>
+        </Border>
+
+        <!-- Navigation Buttons Container -->
+        <ScrollViewer Grid.Row="1"
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled">
+            <StackPanel x:Name="ButtonsContainer" Margin="10,5">
+                <!-- SidebarButtons will be added here programmatically or through binding -->
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Toggle Button at Bottom -->
+        <Button x:Name="ToggleButton"
+                Grid.Row="2"
+                Height="40"
+                Margin="10"
+                Click="ToggleButton_Click"
+                Background="#444444"
+                Foreground="White"
+                BorderThickness="0">
+            <Grid>
+                <TextBlock x:Name="ToggleText"
+                           Text="Collapse"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center" />
+                <Path x:Name="ToggleIcon"
+                      Data="M9,4L4,9L9,14"
+                      Stroke="White"
+                      StrokeThickness="2"
+                      Width="16"
+                      Height="16"
+                      Stretch="Uniform"
+                      HorizontalAlignment="Right"
+                      Margin="0,0,10,0" />
+            </Grid>
+        </Button>
+    </Grid>
+</UserControl>
