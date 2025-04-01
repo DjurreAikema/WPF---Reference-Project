@@ -14,9 +14,8 @@
         </Grid.ColumnDefinitions>
 
         <!-- Sidebar -->
-        <navigation:Sidebar x:Name="MainSidebar"
-                            Grid.Column="0"
-                            NavigationRequested="MainSidebar_NavigationRequested" />
+        <navigation:Sidebar x:Name="MainSidebar" Grid.Column="0"
+                            NavigationRequested="OnNavigationRequested" />
 
         <!-- Main Content Area -->
         <Grid Grid.Column="1" Background="White">
