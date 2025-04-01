@@ -19,11 +19,8 @@
 
         <!-- Content -->
         <WrapPanel Grid.Row="1" Orientation="Horizontal" Margin="10">
-            <buttons:CompositeNavigationButton
-                ButtonContent="Manage Countries"
-                GridStyle="{StaticResource ManageButtonCompositeStyle}"
-                MainButtonStyle="{StaticResource ManageMainButtonStyle}"
-                PopupButtonStyle="{StaticResource ManagePopupButtonStyle}"
+            <buttons:SimplifiedNavigationButton
+                Content="Manage Countries"
                 MainButtonClick="ManageCountries_Click"
                 PopupButtonClick="ManageCountriesPopup_Click" />
         </WrapPanel>
