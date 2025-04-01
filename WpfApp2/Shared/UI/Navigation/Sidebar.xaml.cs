@@ -7,10 +7,10 @@ namespace WpfApp2.Shared.UI.Navigation;
 
 public partial class Sidebar
 {
-    private bool _isExpanded = true;
     private readonly Storyboard _expandStoryboard;
     private readonly Storyboard _collapseStoryboard;
 
+    // --- Dependency properties
     // IsExpanded property
     public static readonly DependencyProperty IsExpandedProperty = DependencyProperty.Register(
         nameof(IsExpanded), typeof(bool), typeof(Sidebar),
@@ -44,11 +44,12 @@ public partial class Sidebar
         set => SetValue(SelectedItemProperty, value);
     }
 
-    // NavigationRequested event
+    // --- Events
     public event NavigationEventHandler NavigationRequested;
 
     public delegate void NavigationEventHandler(object sender, string destination);
 
+    // --- Constructor
     public Sidebar()
     {
         InitializeComponent();
@@ -61,42 +62,26 @@ public partial class Sidebar
         SidebarItems = [];
     }
 
+    // --- Methods
     private static void OnIsExpandedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is Sidebar sidebar)
-        {
-            sidebar.UpdateExpandedState();
-        }
+        if (d is Sidebar sidebar) sidebar.UpdateExpandedState();
     }
 
     private static void OnSidebarItemsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is Sidebar sidebar)
-        {
-            sidebar.RebuildSidebarButtons();
-        }
+        if (d is Sidebar sidebar) sidebar.RebuildSidebarButtons();
     }
 
     private static void OnSelectedItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is Sidebar sidebar)
-        {
-            sidebar.UpdateSelectedButton();
-        }
+        if (d is Sidebar sidebar) sidebar.UpdateSelectedButton();
     }
 
-    private void ToggleButton_Click(object sender, RoutedEventArgs e)
-    {
-        IsExpanded = !IsExpanded;
-    }
+    private void ToggleButton_Click(object sender, RoutedEventArgs e) => IsExpanded = !IsExpanded;
 
     private void UpdateExpandedState()
     {
-        _isExpanded = IsExpanded;
-
-        // Update toggle button text
-        ToggleText.Text = IsExpanded ? "Collapse" : "Expand";
-
         // Update toggle button icon (rotate the arrow)
         var rotateTransform = new RotateTransform();
         ToggleIcon.RenderTransform = rotateTransform;
@@ -116,10 +101,7 @@ public partial class Sidebar
         // Update all sidebar buttons
         foreach (var child in ButtonsContainer.Children)
         {
-            if (child is SidebarButton button)
-            {
-                button.IsExpanded = IsExpanded;
-            }
+            if (child is SidebarButton button) button.IsExpanded = IsExpanded;
         }
     }
 
@@ -158,16 +140,13 @@ public partial class Sidebar
     {
         foreach (var child in ButtonsContainer.Children)
         {
-            if (child is SidebarButton button)
-            {
-                button.IsActive = (string) button.Tag == SelectedItem;
-            }
+            if (child is SidebarButton button) button.IsActive = (string) button.Tag == SelectedItem;
         }
     }
 
     private void SidebarButton_Click(object sender, RoutedEventArgs e)
     {
-        if (sender is SidebarButton button && button.Tag is string destination)
+        if (sender is SidebarButton {Tag: string destination})
         {
             // Update selected item
             SelectedItem = destination;

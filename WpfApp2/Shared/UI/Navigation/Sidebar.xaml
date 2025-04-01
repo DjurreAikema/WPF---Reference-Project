@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:nav="clr-namespace:WpfApp2.Shared.UI.Navigation"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="200">
 
@@ -13,8 +12,9 @@
             <DoubleAnimation Storyboard.TargetName="SidebarGrid"
                              Storyboard.TargetProperty="Width"
                              From="60" To="200" Duration="0:0:0.2">
+
                 <DoubleAnimation.EasingFunction>
-                    <CubicEase EasingMode="EaseOut"/>
+                    <CubicEase EasingMode="EaseOut" />
                 </DoubleAnimation.EasingFunction>
             </DoubleAnimation>
         </Storyboard>
@@ -23,8 +23,9 @@
             <DoubleAnimation Storyboard.TargetName="SidebarGrid"
                              Storyboard.TargetProperty="Width"
                              From="200" To="60" Duration="0:0:0.2">
+
                 <DoubleAnimation.EasingFunction>
-                    <CubicEase EasingMode="EaseOut"/>
+                    <CubicEase EasingMode="EaseOut" />
                 </DoubleAnimation.EasingFunction>
             </DoubleAnimation>
         </Storyboard>
@@ -45,7 +46,6 @@
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center"
                            FontSize="20" />
-                <!-- You could add an image here instead of text -->
             </Grid>
         </Border>
 
@@ -68,10 +68,6 @@
                 Foreground="White"
                 BorderThickness="0">
             <Grid>
-                <TextBlock x:Name="ToggleText"
-                           Text="Collapse"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center" />
                 <Path x:Name="ToggleIcon"
                       Data="M9,4L4,9L9,14"
                       Stroke="White"
