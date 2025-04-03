@@ -2,7 +2,9 @@
 using WpfApp2.Shared.Navigation;
 using WpfApp2.Shared.Navigation.UI;
 using WpfApp2.Views;
+using WpfApp2.Views.Snacks;
 using WpfApp2.Views.StamData;
+using WpfApp2.Views.Warehouses;
 
 namespace WpfApp2;
 

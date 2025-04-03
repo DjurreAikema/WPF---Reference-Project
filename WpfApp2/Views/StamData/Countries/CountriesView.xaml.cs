@@ -9,7 +9,7 @@ public partial class CountriesView
 {
     public CountriesViewModel Vm { get; } = new();
     public Subject<bool> TriggerDispose { get; set; } = new();
-    public bool IsStandaloneWindow { get; set; }
+    private bool IsStandaloneWindow { get; set; }
 
     public CountriesView(bool isStandaloneWindow = false)
     {

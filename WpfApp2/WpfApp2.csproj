@@ -51,11 +51,24 @@
           <XamlRuntime>Wpf</XamlRuntime>
           <SubType>Designer</SubType>
         </Page>
+        <Page Update="Views\Snacks\SnacksView.xaml">
+          <Generator>MSBuild:Compile</Generator>
+          <XamlRuntime>Wpf</XamlRuntime>
+          <SubType>Designer</SubType>
+        </Page>
+        <Page Update="Views\Warehouses\WarehousesView.xaml">
+          <Generator>MSBuild:Compile</Generator>
+          <XamlRuntime>Wpf</XamlRuntime>
+          <SubType>Designer</SubType>
+        </Page>
     </ItemGroup>
 
     <ItemGroup>
       <Compile Update="Views\StamData\Countries\CountriesViewModel.cs">
         <DependentUpon>CountriesView.xaml</DependentUpon>
+      </Compile>
+      <Compile Update="Views\Snacks\SnacksViewModel.cs">
+        <DependentUpon>SnacksView.xaml</DependentUpon>
       </Compile>
     </ItemGroup>
 
