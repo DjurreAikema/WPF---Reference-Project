@@ -3,13 +3,50 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:WpfApp2.Views"
+             xmlns:local="clr-namespace:WpfApp2.Views.Warehouses.UI"
+             xmlns:ui="clr-namespace:WpfApp2.Shared.UI"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="600" d:DesignWidth="800"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <Grid>
-        <TextBlock Text="Warehouses Management"
-                   FontSize="24"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <TextBlock Grid.Row="0" Text="Warehouses Management" FontSize="24" Margin="10,10,10,20" />
+
+        <!-- Main Content -->
+        <Grid Grid.Row="1">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="2*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- List Component -->
+            <local:WarehousesList Grid.Column="0"
+                                 TriggerDispose="{Binding TriggerDispose}"
+                                 WarehousesObs="{Binding Vm.WarehousesObs}"
+                                 Selected="OnSelected"
+                                 Add="OnAdd"
+                                 Reload="OnReload" />
+
+            <!-- Details Component -->
+            <local:WarehouseDetails Grid.Column="1"
+                                  TriggerDispose="{Binding TriggerDispose}"
+                                  SelectedObs="{Binding Vm.SelectedObs}"
+                                  Saved="OnSaved"
+                                  Deleted="OnDeleted" />
+        </Grid>
+        
+        <!-- Loading Spinner -->
+        <ui:ObsLoadingSpinner Grid.Row="0" Grid.RowSpan="2" Panel.ZIndex="100"
+                              IsLoadingObs="{Binding Vm.LoadingObs}" />
+
+        <!-- Notification Control -->
+        <ui:NotificationControl Grid.Row="0" Grid.RowSpan="2" Panel.ZIndex="100"
+                                NotificationsObs="{Binding Vm.NotificationsObs}" />
     </Grid>
 </UserControl>
