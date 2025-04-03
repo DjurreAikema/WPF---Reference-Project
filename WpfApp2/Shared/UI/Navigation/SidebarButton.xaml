@@ -10,12 +10,22 @@
 
     <UserControl.Resources>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+
+        <Style x:Key="SidebarButtonWithActiveState" TargetType="Button" BasedOn="{StaticResource SidebarButtonStyle}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsActive, RelativeSource={RelativeSource AncestorType=nav:SidebarButton}}" Value="True">
+                    <Setter Property="Background" Value="#1E88E5" />
+                </DataTrigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#555555" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </UserControl.Resources>
 
     <Button x:Name="Button"
             Click="Button_Click"
-            Style="{StaticResource SidebarButtonStyle}"
-            Background="{Binding Background, RelativeSource={RelativeSource AncestorType=nav:SidebarButton}}"
+            Style="{StaticResource SidebarButtonWithActiveState}"
             Cursor="Hand">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -39,7 +49,10 @@
                        Text="{Binding Text, RelativeSource={RelativeSource AncestorType=nav:SidebarButton}}"
                        Foreground="{Binding Foreground, ElementName=Button}"
                        VerticalAlignment="Center"
-                       Visibility="{Binding IsExpanded, RelativeSource={RelativeSource AncestorType=nav:SidebarButton}, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                       Visibility="{Binding IsExpanded,
+                       RelativeSource={RelativeSource AncestorType=nav:SidebarButton},
+                       Converter={StaticResource BoolToVisibilityConverter}}" />
         </Grid>
     </Button>
 </UserControl>

@@ -1,5 +1,4 @@
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Media;
 
 namespace WpfApp2.Shared.UI.Navigation;
@@ -28,28 +27,6 @@ public partial class SidebarButton
         set => SetValue(TextProperty, value);
     }
 
-    // Command
-    public static readonly DependencyProperty CommandProperty = DependencyProperty.Register(
-        nameof(Command), typeof(ICommand), typeof(SidebarButton),
-        new PropertyMetadata(null));
-
-    public ICommand Command
-    {
-        get => (ICommand) GetValue(CommandProperty);
-        set => SetValue(CommandProperty, value);
-    }
-
-    // CommandParameter
-    public static readonly DependencyProperty CommandParameterProperty = DependencyProperty.Register(
-        nameof(CommandParameter), typeof(object), typeof(SidebarButton),
-        new PropertyMetadata(null));
-
-    public object CommandParameter
-    {
-        get => GetValue(CommandParameterProperty);
-        set => SetValue(CommandParameterProperty, value);
-    }
-
     // IsExpanded
     public static readonly DependencyProperty IsExpandedProperty = DependencyProperty.Register(
         nameof(IsExpanded), typeof(bool), typeof(SidebarButton),
@@ -61,21 +38,10 @@ public partial class SidebarButton
         set => SetValue(IsExpandedProperty, value);
     }
 
-    // Background
-    public static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
-        nameof(Background), typeof(Brush), typeof(SidebarButton),
-        new PropertyMetadata(Brushes.Transparent));
-
-    public Brush Background
-    {
-        get => (Brush) GetValue(BackgroundProperty);
-        set => SetValue(BackgroundProperty, value);
-    }
-
     // IsActive
     public static readonly DependencyProperty IsActiveProperty = DependencyProperty.Register(
         nameof(IsActive), typeof(bool), typeof(SidebarButton),
-        new PropertyMetadata(false, OnIsActiveChanged));
+        new PropertyMetadata(false));
 
     public bool IsActive
     {
@@ -84,37 +50,12 @@ public partial class SidebarButton
     }
 
     // Click event
-    public event RoutedEventHandler Click;
+    public event RoutedEventHandler? Click;
 
     public SidebarButton()
     {
         InitializeComponent();
     }
 
-    private void Button_Click(object sender, RoutedEventArgs e)
-    {
-        // Execute command if available
-        if (Command != null && Command.CanExecute(CommandParameter))
-        {
-            Command.Execute(CommandParameter);
-        }
-
-        // Raise Click event
-        Click?.Invoke(this, e);
-    }
-
-    private static void OnIsActiveChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        if (d is SidebarButton button)
-        {
-            if ((bool) e.NewValue)
-            {
-                button.Background = new SolidColorBrush(Color.FromRgb(70, 70, 70));
-            }
-            else
-            {
-                button.Background = new SolidColorBrush(Color.FromRgb(68, 68, 68));
-            }
-        }
-    }
+    private void Button_Click(object sender, RoutedEventArgs e) => Click?.Invoke(this, e);
 }
