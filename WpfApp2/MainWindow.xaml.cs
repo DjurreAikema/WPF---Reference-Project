@@ -34,7 +34,7 @@ public partial class MainWindow
     private const string Warehouses = "warehouses";
     private const string Snacks = "snacks";
 
-    private ObservableCollection<SidebarItem> InitializeSidebarItems()
+    private static ObservableCollection<SidebarItem> InitializeSidebarItems()
     {
         return
         [

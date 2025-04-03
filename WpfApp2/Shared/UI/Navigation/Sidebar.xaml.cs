@@ -7,6 +7,8 @@ namespace WpfApp2.Shared.UI.Navigation;
 
 public partial class Sidebar
 {
+    public delegate void NavigationEventHandler(object sender, string destination);
+
     private readonly Storyboard _expandStoryboard;
     private readonly Storyboard _collapseStoryboard;
 
@@ -27,7 +29,7 @@ public partial class Sidebar
         nameof(SidebarItems), typeof(ObservableCollection<SidebarItem>), typeof(Sidebar),
         new PropertyMetadata(null, OnSidebarItemsChanged));
 
-    public ObservableCollection<SidebarItem> SidebarItems
+    public ObservableCollection<SidebarItem>? SidebarItems
     {
         get => (ObservableCollection<SidebarItem>) GetValue(SidebarItemsProperty);
         set => SetValue(SidebarItemsProperty, value);
@@ -45,9 +47,7 @@ public partial class Sidebar
     }
 
     // --- Events
-    public event NavigationEventHandler NavigationRequested;
-
-    public delegate void NavigationEventHandler(object sender, string destination);
+    public event NavigationEventHandler? NavigationRequested;
 
     // --- Constructor
     public Sidebar()
@@ -160,7 +160,7 @@ public partial class Sidebar
 // Class to define sidebar items
 public class SidebarItem
 {
-    public string Text { get; set; }
-    public Geometry IconData { get; set; }
-    public string Destination { get; set; }
+    public required string Text { get; init; }
+    public required Geometry IconData { get; init; }
+    public required string Destination { get; init; }
 }

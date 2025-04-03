@@ -5,6 +5,7 @@ namespace WpfApp2.Shared.UI.Navigation;
 
 public partial class SidebarButton
 {
+    // --- Dependency properties
     // Icon
     public static readonly DependencyProperty IconDataProperty = DependencyProperty.Register(
         nameof(IconData), typeof(Geometry), typeof(SidebarButton),
@@ -49,13 +50,15 @@ public partial class SidebarButton
         set => SetValue(IsActiveProperty, value);
     }
 
-    // Click event
+    // --- Events
     public event RoutedEventHandler? Click;
 
+    // --- Constructor
     public SidebarButton()
     {
         InitializeComponent();
     }
 
+    // --- Methods
     private void Button_Click(object sender, RoutedEventArgs e) => Click?.Invoke(this, e);
 }

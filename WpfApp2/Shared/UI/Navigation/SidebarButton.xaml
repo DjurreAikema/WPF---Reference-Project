@@ -11,6 +11,7 @@
     <UserControl.Resources>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
 
+        <!-- IsActive background style -->
         <Style x:Key="SidebarButtonWithActiveState" TargetType="Button" BasedOn="{StaticResource SidebarButtonStyle}">
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsActive, RelativeSource={RelativeSource AncestorType=nav:SidebarButton}}" Value="True">
