@@ -70,6 +70,9 @@
       <Compile Update="Views\Snacks\SnacksViewModel.cs">
         <DependentUpon>SnacksView.xaml</DependentUpon>
       </Compile>
+      <Compile Update="Views\Warehouses\WarehousesViewModel.cs">
+        <DependentUpon>WarehousesView.xaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 
 </Project>
