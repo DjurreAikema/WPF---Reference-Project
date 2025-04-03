@@ -1,5 +1,5 @@
 using Microsoft.Data.Sqlite;
-using WpfApp2.Shared.Classes;
+using WpfApp2.Data.Classes;
 
 namespace WpfApp2.Data;
 

@@ -1,6 +1,6 @@
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
-using WpfApp2.Shared.Classes;
+using WpfApp2.Data.Classes;
 
 namespace WpfApp2.Views.StamData.Countries.UI;
 

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace WpfApp2.Shared.Classes;
+namespace WpfApp2.Data.Classes;
 
 public class UnitSize
 {

@@ -1,10 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using WpfApp2.Data;
-using WpfApp2.Shared.Classes;
+using WpfApp2.Data.Classes;
 
-namespace WpfApp2.Shared.DataAccess;
+namespace WpfApp2.Data.DataAccess;
 
-public class CountryService
+public class UnitSizeService
 {
     public bool SimulateFailures { get; set; } = false;
     public double FailureProbability { get; set; } = 0.3;
@@ -18,48 +17,48 @@ public class CountryService
         return new AppDbContext(optionsBuilder.Options);
     }
 
-    public async Task<List<Country>> GetAllAsync()
+    public async Task<List<UnitSize>> GetAllAsync()
     {
         if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbabilityOnLoad)
-            throw new Exception("Simulated database failure during GetAllCountrysAsync");
+            throw new Exception("Simulated database failure during GetAllUnitSizesAsync");
 
         await using var context = CreateDbContext();
-        return await context.Countries.ToListAsync();
+        return await context.UnitSizes.ToListAsync();
     }
 
-    public async Task<Country> AddAsync(Country country)
+    public async Task<UnitSize> AddAsync(UnitSize unitSize)
     {
         if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbability)
-            throw new Exception("Simulated database failure during AddCountryAsync");
+            throw new Exception("Simulated database failure during AddUnitSizeAsync");
 
         await using var context = CreateDbContext();
-        context.Countries.Add(country);
+        context.UnitSizes.Add(unitSize);
         await context.SaveChangesAsync();
-        return country;
+        return unitSize;
     }
 
-    public async Task<Country> UpdateAsync(Country country)
+    public async Task<UnitSize> UpdateAsync(UnitSize unitSize)
     {
         if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbability)
-            throw new Exception("Simulated database failure during UpdateCountryAsync");
+            throw new Exception("Simulated database failure during UpdateUnitSizeAsync");
 
         await using var context = CreateDbContext();
-        context.Countries.Update(country);
+        context.UnitSizes.Update(unitSize);
         await context.SaveChangesAsync();
-        return country;
+        return unitSize;
     }
 
-    public async Task<Country?> DeleteAsync(int id)
+    public async Task<UnitSize?> DeleteAsync(int id)
     {
         if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbability)
-            throw new Exception("Simulated database failure during DeleteCountryAsync");
+            throw new Exception("Simulated database failure during DeleteUnitSizeAsync");
 
         await using var context = CreateDbContext();
-        var country = await context.Countries.FindAsync(id);
-        if (country == null) return country;
+        var unitSize = await context.UnitSizes.FindAsync(id);
+        if (unitSize == null) return unitSize;
 
-        context.Countries.Remove(country);
+        context.UnitSizes.Remove(unitSize);
         await context.SaveChangesAsync();
-        return country;
+        return unitSize;
     }
 }

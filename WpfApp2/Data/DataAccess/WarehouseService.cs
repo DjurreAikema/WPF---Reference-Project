@@ -1,10 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using WpfApp2.Data;
-using WpfApp2.Shared.Classes;
+using WpfApp2.Data.Classes;
 
-namespace WpfApp2.Shared.DataAccess;
+namespace WpfApp2.Data.DataAccess;
 
-public class SnackService
+public class WarehouseService
 {
     public bool SimulateFailures { get; set; } = false;
     public double FailureProbability { get; set; } = 0.3;
@@ -18,48 +17,48 @@ public class SnackService
         return new AppDbContext(optionsBuilder.Options);
     }
 
-    public async Task<List<Snack>> GetAllAsync()
+    public async Task<List<Warehouse>> GetAllAsync()
     {
         if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbabilityOnLoad)
-            throw new Exception("Simulated database failure during GetAllSnacksAsync");
+            throw new Exception("Simulated database failure during GetAllWarehousesAsync");
 
         await using var context = CreateDbContext();
-        return await context.Snacks.ToListAsync();
+        return await context.Warehouses.ToListAsync();
     }
 
-    public async Task<Snack> AddAsync(Snack snack)
+    public async Task<Warehouse> AddAsync(Warehouse warehouse)
     {
         if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbability)
-            throw new Exception("Simulated database failure during AddSnackAsync");
+            throw new Exception("Simulated database failure during AddWarehouseAsync");
 
         await using var context = CreateDbContext();
-        context.Snacks.Add(snack);
+        context.Warehouses.Add(warehouse);
         await context.SaveChangesAsync();
-        return snack;
+        return warehouse;
     }
 
-    public async Task<Snack> UpdateAsync(Snack snack)
+    public async Task<Warehouse> UpdateAsync(Warehouse warehouse)
     {
         if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbability)
-            throw new Exception("Simulated database failure during UpdateSnackAsync");
+            throw new Exception("Simulated database failure during UpdateWarehouseAsync");
 
         await using var context = CreateDbContext();
-        context.Snacks.Update(snack);
+        context.Warehouses.Update(warehouse);
         await context.SaveChangesAsync();
-        return snack;
+        return warehouse;
     }
 
-    public async Task<Snack?> DeleteAsync(int id)
+    public async Task<Warehouse?> DeleteAsync(int id)
     {
         if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbability)
-            throw new Exception("Simulated database failure during DeleteSnackAsync");
+            throw new Exception("Simulated database failure during DeleteWarehouseAsync");
 
         await using var context = CreateDbContext();
-        var snack = await context.Snacks.FindAsync(id);
-        if (snack == null) return snack;
+        var warehouse = await context.Warehouses.FindAsync(id);
+        if (warehouse == null) return warehouse;
 
-        context.Snacks.Remove(snack);
+        context.Warehouses.Remove(warehouse);
         await context.SaveChangesAsync();
-        return snack;
+        return warehouse;
     }
 }

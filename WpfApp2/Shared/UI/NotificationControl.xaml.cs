@@ -2,7 +2,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using WpfApp2.Shared.Classes;
+using WpfApp2.Data.Classes;
 
 namespace WpfApp2.Shared.UI;
 

@@ -2,9 +2,9 @@ using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using WpfApp2.Data.Classes;
+using WpfApp2.Data.DataAccess;
 using WpfApp2.Shared.Abstract;
-using WpfApp2.Shared.Classes;
-using WpfApp2.Shared.DataAccess;
 using WpfApp2.Shared.ExtensionMethods;
 
 namespace WpfApp2.Views.StamData.Countries;
