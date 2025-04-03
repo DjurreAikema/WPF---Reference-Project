@@ -1,6 +1,6 @@
 using System.Windows.Media;
 
-namespace WpfApp2.Shared.UI.Navigation;
+namespace WpfApp2.Shared.Navigation.UI;
 
 public static class NavigationIcons
 {

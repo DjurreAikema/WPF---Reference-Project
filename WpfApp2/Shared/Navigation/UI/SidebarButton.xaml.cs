@@ -1,7 +1,7 @@
 using System.Windows;
 using System.Windows.Media;
 
-namespace WpfApp2.Shared.UI.Navigation;
+namespace WpfApp2.Shared.Navigation.UI;
 
 public partial class SidebarButton
 {

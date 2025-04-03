@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 
-namespace WpfApp2.Shared.UI.Navigation;
+namespace WpfApp2.Shared.Navigation.UI;
 
 public partial class Sidebar
 {

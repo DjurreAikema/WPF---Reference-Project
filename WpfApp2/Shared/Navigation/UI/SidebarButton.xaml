@@ -1,10 +1,10 @@
-<UserControl x:Class="WpfApp2.Shared.UI.Navigation.SidebarButton"
+<UserControl x:Class="WpfApp2.Shared.Navigation.UI.SidebarButton"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:nav="clr-namespace:WpfApp2.Shared.UI.Navigation"
              xmlns:converters="clr-namespace:WpfApp2.Shared.Converters"
+             xmlns:ui="clr-namespace:WpfApp2.Shared.Navigation.UI"
              mc:Ignorable="d"
              d:DesignHeight="50" d:DesignWidth="200">
 
@@ -14,7 +14,7 @@
         <!-- IsActive background style -->
         <Style x:Key="SidebarButtonWithActiveState" TargetType="Button" BasedOn="{StaticResource SidebarButtonStyle}">
             <Style.Triggers>
-                <DataTrigger Binding="{Binding IsActive, RelativeSource={RelativeSource AncestorType=nav:SidebarButton}}" Value="True">
+                <DataTrigger Binding="{Binding IsActive, RelativeSource={RelativeSource AncestorType=ui:SidebarButton}}" Value="True">
                     <Setter Property="Background" Value="#1E88E5" />
                 </DataTrigger>
                 <Trigger Property="IsMouseOver" Value="True">
@@ -36,7 +36,7 @@
 
             <!-- Icon -->
             <Path x:Name="IconPath"
-                  Data="{Binding IconData, RelativeSource={RelativeSource AncestorType=nav:SidebarButton}}"
+                  Data="{Binding IconData, RelativeSource={RelativeSource AncestorType=ui:SidebarButton}}"
                   Fill="{Binding Foreground, ElementName=Button}"
                   Width="20"
                   Height="20"
@@ -47,12 +47,12 @@
 
             <!-- Text -->
             <TextBlock Grid.Column="1"
-                       Text="{Binding Text, RelativeSource={RelativeSource AncestorType=nav:SidebarButton}}"
+                       Text="{Binding Text, RelativeSource={RelativeSource AncestorType=ui:SidebarButton}}"
                        Foreground="{Binding Foreground, ElementName=Button}"
                        VerticalAlignment="Center"
 
                        Visibility="{Binding IsExpanded,
-                       RelativeSource={RelativeSource AncestorType=nav:SidebarButton},
+                       RelativeSource={RelativeSource AncestorType=ui:SidebarButton},
                        Converter={StaticResource BoolToVisibilityConverter}}" />
         </Grid>
     </Button>
