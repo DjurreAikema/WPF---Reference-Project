@@ -15,7 +15,7 @@
         </Grid.RowDefinitions>
 
         <!-- Header -->
-        <TextBlock Grid.Row="0" Text="Warehouses Management" FontSize="24" Margin="10,10,10,20" />
+        <TextBlock Grid.Row="0" Text="Warehouses Management" FontSize="20" Margin="10" />
 
         <!-- Main Content -->
         <Grid Grid.Row="1">

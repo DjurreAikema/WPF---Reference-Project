@@ -16,7 +16,7 @@
     </abstract:ADumbComponent.Resources>
 
     <Border BorderBrush="#CCCCCC" BorderThickness="1"
-            Margin="10" Padding="10"
+            Margin="5" Padding="10"
             Background="#F9F9F9">
 
         <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:WarehouseDetails}}" Margin="10">
