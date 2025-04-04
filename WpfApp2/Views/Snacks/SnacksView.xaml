@@ -5,9 +5,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:ui="clr-namespace:WpfApp2.Shared.UI"
              xmlns:ui1="clr-namespace:WpfApp2.Views.Snacks.UI"
+             xmlns:converters="clr-namespace:WpfApp2.Shared.Converters"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="800"
              DataContext="{Binding RelativeSource={RelativeSource Self}}">
+
+    <UserControl.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </UserControl.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -42,7 +48,7 @@
                                       Deleted="OnDeleted" />
                 </TabItem>
 
-                <TabItem Header="Units">
+                <TabItem Header="Units" Visibility="{Binding Flags.HasMultipleUnitSizes, Converter={StaticResource BoolToVisibilityConverter}}">
                     <ui1:SnackUnitSizes TriggerDispose="{Binding TriggerDispose}" />
                 </TabItem>
 

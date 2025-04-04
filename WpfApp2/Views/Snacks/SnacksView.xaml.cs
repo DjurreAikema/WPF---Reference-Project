@@ -1,22 +1,38 @@
 using System.Reactive;
+using System.Reactive.Disposables;
 using System.Reactive.Subjects;
+using CommunityToolkit.Mvvm.ComponentModel;
 using WpfApp2.Data.Classes;
 
 namespace WpfApp2.Views.Snacks;
 
+[ObservableObject]
 public partial class SnacksView
 {
     public SnacksViewModel Vm { get; } = new();
     public Subject<bool> TriggerDispose { get; set; } = new();
+    private readonly CompositeDisposable Disposables = new();
 
+    // --- Internal Properties
+    [ObservableProperty] private SnackFlags? _flags;
+
+    // --- Constructor
     public SnacksView()
     {
         InitializeComponent();
+
+        Disposables.Add(Vm.FlagsObs.Subscribe(flags =>
+        {
+            Flags = flags;
+            // c.Selected = obj != null ? new Snack(obj) : null;
+            // OnPropertyChanged(nameof(Flags));
+        }));
 
         // Dispose of all subscriptions when the window is closed
         Unloaded += (_, _) =>
         {
             Vm.Dispose();
+            Disposables.Dispose();
             TriggerDispose.OnNext(true);
         };
     }

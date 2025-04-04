@@ -57,7 +57,7 @@
                      Text="{Binding Selected.Price, UpdateSourceTrigger=PropertyChanged}" />
 
             <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Center"
-                   Content="Quantity:" />
+                   Content="Total Quantity:" />
 
             <TextBox Grid.Row="3" Grid.Column="1" Margin="5"
                      Text="{Binding Selected.Quantity, UpdateSourceTrigger=PropertyChanged}" />

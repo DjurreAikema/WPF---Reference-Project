@@ -18,6 +18,12 @@ public record SnacksState : BaseState<SnacksState>
         this with {InProgress = inProgress};
 }
 
+public class SnackFlags
+{
+    public bool HasId { get; set; }
+    public bool HasMultipleUnitSizes { get; set; }
+}
+
 public class SnacksViewModel : IDisposable
 {
     private readonly CompositeDisposable _disposables = new();
@@ -31,6 +37,12 @@ public class SnacksViewModel : IDisposable
     public IObservable<List<Snack>> SnacksObs => StateObs.Select(state => state.Snacks);
     public IObservable<Snack?> SelectedObs => StateObs.Select(state => state.Selected);
     public IObservable<bool> LoadingObs => StateObs.Select(state => state.Loading);
+
+    public IObservable<SnackFlags> FlagsObs => StateObs.Select(state => new SnackFlags
+    {
+        HasId = state.Selected?.Id != null,
+        HasMultipleUnitSizes = state.Selected?.MultipleUnitSizes ?? false,
+    });
 
     // --- Notifications
     private readonly Subject<NotificationMessage> _notifications = new();
