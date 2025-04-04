@@ -48,11 +48,15 @@
                                       Deleted="OnDeleted" />
                 </TabItem>
 
-                <TabItem Header="Units" Visibility="{Binding Flags.HasMultipleUnitSizes, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <ui1:SnackUnitSizes TriggerDispose="{Binding TriggerDispose}" />
+                <TabItem Header="Units"
+                         IsEnabled="{Binding Flags.HasId }"
+                         Visibility="{Binding Flags.HasMultipleUnitSizes, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <ui1:SnackUnitSizes TriggerDispose="{Binding TriggerDispose}"
+                                        ListObs="{Binding Vm.SelectedUnitSizesObs}"/>
                 </TabItem>
 
-                <TabItem Header="Inventory">
+                <TabItem Header="Inventory"
+                         IsEnabled="{Binding Flags.HasId }">
                     <ui1:SnackInventory TriggerDispose="{Binding TriggerDispose}" />
                 </TabItem>
             </TabControl>

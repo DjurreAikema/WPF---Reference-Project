@@ -36,6 +36,7 @@ public class SnacksViewModel : IDisposable
     // --- Selectors
     public IObservable<List<Snack>> SnacksObs => StateObs.Select(state => state.Snacks);
     public IObservable<Snack?> SelectedObs => StateObs.Select(state => state.Selected);
+    public IObservable<List<UnitSize>?> SelectedUnitSizesObs => StateObs.Select(state => state.Selected?.UnitSize?.ToList() ?? []);
     public IObservable<bool> LoadingObs => StateObs.Select(state => state.Loading);
 
     public IObservable<SnackFlags> FlagsObs => StateObs.Select(state => new SnackFlags
