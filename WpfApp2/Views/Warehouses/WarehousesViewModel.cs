@@ -52,7 +52,7 @@ public class WarehousesViewModel : IDisposable
         .ExecuteAsyncOperation(
             _stateSubject,
             obj => _warehouseService.FillAsync(obj),
-            _notifications, "Warehouse loaded successfully.", e => $"Error creating warehouse: {e.Message}"
+            _notifications, "Warehouse selected successfully.", e => $"Error selecting warehouse: {e.Message}"
         );
 
     private IObservable<List<Warehouse>?> LoadedObs => Reload

@@ -17,6 +17,20 @@ public class SnackService
         return new AppDbContext(optionsBuilder.Options);
     }
 
+    public async Task<Snack> FillAsync(Snack snack)
+    {
+        if (snack.Id == null) return snack;
+
+        if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbability)
+            throw new Exception("Simulated database failure during FillWarehouseAsync");
+
+        await using var context = CreateDbContext();
+
+        // TODO
+
+        return snack;
+    }
+
     public async Task<List<Snack>> GetAllAsync()
     {
         if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbabilityOnLoad)
