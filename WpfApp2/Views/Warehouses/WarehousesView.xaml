@@ -27,20 +27,27 @@
 
             <!-- List Component -->
             <local:WarehousesList Grid.Column="0"
-                                 TriggerDispose="{Binding TriggerDispose}"
-                                 WarehousesObs="{Binding Vm.WarehousesObs}"
-                                 Selected="OnSelected"
-                                 Add="OnAdd"
-                                 Reload="OnReload" />
+                                  TriggerDispose="{Binding TriggerDispose}"
+                                  WarehousesObs="{Binding Vm.WarehousesObs}"
+                                  Selected="OnSelected"
+                                  Add="OnAdd"
+                                  Reload="OnReload" />
 
             <!-- Details Component -->
-            <local:WarehouseDetails Grid.Column="1"
-                                  TriggerDispose="{Binding TriggerDispose}"
-                                  SelectedObs="{Binding Vm.SelectedObs}"
-                                  Saved="OnSaved"
-                                  Deleted="OnDeleted" />
+            <TabControl Grid.Column="1" Margin="5">
+                <TabItem Header="Details">
+                    <local:WarehouseDetails TriggerDispose="{Binding TriggerDispose}"
+                                            SelectedObs="{Binding Vm.SelectedObs}"
+                                            Saved="OnSaved"
+                                            Deleted="OnDeleted" />
+                </TabItem>
+
+                <TabItem Header="Inventory">
+                    <local:WarehouseInventory TriggerDispose="{Binding TriggerDispose}" />
+                </TabItem>
+            </TabControl>
         </Grid>
-        
+
         <!-- Loading Spinner -->
         <ui:ObsLoadingSpinner Grid.Row="0" Grid.RowSpan="2" Panel.ZIndex="100"
                               IsLoadingObs="{Binding Vm.LoadingObs}" />

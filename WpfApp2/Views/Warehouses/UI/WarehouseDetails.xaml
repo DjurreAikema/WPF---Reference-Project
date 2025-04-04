@@ -15,102 +15,91 @@
         <converters:MultiBooleanAndConverter x:Key="MultiBooleanAndConverter" />
     </abstract:ADumbComponent.Resources>
 
-    <Border BorderBrush="#CCCCCC" BorderThickness="1"
-            Margin="5" Padding="10"
-            Background="#F9F9F9">
+    <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:WarehouseDetails}}" Margin="10">
 
-        <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:WarehouseDetails}}" Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Form Fields -->
+        <Grid Grid.Row="0" IsEnabled="{Binding Selected, Converter={StaticResource NullToBoolConverter}}">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <!-- Form Header -->
-            <TextBlock Grid.Row="0"
-                       Text="Warehouse Details"
-                       FontSize="18" Margin="0,0,0,10" />
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-            <!-- Form Fields -->
-            <Grid Grid.Row="1" IsEnabled="{Binding Selected, Converter={StaticResource NullToBoolConverter}}">
+            <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"
+                   Content="Name:" />
 
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
+            <TextBox Grid.Row="0" Grid.Column="1" Margin="5"
+                     Text="{Binding Selected.Name, UpdateSourceTrigger=PropertyChanged}" />
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
+            <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"
+                   Content="Country:" />
 
-                <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"
-                       Content="Name:" />
+            <formUi:CountriesComboBox Grid.Row="1" Grid.Column="1" Margin="5"
+                                      SelectedCountryId="{Binding Selected.CountryId, Mode=TwoWay}"
+                                      SelectedEvent="OnCountrySelected" />
 
-                <TextBox Grid.Row="0" Grid.Column="1" Margin="5"
-                         Text="{Binding Selected.Name, UpdateSourceTrigger=PropertyChanged}" />
+            <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"
+                   Content="City:" />
 
-                <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"
-                       Content="Country:" />
+            <TextBox Grid.Row="2" Grid.Column="1" Margin="5"
+                     Text="{Binding Selected.City, UpdateSourceTrigger=PropertyChanged}" />
 
-                <formUi:CountriesComboBox Grid.Row="1" Grid.Column="1" Margin="5"
-                                          SelectedCountryId="{Binding Selected.CountryId, Mode=TwoWay}"
-                                          SelectedEvent="OnCountrySelected" />
+            <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Center"
+                   Content="Zip code:" />
 
-                <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"
-                       Content="City:" />
+            <TextBox Grid.Row="3" Grid.Column="1" Margin="5"
+                     Text="{Binding Selected.ZipCode, UpdateSourceTrigger=PropertyChanged}" />
 
-                <TextBox Grid.Row="2" Grid.Column="1" Margin="5"
-                         Text="{Binding Selected.City, UpdateSourceTrigger=PropertyChanged}" />
+            <Label Grid.Row="4" Grid.Column="0" VerticalAlignment="Center"
+                   Content="Address:" />
 
-                <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Center"
-                       Content="Zip code:" />
+            <TextBox Grid.Row="4" Grid.Column="1" Margin="5"
+                     Text="{Binding Selected.Address, UpdateSourceTrigger=PropertyChanged}" />
 
-                <TextBox Grid.Row="3" Grid.Column="1" Margin="5"
-                         Text="{Binding Selected.ZipCode, UpdateSourceTrigger=PropertyChanged}" />
+            <Label Grid.Row="5" Grid.Column="0" VerticalAlignment="Center"
+                   Content="House number:" />
 
-                <Label Grid.Row="4" Grid.Column="0" VerticalAlignment="Center"
-                       Content="Address:" />
-
-                <TextBox Grid.Row="4" Grid.Column="1" Margin="5"
-                         Text="{Binding Selected.Address, UpdateSourceTrigger=PropertyChanged}" />
-
-                <Label Grid.Row="5" Grid.Column="0" VerticalAlignment="Center"
-                       Content="House number:" />
-
-                <TextBox Grid.Row="5" Grid.Column="1" Margin="5"
-                         Text="{Binding Selected.HouseNumber, UpdateSourceTrigger=PropertyChanged}" />
-            </Grid>
-
-            <!-- Form Actions -->
-            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
-
-                <Button Content="Save"
-                        Click="Save_Click"
-                        Padding="15,5" Margin="0,0,10,0"
-                        Style="{StaticResource SuccessButton}"
-                        IsEnabled="{Binding Selected, Converter={StaticResource NullToBoolConverter}}" />
-
-                <Button Content="Delete"
-                        Click="Delete_Click"
-                        Padding="15,5" Margin="0,0,10,0"
-                        Style="{StaticResource DangerButton}">
-
-                    <Button.IsEnabled>
-                        <MultiBinding Converter="{StaticResource MultiBooleanAndConverter}">
-                            <Binding Path="Selected.Id" Converter="{StaticResource NullToBoolConverter}" />
-                            <Binding Path="Selected" Converter="{StaticResource NullToBoolConverter}" />
-                        </MultiBinding>
-                    </Button.IsEnabled>
-
-                </Button>
-            </StackPanel>
+            <TextBox Grid.Row="5" Grid.Column="1" Margin="5"
+                     Text="{Binding Selected.HouseNumber, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
-    </Border>
+
+        <!-- Form Actions -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+
+            <Button Content="Save"
+                    Click="Save_Click"
+                    Padding="15,5" Margin="0,0,10,0"
+                    Style="{StaticResource SuccessButton}"
+                    IsEnabled="{Binding Selected, Converter={StaticResource NullToBoolConverter}}" />
+
+            <Button Content="Delete"
+                    Click="Delete_Click"
+                    Padding="15,5" Margin="0,0,10,0"
+                    Style="{StaticResource DangerButton}">
+
+                <Button.IsEnabled>
+                    <MultiBinding Converter="{StaticResource MultiBooleanAndConverter}">
+                        <Binding Path="Selected.Id" Converter="{StaticResource NullToBoolConverter}" />
+                        <Binding Path="Selected" Converter="{StaticResource NullToBoolConverter}" />
+                    </MultiBinding>
+                </Button.IsEnabled>
+
+            </Button>
+        </StackPanel>
+    </Grid>
 </abstract:ADumbComponent>

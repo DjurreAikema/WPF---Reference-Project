@@ -47,13 +47,21 @@ public class WarehousesViewModel : IDisposable
     public readonly Subject<int> Delete = new();
 
     // Load
-    private IObservable<List<Warehouse>?> LoadedObs =>
-        Reload.StartWith(Unit.Default)
-            .ExecuteAsyncOperation(
-                _stateSubject,
-                _ => _warehouseService.GetAllAsync(),
-                _notifications, "Warehouses loaded successfully.", e => $"Error loading Warehouses: {e.Message}", []
-            );
+    private IObservable<Warehouse?> SelectedChangedObs => SelectedChanged
+        .Do(obj => _beforeOperation = new Warehouse(obj))
+        .ExecuteAsyncOperation(
+            _stateSubject,
+            obj => _warehouseService.FillAsync(obj),
+            _notifications, "Warehouse loaded successfully.", e => $"Error creating warehouse: {e.Message}"
+        );
+
+    private IObservable<List<Warehouse>?> LoadedObs => Reload
+        .StartWith(Unit.Default)
+        .ExecuteAsyncOperation(
+            _stateSubject,
+            _ => _warehouseService.GetAllAsync(),
+            _notifications, "Warehouses loaded successfully.", e => $"Error loading Warehouses: {e.Message}", []
+        );
 
     // Create
     private IObservable<Warehouse?> CreatedObs => Create
@@ -92,12 +100,19 @@ public class WarehousesViewModel : IDisposable
         };
 
         // SelectedChanged reducer
-        _disposables.Add(SelectedChanged
+        _disposables.Add(SelectedChangedObs
             .ObserveOnCurrentSynchronizationContext()
             .Subscribe(
                 obj => { _stateSubject.OnNext(_stateSubject.Value with {Selected = obj}); },
-                error => Console.WriteLine($"Unexpected error in SelectedChanged: {error.Message}")
-            ));
+                error =>
+                {
+                    Console.WriteLine($"Unhandled error in SelectedChanged reducer: {error.Message}");
+                    _stateSubject.OnNext(_stateSubject.Value with
+                    {
+                        Selected = _beforeOperation,
+                        InProgress = false
+                    });
+                }));
 
         // Loaded reducer
         _disposables.Add(LoadedObs
