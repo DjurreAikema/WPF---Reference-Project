@@ -18,32 +18,12 @@ public partial class CountriesComboBox
         set => SetValue(SelectedCountryIdProperty, value);
     }
 
-    public static readonly DependencyProperty LabelTextProperty = DependencyProperty.Register(
-        nameof(LabelText), typeof(string), typeof(CountriesComboBox),
-        new PropertyMetadata("Country:"));
-
-    public string LabelText
-    {
-        get => (string)GetValue(LabelTextProperty);
-        set => SetValue(LabelTextProperty, value);
-    }
-
-    public static readonly DependencyProperty IsRequiredProperty = DependencyProperty.Register(
-        nameof(IsRequired), typeof(bool), typeof(CountriesComboBox),
-        new PropertyMetadata(false));
-
-    public bool IsRequired
-    {
-        get => (bool)GetValue(IsRequiredProperty);
-        set => SetValue(IsRequiredProperty, value);
-    }
-
     // --- Events
     public event Action<int?>? SelectedEvent;
 
     // --- Internal Properties
-    [ObservableProperty] private ObservableCollection<Country> _countries = [];
-    [ObservableProperty] private Country _selected;
+    [ObservableProperty] private ObservableCollection<Country>? _countries = [];
+    [ObservableProperty] private Country? _selected;
     [ObservableProperty] private bool _isLoading;
 
     public CountriesComboBox()
@@ -54,8 +34,6 @@ public partial class CountriesComboBox
         Disposables.Add(CountriesService.Instance.CountriesObs.Subscribe(countries =>
         {
             Countries = new ObservableCollection<Country>(countries);
-
-            // If we have a SelectedCountryId, try to find and select that country
             UpdateSelectedCountryFromId();
         }));
 
@@ -75,10 +53,7 @@ public partial class CountriesComboBox
         if (SelectedCountryId.HasValue && Countries != null && Countries.Any())
         {
             var country = Countries.FirstOrDefault(c => c.Id == SelectedCountryId);
-            if (country != null)
-            {
-                Selected = country;
-            }
+            if (country != null) Selected = country;
         }
         else if (!SelectedCountryId.HasValue)
         {
@@ -88,18 +63,12 @@ public partial class CountriesComboBox
 
     private static void OnSelectedCountryIdChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is CountriesComboBox selector)
-        {
-            selector.UpdateSelectedCountryFromId();
-        }
+        if (d is CountriesComboBox selector) selector.UpdateSelectedCountryFromId();
     }
 
     private void OnSelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
     {
-        // Update the SelectedCountryId property
         SelectedCountryId = Selected?.Id;
-
-        // Notify listeners about the selection change
         SelectedEvent?.Invoke(SelectedCountryId);
     }
 }
