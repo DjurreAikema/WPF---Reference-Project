@@ -9,7 +9,7 @@ namespace WpfApp2.Views.Snacks;
 [ObservableObject]
 public partial class SnacksView
 {
-    public SnacksViewModel Vm { get; } = new();
+    public SnacksVm Vm { get; } = new();
     public Subject<bool> TriggerDispose { get; set; } = new();
     private readonly CompositeDisposable Disposables = new();
 

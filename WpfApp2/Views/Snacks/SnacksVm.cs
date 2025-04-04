@@ -24,10 +24,12 @@ public class SnackFlags
     public bool HasMultipleUnitSizes { get; set; }
 }
 
-public class SnacksViewModel : IDisposable
+public partial class SnacksVm : IDisposable
 {
     private readonly CompositeDisposable _disposables = new();
+    private readonly UnitSizeService _unitSizeService;
     private readonly SnackService _snackService;
+
 
     // --- State
     private readonly BehaviorSubject<SnacksState> _stateSubject = new(new SnacksState());
@@ -103,9 +105,16 @@ public class SnacksViewModel : IDisposable
         );
 
     // --- Reducers
-    public SnacksViewModel()
+    public SnacksVm()
     {
         _snackService = new SnackService
+        {
+            SimulateFailures = true,
+            FailureProbability = 0.1,
+            FailureProbabilityOnLoad = 0.1
+        };
+
+        _unitSizeService = new UnitSizeService
         {
             SimulateFailures = true,
             FailureProbability = 0.1,
@@ -246,6 +255,9 @@ public class SnacksViewModel : IDisposable
                     });
                 }
             ));
+
+        // --- UnitSize
+        UnitSizeVm();
     }
 
     // --- Dispose

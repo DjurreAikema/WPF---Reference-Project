@@ -67,11 +67,14 @@
       <Compile Update="Views\StamData\Countries\CountriesViewModel.cs">
         <DependentUpon>CountriesView.xaml</DependentUpon>
       </Compile>
-      <Compile Update="Views\Snacks\SnacksViewModel.cs">
+      <Compile Update="Views\Snacks\SnacksVm.cs">
         <DependentUpon>SnacksView.xaml</DependentUpon>
       </Compile>
       <Compile Update="Views\Warehouses\WarehousesViewModel.cs">
         <DependentUpon>WarehousesView.xaml</DependentUpon>
+      </Compile>
+      <Compile Update="Views\Snacks\SnacksVm.UnitSizes.cs">
+        <DependentUpon>SnacksView.xaml</DependentUpon>
       </Compile>
     </ItemGroup>
 
