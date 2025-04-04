@@ -6,6 +6,7 @@
                          xmlns:local="clr-namespace:WpfApp2.Views.Warehouses.UI"
                          xmlns:abstract="clr-namespace:WpfApp2.Shared.Abstract"
                          xmlns:converters="clr-namespace:WpfApp2.Shared.Converters"
+                         xmlns:formUi="clr-namespace:WpfApp2.Views.StamData.Countries.FormUI"
                          mc:Ignorable="d"
                          d:DesignHeight="450" d:DesignWidth="300">
 
@@ -40,6 +41,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
@@ -54,28 +56,34 @@
                 <TextBox Grid.Row="0" Grid.Column="1" Margin="5"
                          Text="{Binding Selected.Name, UpdateSourceTrigger=PropertyChanged}" />
 
-                <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"
-                       Content="City:" />
-
-                <TextBox Grid.Row="1" Grid.Column="1" Margin="5"
-                         Text="{Binding Selected.City, UpdateSourceTrigger=PropertyChanged}" />
+                <formUi:CountriesComboBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                                          Margin="0,5"
+                                          LabelText="Country:"
+                                          SelectedCountryId="{Binding Selected.CountryId, Mode=TwoWay}"
+                                          SelectedEvent="OnCountrySelected" />
 
                 <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"
-                       Content="Zip code:" />
+                       Content="City:" />
 
                 <TextBox Grid.Row="2" Grid.Column="1" Margin="5"
-                         Text="{Binding Selected.ZipCode, UpdateSourceTrigger=PropertyChanged}" />
+                         Text="{Binding Selected.City, UpdateSourceTrigger=PropertyChanged}" />
 
                 <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Center"
-                       Content="Address:" />
+                       Content="Zip code:" />
 
                 <TextBox Grid.Row="3" Grid.Column="1" Margin="5"
-                         Text="{Binding Selected.Address, UpdateSourceTrigger=PropertyChanged}" />
+                         Text="{Binding Selected.ZipCode, UpdateSourceTrigger=PropertyChanged}" />
 
                 <Label Grid.Row="4" Grid.Column="0" VerticalAlignment="Center"
-                       Content="House number:" />
+                       Content="Address:" />
 
                 <TextBox Grid.Row="4" Grid.Column="1" Margin="5"
+                         Text="{Binding Selected.Address, UpdateSourceTrigger=PropertyChanged}" />
+
+                <Label Grid.Row="5" Grid.Column="0" VerticalAlignment="Center"
+                       Content="House number:" />
+
+                <TextBox Grid.Row="5" Grid.Column="1" Margin="5"
                          Text="{Binding Selected.HouseNumber, UpdateSourceTrigger=PropertyChanged}" />
             </Grid>
 

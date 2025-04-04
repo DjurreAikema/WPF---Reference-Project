@@ -50,4 +50,9 @@ public partial class WarehouseDetails
         if (Selected == null || Selected.Id is 0 or null) return;
         Deleted?.Invoke(Selected.Id.Value);
     }
+
+    private void OnCountrySelected(int? countryId)
+    {
+        if (Selected != null) Selected.CountryId = countryId;
+    }
 }
