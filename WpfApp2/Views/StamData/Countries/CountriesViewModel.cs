@@ -88,7 +88,7 @@ public class CountriesViewModel : IDisposable
         {
             SimulateFailures = true,
             FailureProbability = 0.3,
-            FailureProbabilityOnLoad = 0.3
+            FailureProbabilityOnLoad = 0
         };
 
         // SelectedChanged reducer

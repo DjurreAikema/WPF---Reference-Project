@@ -2,7 +2,6 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using WpfApp2.Data.Classes;
-using WpfApp2.Shared.Services;
 
 namespace WpfApp2.Views.StamData.Countries.FormUI;
 
