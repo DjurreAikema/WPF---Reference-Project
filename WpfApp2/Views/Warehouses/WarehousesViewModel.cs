@@ -95,8 +95,8 @@ public class WarehousesViewModel : IDisposable
         _warehouseService = new WarehouseService
         {
             SimulateFailures = true,
-            FailureProbability = 0.3,
-            FailureProbabilityOnLoad = 0.3
+            FailureProbability = 0.1,
+            FailureProbabilityOnLoad = 0.1
         };
 
         // SelectedChanged reducer

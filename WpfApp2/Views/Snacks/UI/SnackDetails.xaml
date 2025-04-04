@@ -26,6 +26,10 @@
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
@@ -39,6 +43,30 @@
 
             <TextBox Grid.Row="0" Grid.Column="1" Margin="5"
                      Text="{Binding Selected.Name, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"
+                   Content="Brand:" />
+
+            <TextBox Grid.Row="1" Grid.Column="1" Margin="5"
+                     Text="{Binding Selected.Brand, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"
+                   Content="Price:" />
+
+            <TextBox Grid.Row="2" Grid.Column="1" Margin="5"
+                     Text="{Binding Selected.Price, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Center"
+                   Content="Quantity:" />
+
+            <TextBox Grid.Row="3" Grid.Column="1" Margin="5"
+                     Text="{Binding Selected.Quantity, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Label Grid.Row="4" Grid.Column="0" VerticalAlignment="Center"
+                   Content="MultipleUnitSizes:" />
+
+            <CheckBox Grid.Row="4" Grid.Column="1" Margin="5"
+                      IsChecked="{Binding Selected.MultipleUnitSizes, UpdateSourceTrigger=PropertyChanged}"/>
         </Grid>
 
         <!-- Form Actions -->

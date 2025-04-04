@@ -95,8 +95,8 @@ public class SnacksViewModel : IDisposable
         _snackService = new SnackService
         {
             SimulateFailures = true,
-            FailureProbability = 0.3,
-            FailureProbabilityOnLoad = 0.3
+            FailureProbability = 0.1,
+            FailureProbabilityOnLoad = 0.1
         };
 
         // SelectedChanged reducer

@@ -87,7 +87,7 @@ public class CountriesViewModel : IDisposable
         _countryService = new CountryService
         {
             SimulateFailures = true,
-            FailureProbability = 0.3,
+            FailureProbability = 0.1,
             FailureProbabilityOnLoad = 0
         };
 
