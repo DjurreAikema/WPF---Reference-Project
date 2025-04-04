@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using Microsoft.EntityFrameworkCore;
 using WpfApp2.Data.Classes;
 
@@ -22,11 +23,41 @@ public class SnackService
         if (snack.Id == null) return snack;
 
         if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbability)
-            throw new Exception("Simulated database failure during FillWarehouseAsync");
+            throw new Exception("Simulated database failure during FillSnackAsync");
 
         await using var context = CreateDbContext();
 
-        // TODO
+        // Get all unit sizes for this snack
+        var unitSizes = await context.UnitSizes
+            .Where(u => u.SnackId == snack.Id)
+            .ToListAsync();
+
+        // Create a clean collection without circular references
+        snack.UnitSizes = new ObservableCollection<UnitSize>(unitSizes.Select(us => new UnitSize
+        {
+            Id = us.Id,
+            SnackId = us.SnackId,
+            Price = us.Price,
+            Quantity = us.Quantity
+        }));
+
+        var inventories = await context.Inventories
+            .Where(i => i.SnackId == snack.Id)
+            .Include(i => i.Warehouse)
+            .ToListAsync();
+
+        snack.Inventories = new ObservableCollection<Inventory>(inventories.Select(i => new Inventory
+        {
+            Id = i.Id,
+            SnackId = (int) snack.Id,
+            WarehouseId = i.WarehouseId,
+            Quantity = i.Quantity,
+            Warehouse = new Warehouse
+            {
+                Id = i.Warehouse.Id,
+                Name = i.Warehouse.Name
+            }
+        }));
 
         return snack;
     }

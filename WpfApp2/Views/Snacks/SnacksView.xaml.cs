@@ -56,4 +56,15 @@ public partial class SnacksView
     }
 
     private void OnDeleted(int id) => Vm.Delete.OnNext(id);
+
+    // --- Unit Size
+    private void OnUnitSizeSaved(UnitSize obj)
+    {
+        if (obj.Id is 0 or null)
+            Vm.CreateUnitSize.OnNext(obj);
+        else
+            Vm.UpdateUnitSize.OnNext(obj);
+    }
+
+    private void OnUnitSizeDeleted(int id) => Vm.DeleteUnitSize.OnNext(id);
 }

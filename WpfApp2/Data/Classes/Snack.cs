@@ -14,7 +14,7 @@ public class Snack
     public bool MultipleUnitSizes { get; set; }
 
     // --- Navigation properties
-    public ObservableCollection<UnitSize>? UnitSize { get; set; }
+    public ObservableCollection<UnitSize>? UnitSizes { get; set; }
     public ObservableCollection<Inventory>? Inventories { get; set; }
 
     // --- Constructors
@@ -32,6 +32,6 @@ public class Snack
         Quantity = other.Quantity;
         MultipleUnitSizes = other.MultipleUnitSizes;
 
-        UnitSize = other.UnitSize;
+        UnitSizes = other.UnitSizes;
     }
 }

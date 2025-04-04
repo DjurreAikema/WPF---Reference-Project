@@ -1,4 +1,5 @@
-﻿using System.Reactive.Linq;
+﻿using System.Collections.ObjectModel;
+using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using WpfApp2.Data.Classes;
 using WpfApp2.Shared.ExtensionMethods;
@@ -52,27 +53,127 @@ public partial class SnacksVm
                     {
                         _stateSubject.OnNext(_stateSubject.Value with
                         {
-                            Selected = _beforeOperation,
                             InProgress = false
                         });
                         return;
                     }
 
-                    var objs = new List<UnitSize>(_stateSubject.Value.Selected.UnitSize) {obj};
+                    var currentSnack = _stateSubject.Value.Selected;
+                    if (currentSnack == null) return;
+
+                    currentSnack.UnitSizes ??= [];
+                    currentSnack.UnitSizes.Add(obj);
+
+                    // Update the snack in the overall list
+                    var objs = new List<Snack>(_stateSubject.Value.Snacks);
+                    var index = objs.FindIndex(s => s.Id == currentSnack.Id);
+                    if (index >= 0)
+                        objs[index] = currentSnack;
 
                     _stateSubject.OnNext(_stateSubject.Value with
                     {
                         Snacks = objs,
-                        Selected = obj,
+                        Selected = currentSnack,
                         InProgress = false
                     });
                 },
                 error =>
                 {
-                    Console.WriteLine($"Unhandled error in Created reducer: {error.Message}");
+                    Console.WriteLine($"Unhandled error in CreatedUnitSize reducer: {error.Message}");
                     _stateSubject.OnNext(_stateSubject.Value with
                     {
                         Selected = _beforeOperation,
+                        InProgress = false
+                    });
+                }
+            ));
+
+        // UpdatedUnitSize reducer
+        _disposables.Add(UpdatedUnitSizeObs
+            .ObserveOnCurrentSynchronizationContext()
+            .Subscribe(obj =>
+                {
+                    if (obj is null)
+                    {
+                        _stateSubject.OnNext(_stateSubject.Value with
+                        {
+                            InProgress = false
+                        });
+                        return;
+                    }
+
+                    var currentSnack = _stateSubject.Value.Selected;
+                    if (currentSnack?.UnitSizes == null) return;
+
+                    currentSnack.UnitSizes = currentSnack.UnitSizes == null
+                        ? []
+                        : new ObservableCollection<UnitSize>(currentSnack.UnitSizes);
+
+                    // Find and replace the updated UnitSize
+                    var index = currentSnack.UnitSizes.ToList().FindIndex(u => u.Id == obj.Id);
+                    if (index >= 0)
+                        currentSnack.UnitSizes[index] = obj;
+
+                    // Update the snack in the overall list
+                    var objs = new List<Snack>(_stateSubject.Value.Snacks);
+                    var snackIndex = objs.FindIndex(s => s.Id == currentSnack.Id);
+                    if (snackIndex >= 0)
+                        objs[snackIndex] = currentSnack;
+
+                    _stateSubject.OnNext(_stateSubject.Value with
+                    {
+                        Snacks = objs,
+                        Selected = currentSnack,
+                        InProgress = false
+                    });
+                },
+                error =>
+                {
+                    Console.WriteLine($"Unhandled error in UpdatedUnitSize reducer: {error.Message}");
+                    _stateSubject.OnNext(_stateSubject.Value with
+                    {
+                        InProgress = false
+                    });
+                }
+            ));
+
+        // DeletedUnitSize reducer
+        _disposables.Add(DeletedUnitSizeObs
+            .ObserveOnCurrentSynchronizationContext()
+            .Subscribe(obj =>
+                {
+                    if (obj is null)
+                    {
+                        _stateSubject.OnNext(_stateSubject.Value with
+                        {
+                            InProgress = false
+                        });
+                        return;
+                    }
+
+                    var currentSnack = _stateSubject.Value.Selected;
+                    if (currentSnack?.UnitSizes == null) return;
+
+                    currentSnack.UnitSizes = new ObservableCollection<UnitSize>(currentSnack.UnitSizes.Where(u => u.Id != obj.Id));
+
+                    // Update the snack in the overall list
+                    var objs = new List<Snack>(_stateSubject.Value.Snacks);
+                    var snackIndex = objs.FindIndex(s => s.Id == currentSnack.Id);
+                    if (snackIndex >= 0)
+                        objs[snackIndex] = currentSnack;
+
+                    _stateSubject.OnNext(_stateSubject.Value with
+                    {
+                        Snacks = objs,
+                        Selected = currentSnack,
+                        InProgress = false
+                    });
+                },
+                error =>
+                {
+                    Console.WriteLine($"Unhandled error in DeletedUnitSize reducer: {error.Message}");
+                    _stateSubject.OnNext(_stateSubject.Value with
+                    {
                         InProgress = false
                     });
                 }

@@ -40,7 +40,7 @@ public class AppDbContext : DbContext
         // Snack -> UnitSizes (one-to-many)
         modelBuilder.Entity<UnitSize>()
             .HasOne<Snack>()
-            .WithMany(s => s.UnitSize)
+            .WithMany(s => s.UnitSizes)
             .HasForeignKey(s => s.SnackId);
 
         // Configure table names

@@ -39,9 +39,9 @@
                             Add="OnAdd"
                             Reload="OnReload" />
 
-            <!-- Details Component -->
             <TabControl Grid.Column="1" Margin="5">
                 <TabItem Header="Details">
+                    <!-- Details Component -->
                     <ui1:SnackDetails TriggerDispose="{Binding TriggerDispose}"
                                       SelectedObs="{Binding Vm.SelectedObs}"
                                       Saved="OnSaved"
@@ -51,12 +51,17 @@
                 <TabItem Header="Units"
                          IsEnabled="{Binding Flags.HasId }"
                          Visibility="{Binding Flags.HasMultipleUnitSizes, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <!-- UnitSize Component -->
                     <ui1:SnackUnitSizes TriggerDispose="{Binding TriggerDispose}"
-                                        ListObs="{Binding Vm.SelectedUnitSizesObs}"/>
+                                        ListObs="{Binding Vm.SelectedUnitSizesObs}"
+                                        SelectedIdObs="{Binding Vm.SelectedIdObs}"
+                                        Saved="OnUnitSizeSaved"
+                                        Deleted="OnUnitSizeDeleted" />
                 </TabItem>
 
                 <TabItem Header="Inventory"
                          IsEnabled="{Binding Flags.HasId }">
+                    <!-- Inventory Component -->
                     <ui1:SnackInventory TriggerDispose="{Binding TriggerDispose}" />
                 </TabItem>
             </TabControl>

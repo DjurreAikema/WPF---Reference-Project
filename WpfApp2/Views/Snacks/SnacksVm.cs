@@ -38,9 +38,13 @@ public partial class SnacksVm : IDisposable
     // --- Selectors
     public IObservable<List<Snack>> SnacksObs => StateObs.Select(state => state.Snacks);
     public IObservable<Snack?> SelectedObs => StateObs.Select(state => state.Selected);
-    public IObservable<List<UnitSize>?> SelectedUnitSizesObs => StateObs.Select(state => state.Selected?.UnitSize?.ToList() ?? []);
+    public IObservable<int?> SelectedIdObs => StateObs.Select(state => state.Selected?.Id);
     public IObservable<bool> LoadingObs => StateObs.Select(state => state.Loading);
 
+    // UnitSizes
+    public IObservable<List<UnitSize>?> SelectedUnitSizesObs => StateObs.Select(state => state.Selected?.UnitSizes?.ToList() ?? []);
+
+    // Flags
     public IObservable<SnackFlags> FlagsObs => StateObs.Select(state => new SnackFlags
     {
         HasId = state.Selected?.Id != null,
