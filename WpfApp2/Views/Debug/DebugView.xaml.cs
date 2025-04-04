@@ -1,11 +1,10 @@
 using System.Windows;
-using System.Windows.Controls;
 using Microsoft.Extensions.DependencyInjection;
 using WpfApp2.Data;
 
 namespace WpfApp2.Views.Debug;
 
-public partial class DebugView : UserControl
+public partial class DebugView
 {
     public DebugView()
     {
