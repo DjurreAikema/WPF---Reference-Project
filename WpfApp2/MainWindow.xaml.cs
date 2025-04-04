@@ -2,6 +2,7 @@
 using WpfApp2.Shared.Navigation;
 using WpfApp2.Shared.Navigation.UI;
 using WpfApp2.Views;
+using WpfApp2.Views.Debug;
 using WpfApp2.Views.Snacks;
 using WpfApp2.Views.StamData;
 using WpfApp2.Views.Warehouses;
@@ -35,6 +36,7 @@ public partial class MainWindow
     private const string Stamdata = "stamdata";
     private const string Warehouses = "warehouses";
     private const string Snacks = "snacks";
+    private const string Debug = "debug";
 
     private static ObservableCollection<SidebarItem> InitializeSidebarItems()
     {
@@ -57,6 +59,12 @@ public partial class MainWindow
                 Text = "Snacks",
                 IconData = NavigationIcons.Snacks,
                 Destination = Snacks
+            },
+            new SidebarItem
+            {
+                Text = "Debug Tools",
+                IconData = NavigationIcons.Settings,
+                Destination = Debug
             }
         ];
     }
@@ -73,6 +81,9 @@ public partial class MainWindow
                 break;
             case Snacks:
                 _navigationService.NavigateTo(new SnacksView());
+                break;
+            case Debug:
+                _navigationService.NavigateTo(new DebugView());
                 break;
         }
     }

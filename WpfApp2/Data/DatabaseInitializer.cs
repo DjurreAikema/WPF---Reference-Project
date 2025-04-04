@@ -1,4 +1,5 @@
 using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using WpfApp2.Data.Classes;
 
 namespace WpfApp2.Data;
@@ -17,6 +18,7 @@ public class DatabaseInitializer
         CreateWarehousesTable(connection);
         CreateSnacksTable(connection);
         CreateUnitSizesTable(connection);
+        CreateInventoriesTable(connection);
     }
 
     // Countries table
@@ -59,13 +61,11 @@ public class DatabaseInitializer
         var tableCommand = @"
             CREATE TABLE IF NOT EXISTS Snacks (
                 Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                WarehouseId INTEGER NULL,
                 Name TEXT NOT NULL,
                 Brand TEXT NOT NULL,
                 Price REAL NOT NULL,
                 Quantity INTEGER NOT NULL,
-                MultipleUnitSizes INTEGER NOT NULL,
-                FOREIGN KEY (WarehouseId) REFERENCES Warehouses (Id)
+                MultipleUnitSizes INTEGER NOT NULL
             );
         ";
 
@@ -90,11 +90,30 @@ public class DatabaseInitializer
         createTable.ExecuteNonQuery();
     }
 
-    // --- Seeding
-    public static void SeedData(AppDbContext context)
+    // Inventories table
+    private static void CreateInventoriesTable(SqliteConnection connection)
     {
-        // Only seed if the database is empty
-        if (context.Countries.Any()) return;
+        var tableCommand = @"
+        CREATE TABLE IF NOT EXISTS Inventories (
+            Id INTEGER PRIMARY KEY AUTOINCREMENT,
+            SnackId INTEGER NOT NULL,
+            WarehouseId INTEGER NOT NULL,
+            Quantity INTEGER NOT NULL,
+            FOREIGN KEY (SnackId) REFERENCES Snacks (Id),
+            FOREIGN KEY (WarehouseId) REFERENCES Warehouses (Id)
+        );
+    ";
+
+        using var createTable = new SqliteCommand(tableCommand, connection);
+        createTable.ExecuteNonQuery();
+    }
+
+    // --- Seeding
+    public static void SeedData(AppDbContext context, bool forceReseed = false)
+    {
+        // Check if data already exists, unless forceReseed is true
+        if (!forceReseed && context.Countries.Any()) return;
+        if (forceReseed) ClearAllData(context);
 
         // Add countries
         var countries = new List<Country>
@@ -151,7 +170,6 @@ public class DatabaseInitializer
                 Brand = "Frito-Lay",
                 Price = 1.50,
                 Quantity = 100,
-                WarehouseId = 1,
                 MultipleUnitSizes = true
             },
             new()
@@ -160,7 +178,6 @@ public class DatabaseInitializer
                 Brand = "Frito-Lay",
                 Price = 1.25,
                 Quantity = 150,
-                WarehouseId = 1,
                 MultipleUnitSizes = true
             },
             new()
@@ -169,7 +186,6 @@ public class DatabaseInitializer
                 Brand = "Nabisco",
                 Price = 2.00,
                 Quantity = 75,
-                WarehouseId = 2,
                 MultipleUnitSizes = false
             },
             new()
@@ -178,7 +194,6 @@ public class DatabaseInitializer
                 Brand = "Haribo",
                 Price = 1.75,
                 Quantity = 120,
-                WarehouseId = 3,
                 MultipleUnitSizes = true
             }
         };
@@ -198,5 +213,52 @@ public class DatabaseInitializer
         };
         context.UnitSizes.AddRange(unitSizes);
         context.SaveChanges();
+
+        // Add inventory records
+        var inventories = new List<Inventory>
+        {
+            new() {SnackId = 1, WarehouseId = 1, Quantity = 100}, // New York
+            new() {SnackId = 1, WarehouseId = 2, Quantity = 50}, // Los Angeles
+            new() {SnackId = 2, WarehouseId = 1, Quantity = 75}, // New York
+            new() {SnackId = 2, WarehouseId = 2, Quantity = 75}, // Los Angeles
+            new() {SnackId = 2, WarehouseId = 3, Quantity = 50}, // Berlin
+            new() {SnackId = 3, WarehouseId = 2, Quantity = 75}, // Los Angeles
+            new() {SnackId = 4, WarehouseId = 3, Quantity = 180} // Berlin
+        };
+        context.Inventories.AddRange(inventories);
+        context.SaveChanges();
+    }
+
+    private static void ClearAllData(AppDbContext context)
+    {
+        // Use a transaction to ensure all operations succeed or fail together
+        using var transaction = context.Database.BeginTransaction();
+        try
+        {
+            // Disable foreign key checks temporarily
+            context.Database.ExecuteSqlRaw("PRAGMA foreign_keys = OFF;");
+
+            // Clear tables in correct order
+            context.Database.ExecuteSqlRaw("DELETE FROM Inventories");
+            context.Database.ExecuteSqlRaw("DELETE FROM UnitSizes");
+            context.Database.ExecuteSqlRaw("DELETE FROM Snacks");
+            context.Database.ExecuteSqlRaw("DELETE FROM Warehouses");
+            context.Database.ExecuteSqlRaw("DELETE FROM Countries");
+
+            // Reset primary keys (auto-increment)
+            context.Database.ExecuteSqlRaw("DELETE FROM sqlite_sequence WHERE name IN ('Inventories', 'UnitSizes', 'Snacks', 'Warehouses', 'Countries')");
+
+            // Re-enable foreign key checks
+            context.Database.ExecuteSqlRaw("PRAGMA foreign_keys = ON;");
+
+            // Commit the transaction
+            transaction.Commit();
+        }
+        catch
+        {
+            // If anything fails, roll back all changes
+            transaction.Rollback();
+            throw;
+        }
     }
 }

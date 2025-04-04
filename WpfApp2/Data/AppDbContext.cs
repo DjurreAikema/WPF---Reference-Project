@@ -10,6 +10,7 @@ public class AppDbContext : DbContext
     public DbSet<Warehouse> Warehouses { get; set; } = null!;
     public DbSet<Snack> Snacks { get; set; } = null!;
     public DbSet<UnitSize> UnitSizes { get; set; } = null!;
+    public DbSet<Inventory> Inventories { get; set; } = null!;
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
@@ -25,11 +26,16 @@ public class AppDbContext : DbContext
             .WithMany()
             .HasForeignKey(w => w.CountryId);
 
-        // Warehouse -> Snacks (one-to-many)
-        modelBuilder.Entity<Snack>()
-            .HasOne<Warehouse>()
-            .WithMany(w => w.Snacks)
-            .HasForeignKey(s => s.WarehouseId);
+        // Configure the many-to-many relationship using Inventory
+        modelBuilder.Entity<Inventory>()
+            .HasOne(i => i.Snack)
+            .WithMany(s => s.Inventories)
+            .HasForeignKey(i => i.SnackId);
+
+        modelBuilder.Entity<Inventory>()
+            .HasOne(i => i.Warehouse)
+            .WithMany(w => w.Inventories)
+            .HasForeignKey(i => i.WarehouseId);
 
         // Snack -> UnitSizes (one-to-many)
         modelBuilder.Entity<UnitSize>()
@@ -42,5 +48,6 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Warehouse>().ToTable("Warehouses");
         modelBuilder.Entity<Snack>().ToTable("Snacks");
         modelBuilder.Entity<UnitSize>().ToTable("UnitSizes");
+        modelBuilder.Entity<Inventory>().ToTable("Inventories");
     }
 }

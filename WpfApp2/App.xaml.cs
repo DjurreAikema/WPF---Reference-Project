@@ -25,16 +25,24 @@ public partial class App : Application
             options.UseSqlite("Data Source=Inventory.db"));
 
         // Add other services as needed
-        // Example: services.AddScoped<IInventoryService, InventoryService>();
+        services.AddScoped<DatabaseInitializer>();
 
         ServiceProvider = services.BuildServiceProvider();
 
-        // Initialize and seed the database
+        // Initialize database STRUCTURE only
         using (var scope = ServiceProvider.CreateScope())
         {
             var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
             context.Database.EnsureCreated();
-            DatabaseInitializer.SeedData(context);
+
+            // Only initialize database structure, don't seed data automatically
+            DatabaseInitializer.InitializeDatabase();
+
+            // Only seed data if database is completely empty
+            if (!context.Countries.Any() && !context.Warehouses.Any() && !context.Snacks.Any() && !context.Inventories.Any())
+            {
+                DatabaseInitializer.SeedData(context);
+            }
         }
     }
 }

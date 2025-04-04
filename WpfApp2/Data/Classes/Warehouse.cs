@@ -14,8 +14,8 @@ public class Warehouse
     public string Address { get; set; } = string.Empty;
     public string HouseNumber { get; set; } = string.Empty;
 
-    // --- Many
-    public ObservableCollection<Snack>? Snacks { get; set; }
+    // --- Navigation properties
+    public ObservableCollection<Inventory>? Inventories { get; set; }
 
     // --- Constructors
     public Warehouse()
@@ -32,7 +32,5 @@ public class Warehouse
         ZipCode = other.ZipCode;
         Address = other.Address;
         HouseNumber = other.HouseNumber;
-
-        Snacks = other.Snacks;
     }
 }
