@@ -21,7 +21,9 @@ public class UnitSize
     {
         Id = other.Id;
 
+        Name = other.Name;
         Price = other.Price;
         Quantity = other.Quantity;
+        Description = other.Description;
     }
 }

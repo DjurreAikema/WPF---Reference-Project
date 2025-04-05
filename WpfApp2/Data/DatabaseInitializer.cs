@@ -1,3 +1,4 @@
+using System.IO;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using WpfApp2.Data.Classes;
@@ -262,5 +263,29 @@ public class DatabaseInitializer
             transaction.Rollback();
             throw;
         }
+    }
+
+    public static void DeleteDatabase()
+    {
+        // Close all connections to the database
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+
+        // Delete the database file
+        string dbFilePath = "Inventory.db";
+        if (File.Exists(dbFilePath))
+        {
+            try
+            {
+                File.Delete(dbFilePath);
+                Console.WriteLine("Database deleted successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error deleting database: {ex.Message}");
+                throw;
+            }
+        }
+        // Database will be recreated by EF Core when next accessed
     }
 }

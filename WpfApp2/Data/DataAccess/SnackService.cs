@@ -37,8 +37,10 @@ public class SnackService
         {
             Id = us.Id,
             SnackId = us.SnackId,
+            Name = us.Name,
             Price = us.Price,
-            Quantity = us.Quantity
+            Quantity = us.Quantity,
+            Description = us.Description
         }));
 
         var inventories = await context.Inventories
