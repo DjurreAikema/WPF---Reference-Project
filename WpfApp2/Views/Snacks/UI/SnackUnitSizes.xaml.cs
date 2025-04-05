@@ -55,9 +55,9 @@ public partial class SnackUnitSizes
     {
         InitializeComponent();
 
-        ListView.SelectionChanged += (_, _) =>
+        Dg.SelectionChanged += (_, _) =>
         {
-            if (ListView.SelectedItem is UnitSize selected)
+            if (Dg.SelectedItem is UnitSize selected)
             {
                 Selected = selected;
             }

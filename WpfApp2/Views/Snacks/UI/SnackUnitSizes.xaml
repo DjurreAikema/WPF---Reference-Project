@@ -21,20 +21,18 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <!-- List -->
-        <ListView Grid.Row="0" x:Name="ListView"
-                  Margin="5"
-                  ItemsSource="{Binding UnitSizes}">
+        <!-- Grid -->
+        <DataGrid Grid.Row="0" Name="Dg" Margin="5"
+                  ItemsSource="{Binding UnitSizes}"
+                  AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single">
 
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"/>
-                    <GridViewColumn Header="Quantity" DisplayMemberBinding="{Binding Quantity}"/>
-                    <GridViewColumn Header="Price" DisplayMemberBinding="{Binding Price}"/>
-                    <GridViewColumn Header="Description" DisplayMemberBinding="{Binding Description}"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="25*" />
+                <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="15*" />
+                <DataGridTextColumn Header="Price" Binding="{Binding Price}" Width="15*" />
+                <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="45*" />
+            </DataGrid.Columns>
+        </DataGrid>
 
         <!-- Toolbar -->
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="5">
@@ -59,6 +57,8 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
@@ -68,17 +68,28 @@
             </Grid.ColumnDefinitions>
 
             <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"
-                   Content="Quantity:" />
+                   Content="Name:" />
 
             <TextBox Grid.Row="0" Grid.Column="1" Margin="5"
-                     Text="{Binding Selected.Quantity, UpdateSourceTrigger=PropertyChanged}" />
-
+                     Text="{Binding Selected.Name, UpdateSourceTrigger=PropertyChanged}" />
 
             <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"
-                   Content="Price:" />
+                   Content="Quantity:" />
 
             <TextBox Grid.Row="1" Grid.Column="1" Margin="5"
+                     Text="{Binding Selected.Quantity, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"
+                   Content="Price:" />
+
+            <TextBox Grid.Row="2" Grid.Column="1" Margin="5"
                      Text="{Binding Selected.Price, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Center"
+                   Content="Description:" />
+
+            <TextBox Grid.Row="3" Grid.Column="1" Margin="5"
+                     Text="{Binding Selected.Description, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
 
     </Grid>

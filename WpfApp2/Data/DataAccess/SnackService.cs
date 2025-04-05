@@ -6,11 +6,25 @@ namespace WpfApp2.Data.DataAccess;
 
 public class SnackService
 {
+    // -- Dependencies
+    private readonly UnitSizeService _unitSizeService;
+
+    // --- Properties
     public bool SimulateFailures { get; set; } = false;
     public double FailureProbability { get; set; } = 0.3;
     public double FailureProbabilityOnLoad { get; set; } = 0.3;
     private static readonly Random RandomGenerator = new();
 
+    // --- Constructor
+    public SnackService()
+    {
+        _unitSizeService = new UnitSizeService
+        {
+            SimulateFailures = false
+        };
+    }
+
+    // --- Methods
     private static AppDbContext CreateDbContext()
     {
         var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
@@ -25,23 +39,10 @@ public class SnackService
         if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbability)
             throw new Exception("Simulated database failure during FillSnackAsync");
 
+        // UnitSizes
+        snack.UnitSizes = new ObservableCollection<UnitSize>(await _unitSizeService.GetByParentIdAsync(snack.Id.Value));
+
         await using var context = CreateDbContext();
-
-        // Get all unit sizes for this snack
-        var unitSizes = await context.UnitSizes
-            .Where(u => u.SnackId == snack.Id)
-            .ToListAsync();
-
-        // Create a clean collection without circular references
-        snack.UnitSizes = new ObservableCollection<UnitSize>(unitSizes.Select(us => new UnitSize
-        {
-            Id = us.Id,
-            SnackId = us.SnackId,
-            Name = us.Name,
-            Price = us.Price,
-            Quantity = us.Quantity,
-            Description = us.Description
-        }));
 
         var inventories = await context.Inventories
             .Where(i => i.SnackId == snack.Id)

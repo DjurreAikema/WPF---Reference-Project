@@ -17,6 +17,28 @@ public class UnitSizeService
         return new AppDbContext(optionsBuilder.Options);
     }
 
+    public async Task<List<UnitSize>> GetByParentIdAsync(int snackId)
+    {
+        if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbability)
+            throw new Exception("Simulated database failure during GetByParentIdAsync");
+
+        await using var context = CreateDbContext();
+        var unitSizes = await context.UnitSizes
+            .Where(u => u.SnackId == snackId)
+            .ToListAsync();
+
+        // Create clean objects without circular references
+        return unitSizes.Select(us => new UnitSize
+        {
+            Id = us.Id,
+            SnackId = us.SnackId,
+            Name = us.Name,
+            Price = us.Price,
+            Quantity = us.Quantity,
+            Description = us.Description
+        }).ToList();
+    }
+
     public async Task<List<UnitSize>> GetAllAsync()
     {
         if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbabilityOnLoad)
