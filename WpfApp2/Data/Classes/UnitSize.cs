@@ -7,8 +7,10 @@ public class UnitSize
     [Key] public int? Id { get; set; }
     public int? SnackId { get; set; }
 
+    public string Name { get; set; } = string.Empty;
     public double Price { get; set; }
     public int Quantity { get; set; }
+    public string? Description { get; set; }
 
     // --- Constructors
     public UnitSize()

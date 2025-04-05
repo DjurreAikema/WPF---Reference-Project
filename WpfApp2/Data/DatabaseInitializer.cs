@@ -80,8 +80,10 @@ public class DatabaseInitializer
             CREATE TABLE IF NOT EXISTS UnitSizes (
                 Id INTEGER PRIMARY KEY AUTOINCREMENT,
                 SnackId INTEGER NULL,
+                Name TEXT NOT NULL,
                 Price REAL NOT NULL,
                 Quantity INTEGER NOT NULL,
+                Description TEXT,
                 FOREIGN KEY (SnackId) REFERENCES Snacks (Id)
             );
         ";
@@ -94,15 +96,15 @@ public class DatabaseInitializer
     private static void CreateInventoriesTable(SqliteConnection connection)
     {
         var tableCommand = @"
-        CREATE TABLE IF NOT EXISTS Inventories (
-            Id INTEGER PRIMARY KEY AUTOINCREMENT,
-            SnackId INTEGER NOT NULL,
-            WarehouseId INTEGER NOT NULL,
-            Quantity INTEGER NOT NULL,
-            FOREIGN KEY (SnackId) REFERENCES Snacks (Id),
-            FOREIGN KEY (WarehouseId) REFERENCES Warehouses (Id)
-        );
-    ";
+            CREATE TABLE IF NOT EXISTS Inventories (
+                Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                SnackId INTEGER NOT NULL,
+                WarehouseId INTEGER NOT NULL,
+                Quantity INTEGER NOT NULL,
+                FOREIGN KEY (SnackId) REFERENCES Snacks (Id),
+                FOREIGN KEY (WarehouseId) REFERENCES Warehouses (Id)
+            );
+        ";
 
         using var createTable = new SqliteCommand(tableCommand, connection);
         createTable.ExecuteNonQuery();
@@ -203,13 +205,13 @@ public class DatabaseInitializer
         // Add unit sizes
         var unitSizes = new List<UnitSize>
         {
-            new() {SnackId = 1, Price = 1.50, Quantity = 1},
-            new() {SnackId = 1, Price = 4.00, Quantity = 3},
-            new() {SnackId = 2, Price = 1.25, Quantity = 1},
-            new() {SnackId = 2, Price = 3.50, Quantity = 3},
-            new() {SnackId = 2, Price = 5.50, Quantity = 5},
-            new() {SnackId = 4, Price = 1.75, Quantity = 1},
-            new() {SnackId = 4, Price = 4.50, Quantity = 3}
+            new() {Name = "Single", SnackId = 1, Price = 1.50, Quantity = 1},
+            new() {Name = "Three-pack", SnackId = 1, Price = 4.00, Quantity = 3},
+            new() {Name = "Single", SnackId = 2, Price = 1.25, Quantity = 1},
+            new() {Name = "Three-pack", SnackId = 2, Price = 3.50, Quantity = 3},
+            new() {Name = "Five-pack", SnackId = 2, Price = 5.50, Quantity = 5},
+            new() {Name = "Single", SnackId = 4, Price = 1.75, Quantity = 1},
+            new() {Name = "Three-pack", SnackId = 4, Price = 4.50, Quantity = 3}
         };
         context.UnitSizes.AddRange(unitSizes);
         context.SaveChanges();

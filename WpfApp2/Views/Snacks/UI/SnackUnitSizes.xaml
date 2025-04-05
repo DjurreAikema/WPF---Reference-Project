@@ -28,8 +28,10 @@
 
             <ListView.View>
                 <GridView>
+                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"/>
                     <GridViewColumn Header="Quantity" DisplayMemberBinding="{Binding Quantity}"/>
                     <GridViewColumn Header="Price" DisplayMemberBinding="{Binding Price}"/>
+                    <GridViewColumn Header="Description" DisplayMemberBinding="{Binding Description}"/>
                 </GridView>
             </ListView.View>
         </ListView>
