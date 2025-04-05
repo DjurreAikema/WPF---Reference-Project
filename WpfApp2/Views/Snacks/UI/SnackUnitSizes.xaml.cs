@@ -74,6 +74,7 @@ public partial class SnackUnitSizes
     {
         if (Selected == null) return;
         Saved?.Invoke(Selected);
+        Dg.SelectedItem = null;
     }
 
     private void Delete_Click(object sender, RoutedEventArgs e)
