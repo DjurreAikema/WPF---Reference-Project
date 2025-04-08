@@ -30,8 +30,10 @@ public partial class SnackUnitSizes
             c.Disposables.Add(c.SelectedIdObs.Subscribe(id =>
             {
                 c.SelectedId = id;
-                c.Selected = new UnitSize();
-                c.Selected.SnackId = c.SelectedId;
+                c.Selected = new UnitSize
+                {
+                    SnackId = c.SelectedId
+                };
             }));
         }));
 
@@ -66,8 +68,10 @@ public partial class SnackUnitSizes
 
     private void New_Click(object sender, RoutedEventArgs e)
     {
-        Selected = new UnitSize();
-        Selected.SnackId = SelectedId;
+        Selected = new UnitSize
+        {
+            SnackId = SelectedId
+        };
     }
 
     private void Save_Click(object sender, RoutedEventArgs e)

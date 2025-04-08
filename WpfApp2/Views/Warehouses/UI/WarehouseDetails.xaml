@@ -42,38 +42,32 @@
 
             <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"
                    Content="Name:" />
-
             <TextBox Grid.Row="0" Grid.Column="1" Margin="5"
                      Text="{Binding Selected.Name, UpdateSourceTrigger=PropertyChanged}" />
 
             <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"
                    Content="Country:" />
-
             <formUi:CountriesComboBox Grid.Row="1" Grid.Column="1" Margin="5"
                                       SelectedCountryId="{Binding Selected.CountryId, Mode=TwoWay}"
                                       SelectedEvent="OnCountrySelected" />
 
             <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"
                    Content="City:" />
-
             <TextBox Grid.Row="2" Grid.Column="1" Margin="5"
                      Text="{Binding Selected.City, UpdateSourceTrigger=PropertyChanged}" />
 
             <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Center"
                    Content="Zip code:" />
-
             <TextBox Grid.Row="3" Grid.Column="1" Margin="5"
                      Text="{Binding Selected.ZipCode, UpdateSourceTrigger=PropertyChanged}" />
 
             <Label Grid.Row="4" Grid.Column="0" VerticalAlignment="Center"
                    Content="Address:" />
-
             <TextBox Grid.Row="4" Grid.Column="1" Margin="5"
                      Text="{Binding Selected.Address, UpdateSourceTrigger=PropertyChanged}" />
 
             <Label Grid.Row="5" Grid.Column="0" VerticalAlignment="Center"
                    Content="House number:" />
-
             <TextBox Grid.Row="5" Grid.Column="1" Margin="5"
                      Text="{Binding Selected.HouseNumber, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
