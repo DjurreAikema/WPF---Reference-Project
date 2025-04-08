@@ -1,12 +1,103 @@
 <abstract:ADumbComponent x:Class="WpfApp2.Views.Snacks.UI.SnackInventory"
-                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                xmlns:abstract="clr-namespace:WpfApp2.Shared.Abstract"
-                mc:Ignorable="d"
-                d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
+                         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                         xmlns:abstract="clr-namespace:WpfApp2.Shared.Abstract"
+                         xmlns:converters="clr-namespace:WpfApp2.Shared.Converters"
+                         xmlns:ui="clr-namespace:WpfApp2.Views.Snacks.UI"
+                         xmlns:formUi="clr-namespace:WpfApp2.Views.Warehouses.FormUI"
+                         mc:Ignorable="d"
+                         d:DesignHeight="450" d:DesignWidth="400">
+
+    <abstract:ADumbComponent.Resources>
+        <converters:NullToBoolConverter x:Key="NullToBoolConverter" />
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </abstract:ADumbComponent.Resources>
+
+    <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=ui:SnackInventory}}">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Grid -->
+        <DataGrid Grid.Row="0" Name="Dg" Margin="5"
+                  ItemsSource="{Binding InventoryEntries}"
+                  AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single"
+                  CanUserResizeColumns="True" CanUserResizeRows="False" CanUserReorderColumns="False">
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Warehouse" Binding="{Binding Warehouse.Name}" Width="30*" />
+                <DataGridTextColumn Header="Unit Size" Binding="{Binding UnitSizeName}" Width="20*"
+                                    Visibility="{Binding DataContext.HasMultipleUnitSizes,
+                                        RelativeSource={RelativeSource AncestorType=ui:SnackInventory},
+                                        Converter={StaticResource BoolToVisibilityConverter}}" />
+                <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="15*" />
+                <DataGridTextColumn Header="Last Updated" Binding="{Binding LastUpdated, StringFormat=\{0:MM/dd/yyyy\}}" Width="20*" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Toolbar -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="5">
+            <Button Content="New"
+                    Click="New_Click"
+                    Margin="0,0,5,0"
+                    Style="{StaticResource PrimaryButton}" />
+
+            <Button Content="Save"
+                    Click="Save_Click"
+                    Margin="0,0,5,0"
+                    Style="{StaticResource SuccessButton}"
+                    IsEnabled="{Binding Selected, Converter={StaticResource NullToBoolConverter}}" />
+
+            <Button Content="Delete"
+                    Click="Delete_Click"
+                    Style="{StaticResource DangerButton}"
+                    IsEnabled="{Binding Selected, Converter={StaticResource NullToBoolConverter}}" />
+        </StackPanel>
+
+        <!-- Form -->
+        <Grid Grid.Row="2" IsEnabled="{Binding Selected, Converter={StaticResource NullToBoolConverter}}" Margin="5">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Warehouse Selection -->
+            <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"
+                   Content="Warehouse:" />
+            <formUi:WarehousesComboBox Grid.Row="0" Grid.Column="1" Margin="5"
+                                       SelectedId="{Binding Selected.WarehouseId, Mode=TwoWay}"
+                                       SelectedEvent="OnWarehouseSelected" />
+
+            <!-- UnitSize Selection (only visible when snack has multiple unit sizes) -->
+            <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"
+                   Content="Unit Size:"
+                   Visibility="{Binding HasMultipleUnitSizes, Converter={StaticResource BoolToVisibilityConverter}}" />
+            <ComboBox Grid.Row="1" Grid.Column="1" Margin="5"
+                     ItemsSource="{Binding UnitSizes}"
+                     DisplayMemberPath="Name"
+                     SelectedValuePath="Id"
+                     SelectedItem="{Binding SelectedUnitSize}"
+                     SelectionChanged="OnUnitSizeChanged"
+                     Visibility="{Binding HasMultipleUnitSizes, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+            <!-- Quantity Field -->
+            <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"
+                   Content="Quantity:" />
+            <TextBox Grid.Row="2" Grid.Column="1" Margin="5"
+                     Text="{Binding Selected.Quantity, UpdateSourceTrigger=PropertyChanged}" />
+        </Grid>
 
     </Grid>
 </abstract:ADumbComponent>

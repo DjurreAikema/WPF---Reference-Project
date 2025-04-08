@@ -21,12 +21,7 @@ public partial class SnacksView
     {
         InitializeComponent();
 
-        Disposables.Add(Vm.FlagsObs.Subscribe(flags =>
-        {
-            Flags = flags;
-            // c.Selected = obj != null ? new Snack(obj) : null;
-            // OnPropertyChanged(nameof(Flags));
-        }));
+        Disposables.Add(Vm.FlagsObs.Subscribe(flags => { Flags = flags; }));
 
         // Dispose of all subscriptions when the window is closed
         Unloaded += (_, _) =>
@@ -67,4 +62,15 @@ public partial class SnacksView
     }
 
     private void OnUnitSizeDeleted(int id) => Vm.DeleteUnitSize.OnNext(id);
+
+    // --- Inventory
+    private void OnInventorySaved(Inventory obj)
+    {
+        if (obj.Id is 0 or null)
+            Vm.CreateInventory.OnNext(obj);
+        else
+            Vm.UpdateInventory.OnNext(obj);
+    }
+
+    private void OnInventoryDeleted(int id) => Vm.DeleteInventory.OnNext(id);
 }

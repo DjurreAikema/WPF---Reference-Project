@@ -37,6 +37,11 @@ public class AppDbContext : DbContext
             .WithMany(w => w.Inventories)
             .HasForeignKey(i => i.WarehouseId);
 
+        modelBuilder.Entity<Inventory>()
+            .HasOne(i => i.UnitSize)
+            .WithMany()
+            .HasForeignKey(i => i.UnitSizeId);
+
         // Snack -> UnitSizes (one-to-many)
         modelBuilder.Entity<UnitSize>()
             .HasOne<Snack>()

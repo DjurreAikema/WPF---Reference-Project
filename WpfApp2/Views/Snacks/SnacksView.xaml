@@ -62,7 +62,12 @@
                 <TabItem Header="Inventory"
                          IsEnabled="{Binding Flags.HasId }">
                     <!-- Inventory Component -->
-                    <ui1:SnackInventory TriggerDispose="{Binding TriggerDispose}" />
+                    <ui1:SnackInventory TriggerDispose="{Binding TriggerDispose}"
+                                        InventoryObs="{Binding Vm.SelectedInventoryObs}"
+                                        UnitSizesObs="{Binding Vm.SelectedUnitSizesObs}"
+                                        SnackIdObs="{Binding Vm.SelectedIdObs}"
+                                        Saved="OnInventorySaved"
+                                        Deleted="OnInventoryDeleted" />
                 </TabItem>
             </TabControl>
         </Grid>

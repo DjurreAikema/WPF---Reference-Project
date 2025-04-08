@@ -101,9 +101,11 @@ public class DatabaseInitializer
                 Id INTEGER PRIMARY KEY AUTOINCREMENT,
                 SnackId INTEGER NOT NULL,
                 WarehouseId INTEGER NOT NULL,
+                UnitSizeId INTEGER NULL,
                 Quantity INTEGER NOT NULL,
                 FOREIGN KEY (SnackId) REFERENCES Snacks (Id),
-                FOREIGN KEY (WarehouseId) REFERENCES Warehouses (Id)
+                FOREIGN KEY (WarehouseId) REFERENCES Warehouses (Id),
+                FOREIGN KEY (UnitSizeId) REFERENCES UnitSizes (Id)
             );
         ";
 
@@ -220,13 +222,19 @@ public class DatabaseInitializer
         // Add inventory records
         var inventories = new List<Inventory>
         {
-            new() {SnackId = 1, WarehouseId = 1, Quantity = 100}, // New York
-            new() {SnackId = 1, WarehouseId = 2, Quantity = 50}, // Los Angeles
-            new() {SnackId = 2, WarehouseId = 1, Quantity = 75}, // New York
-            new() {SnackId = 2, WarehouseId = 2, Quantity = 75}, // Los Angeles
-            new() {SnackId = 2, WarehouseId = 3, Quantity = 50}, // Berlin
-            new() {SnackId = 3, WarehouseId = 2, Quantity = 75}, // Los Angeles
-            new() {SnackId = 4, WarehouseId = 3, Quantity = 180} // Berlin
+            new() {SnackId = 1, WarehouseId = 1, UnitSizeId = 1, Quantity = 60}, // New York, Single
+            new() {SnackId = 1, WarehouseId = 1, UnitSizeId = 2, Quantity = 40}, // New York, Three-pack
+            new() {SnackId = 1, WarehouseId = 2, UnitSizeId = 1, Quantity = 30}, // Los Angeles, Single
+            new() {SnackId = 1, WarehouseId = 2, UnitSizeId = 2, Quantity = 20}, // Los Angeles, Three-pack
+            new() {SnackId = 2, WarehouseId = 1, UnitSizeId = 3, Quantity = 40}, // New York, Single
+            new() {SnackId = 2, WarehouseId = 1, UnitSizeId = 4, Quantity = 35}, // New York, Three-pack
+            new() {SnackId = 2, WarehouseId = 2, UnitSizeId = 3, Quantity = 45}, // Los Angeles, Single
+            new() {SnackId = 2, WarehouseId = 2, UnitSizeId = 4, Quantity = 30}, // Los Angeles, Three-pack
+            new() {SnackId = 2, WarehouseId = 3, UnitSizeId = 3, Quantity = 25}, // Berlin, Single
+            new() {SnackId = 2, WarehouseId = 3, UnitSizeId = 4, Quantity = 25}, // Berlin, Three-pack
+            new() {SnackId = 3, WarehouseId = 2, UnitSizeId = null, Quantity = 75}, // Los Angeles (no unit sizes)
+            new() {SnackId = 4, WarehouseId = 3, UnitSizeId = 6, Quantity = 100}, // Berlin, Single
+            new() {SnackId = 4, WarehouseId = 3, UnitSizeId = 7, Quantity = 80} // Berlin, Three-pack
         };
         context.Inventories.AddRange(inventories);
         context.SaveChanges();

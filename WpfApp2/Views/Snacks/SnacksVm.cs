@@ -27,9 +27,9 @@ public class SnackFlags
 public partial class SnacksVm : IDisposable
 {
     private readonly CompositeDisposable _disposables = new();
+    private readonly InventoryService _inventoryService;
     private readonly UnitSizeService _unitSizeService;
     private readonly SnackService _snackService;
-
 
     // --- State
     private readonly BehaviorSubject<SnacksState> _stateSubject = new(new SnacksState());
@@ -43,6 +43,9 @@ public partial class SnacksVm : IDisposable
 
     // UnitSizes
     public IObservable<List<UnitSize>?> SelectedUnitSizesObs => StateObs.Select(state => state.Selected?.UnitSizes?.ToList() ?? []);
+
+    // Inventory
+    public IObservable<List<Inventory>?> SelectedInventoryObs => StateObs.Select(state => state.Selected?.Inventories?.ToList() ?? []);
 
     // Flags
     public IObservable<SnackFlags> FlagsObs => StateObs.Select(state => new SnackFlags
@@ -118,12 +121,23 @@ public partial class SnacksVm : IDisposable
             FailureProbabilityOnLoad = 0.1
         };
 
+        // --- UnitSize
         _unitSizeService = new UnitSizeService
         {
             SimulateFailures = true,
             FailureProbability = 0.1,
             FailureProbabilityOnLoad = 0.1
         };
+        UnitSizeVm();
+
+        // --- Inventory
+        _inventoryService = new InventoryService
+        {
+            SimulateFailures = true,
+            FailureProbability = 0.1,
+            FailureProbabilityOnLoad = 0.1
+        };
+        InventoryVm();
 
         // SelectedChanged reducer
         _disposables.Add(SelectedChangedObs
@@ -259,9 +273,6 @@ public partial class SnacksVm : IDisposable
                     });
                 }
             ));
-
-        // --- UnitSize
-        UnitSizeVm();
     }
 
     // --- Dispose

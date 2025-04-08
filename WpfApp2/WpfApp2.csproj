@@ -76,6 +76,9 @@
       <Compile Update="Views\Snacks\SnacksVm.UnitSizes.cs">
         <DependentUpon>SnacksView.xaml</DependentUpon>
       </Compile>
+      <Compile Update="Views\Snacks\SnacksVm.Inventory.cs">
+        <DependentUpon>SnacksView.xaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 
 </Project>

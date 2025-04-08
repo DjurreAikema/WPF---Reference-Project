@@ -45,11 +45,13 @@
             <Button Content="Save"
                     Click="Save_Click"
                     Margin="0,0,5,0"
-                    Style="{StaticResource SuccessButton}" />
+                    Style="{StaticResource SuccessButton}"
+                    IsEnabled="{Binding Selected, Converter={StaticResource NullToBoolConverter}}" />
 
             <Button Content="Delete"
                     Click="Delete_Click"
-                    Style="{StaticResource DangerButton}" />
+                    Style="{StaticResource DangerButton}"
+                    IsEnabled="{Binding Selected, Converter={StaticResource NullToBoolConverter}}" />
         </StackPanel>
 
         <!-- Form -->

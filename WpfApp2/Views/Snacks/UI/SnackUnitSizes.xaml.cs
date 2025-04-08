@@ -66,8 +66,11 @@ public partial class SnackUnitSizes
         };
     }
 
+    // --- UI Event Handlers
     private void New_Click(object sender, RoutedEventArgs e)
     {
+        if (!SelectedId.HasValue) return;
+
         Selected = new UnitSize
         {
             SnackId = SelectedId
@@ -76,7 +79,7 @@ public partial class SnackUnitSizes
 
     private void Save_Click(object sender, RoutedEventArgs e)
     {
-        if (Selected == null) return;
+        if (Selected == null || !SelectedId.HasValue) return;
         Saved?.Invoke(Selected);
         Dg.SelectedItem = null;
     }
