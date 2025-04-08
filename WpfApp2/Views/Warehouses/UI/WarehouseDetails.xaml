@@ -48,7 +48,7 @@
             <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"
                    Content="Country:" />
             <formUi:CountriesComboBox Grid.Row="1" Grid.Column="1" Margin="5"
-                                      SelectedCountryId="{Binding Selected.CountryId, Mode=TwoWay}"
+                                      SelectedId="{Binding Selected.CountryId, Mode=TwoWay}"
                                       SelectedEvent="OnCountrySelected" />
 
             <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"
