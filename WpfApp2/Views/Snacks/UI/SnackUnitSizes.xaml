@@ -24,7 +24,8 @@
         <!-- Grid -->
         <DataGrid Grid.Row="0" Name="Dg" Margin="5"
                   ItemsSource="{Binding UnitSizes}"
-                  AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single">
+                  AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single"
+                  CanUserResizeColumns="False" CanUserResizeRows="False" CanUserReorderColumns="False">
 
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="25*" />
