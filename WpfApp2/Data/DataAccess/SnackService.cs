@@ -8,6 +8,7 @@ public class SnackService
 {
     // -- Dependencies
     private readonly UnitSizeService _unitSizeService;
+    private readonly InventoryService _inventoryService;
 
     // --- Properties
     public bool SimulateFailures { get; set; } = false;
@@ -19,6 +20,11 @@ public class SnackService
     public SnackService()
     {
         _unitSizeService = new UnitSizeService
+        {
+            SimulateFailures = false
+        };
+
+        _inventoryService = new InventoryService
         {
             SimulateFailures = false
         };
@@ -41,26 +47,8 @@ public class SnackService
 
         // UnitSizes
         snack.UnitSizes = new ObservableCollection<UnitSize>(await _unitSizeService.GetByParentIdAsync(snack.Id.Value));
-
-        await using var context = CreateDbContext();
-
-        var inventories = await context.Inventories
-            .Where(i => i.SnackId == snack.Id)
-            .Include(i => i.Warehouse)
-            .ToListAsync();
-
-        snack.Inventories = new ObservableCollection<Inventory>(inventories.Select(i => new Inventory
-        {
-            Id = i.Id,
-            SnackId = (int) snack.Id,
-            WarehouseId = i.WarehouseId,
-            Quantity = i.Quantity,
-            Warehouse = new Warehouse
-            {
-                Id = i.Warehouse.Id,
-                Name = i.Warehouse.Name
-            }
-        }));
+        // Inventory
+        snack.Inventories = new ObservableCollection<Inventory>(await _inventoryService.GetBySnackIdAsync(snack.Id.Value));
 
         return snack;
     }

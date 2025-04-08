@@ -59,10 +59,8 @@ public partial class SnackUnitSizes
 
         Dg.SelectionChanged += (_, _) =>
         {
-            if (Dg.SelectedItem is UnitSize selected)
-            {
-                Selected = selected;
-            }
+            if (Dg.SelectedItem is not UnitSize selected) return;
+            Selected = selected;
         };
     }
 

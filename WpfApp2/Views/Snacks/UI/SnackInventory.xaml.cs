@@ -126,15 +126,13 @@ public partial class SnackInventory
         // Set up grid selection handler
         Dg.SelectionChanged += (_, _) =>
         {
-            if (Dg.SelectedItem is InventoryEntry selected)
-            {
-                Selected = selected;
+            if (Dg.SelectedItem is not InventoryEntry selected) return;
+            Selected = selected;
 
-                // When selecting an item, also select the corresponding unit size if applicable
-                if (HasMultipleUnitSizes && UnitSizes != null)
-                {
-                    SelectedUnitSize = UnitSizes.FirstOrDefault(u => u.Name == selected.UnitSizeName);
-                }
+            // When selecting an item, also select the corresponding unit size if applicable
+            if (HasMultipleUnitSizes && UnitSizes != null)
+            {
+                SelectedUnitSize = UnitSizes.FirstOrDefault(u => u.Name == selected.UnitSizeName);
             }
         };
     }
