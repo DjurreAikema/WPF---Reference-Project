@@ -2,6 +2,8 @@
 using WpfApp2.Shared.Navigation;
 using WpfApp2.Shared.Navigation.UI;
 using WpfApp2.Views.Debug;
+using WpfApp2.Views.InboundOrders;
+using WpfApp2.Views.OutboundOrders;
 using WpfApp2.Views.StamData;
 
 namespace WpfApp2;
@@ -31,6 +33,8 @@ public partial class MainWindow
     #region Sidebar navigation
 
     private const string Stamdata = "stamdata";
+    private const string InboundOrder = "inboundOrder";
+    private const string OutboundOrder = "outboundOrder";
     private const string Debug = "debug";
 
     private static ObservableCollection<SidebarItem> InitializeSidebarItems()
@@ -42,6 +46,18 @@ public partial class MainWindow
                 Text = "Stamdata",
                 IconData = NavigationIcons.Database,
                 Destination = Stamdata
+            },
+            new SidebarItem
+            {
+                Text = "Inbound Orders",
+                IconData = NavigationIcons.Database,
+                Destination = InboundOrder
+            },
+            new SidebarItem
+            {
+                Text = "Outbound Orders",
+                IconData = NavigationIcons.Database,
+                Destination = OutboundOrder
             },
             new SidebarItem
             {
@@ -58,6 +74,12 @@ public partial class MainWindow
         {
             case Stamdata:
                 _navigationService.NavigateTo(new StamdataView());
+                break;
+            case InboundOrder:
+                _navigationService.NavigateTo(new InboundOrdersView());
+                break;
+            case OutboundOrder:
+                _navigationService.NavigateTo(new OutboundOrdersView());
                 break;
             case Debug:
                 _navigationService.NavigateTo(new DebugView());
