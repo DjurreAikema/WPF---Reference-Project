@@ -2,6 +2,7 @@ using System.Windows.Media;
 
 namespace WpfApp2.Shared.Navigation.UI;
 
+// https://pictogrammers.com/library/mdi/
 public static class NavigationIcons
 {
     // Home/Dashboard icon
@@ -29,4 +30,10 @@ public static class NavigationIcons
     // Collapse/Expand icon
     public static Geometry Collapse => Geometry.Parse("M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z");
     public static Geometry Expand => Geometry.Parse("M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z");
+
+    // Inbound Orders (receiving) icon
+    public static Geometry InboundOrder => Geometry.Parse("M15 13L11 17V14H2V12H11V9L15 13M5 20V16H7V18H17V10.19L12 5.69L7.21 10H4.22L12 3L22 12H19V20H5Z");
+
+    // Outbound Orders (shipping) icon
+    public static Geometry OutboundOrder => Geometry.Parse("M24 13L20 17V14H11V12H20V9L24 13M4 20V12H1L11 3L18 9.3V10H15.79L11 5.69L6 10.19V18H16V16H18V20H4Z");
 }

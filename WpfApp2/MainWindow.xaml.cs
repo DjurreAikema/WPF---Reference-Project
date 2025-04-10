@@ -50,13 +50,13 @@ public partial class MainWindow
             new SidebarItem
             {
                 Text = "Inbound Orders",
-                IconData = NavigationIcons.Database,
+                IconData = NavigationIcons.InboundOrder,
                 Destination = InboundOrder
             },
             new SidebarItem
             {
                 Text = "Outbound Orders",
-                IconData = NavigationIcons.Database,
+                IconData = NavigationIcons.OutboundOrder,
                 Destination = OutboundOrder
             },
             new SidebarItem
