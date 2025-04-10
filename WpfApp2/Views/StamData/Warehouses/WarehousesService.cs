@@ -1,4 +1,4 @@
-namespace WpfApp2.Views.Warehouses;
+namespace WpfApp2.Views.StamData.Warehouses;
 
 /// <summary>
 /// Provides a singleton instance of the WarehousesViewModel

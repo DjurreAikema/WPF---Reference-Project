@@ -1,14 +1,14 @@
-<abstract:ADumbComponent x:Class="WpfApp2.Views.Warehouses.FormUI.WarehousesComboBox"
+<abstract:ADumbComponent x:Class="WpfApp2.Views.StamData.Warehouses.FormUI.WarehousesComboBox"
                          xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                          xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                         xmlns:local="clr-namespace:WpfApp2.Views.Warehouses.FormUI"
                          xmlns:abstract="clr-namespace:WpfApp2.Shared.Abstract"
+                         xmlns:formUi="clr-namespace:WpfApp2.Views.StamData.Warehouses.FormUI"
                          mc:Ignorable="d"
                          d:DesignHeight="50" d:DesignWidth="300">
 
-    <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:WarehousesComboBox}}">
+    <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=formUi:WarehousesComboBox}}">
         <ComboBox ItemsSource="{Binding Warehouses}"
                   SelectedItem="{Binding Selected, Mode=TwoWay}"
                   DisplayMemberPath="Name"

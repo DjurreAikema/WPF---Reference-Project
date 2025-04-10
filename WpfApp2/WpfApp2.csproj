@@ -51,15 +51,35 @@
           <XamlRuntime>Wpf</XamlRuntime>
           <SubType>Designer</SubType>
         </Page>
-        <Page Update="Views\Snacks\SnacksView.xaml">
+        <Page Update="Views\StamData\Snacks\SnacksView.xaml">
           <Generator>MSBuild:Compile</Generator>
-          <XamlRuntime>Wpf</XamlRuntime>
-          <SubType>Designer</SubType>
         </Page>
-        <Page Update="Views\Warehouses\WarehousesView.xaml">
+        <Page Update="Views\StamData\Snacks\UI\SnacksList.xaml">
           <Generator>MSBuild:Compile</Generator>
-          <XamlRuntime>Wpf</XamlRuntime>
-          <SubType>Designer</SubType>
+        </Page>
+        <Page Update="Views\StamData\Snacks\UI\SnackDetails.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </Page>
+        <Page Update="Views\StamData\Snacks\UI\SnackInventory.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </Page>
+        <Page Update="Views\StamData\Snacks\UI\SnackUnitSizes.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </Page>
+        <Page Update="Views\StamData\Warehouses\WarehousesView.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </Page>
+        <Page Update="Views\StamData\Warehouses\UI\WarehouseDetails.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </Page>
+        <Page Update="Views\StamData\Warehouses\UI\WarehousesList.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </Page>
+        <Page Update="Views\StamData\Warehouses\UI\WarehouseInventory.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </Page>
+        <Page Update="Views\StamData\Warehouses\FormUI\WarehousesComboBox.xaml">
+          <Generator>MSBuild:Compile</Generator>
         </Page>
     </ItemGroup>
 
@@ -67,17 +87,17 @@
       <Compile Update="Views\StamData\Countries\CountriesViewModel.cs">
         <DependentUpon>CountriesView.xaml</DependentUpon>
       </Compile>
-      <Compile Update="Views\Snacks\SnacksVm.cs">
+      <Compile Update="Views\StamData\Snacks\SnacksVm.cs">
         <DependentUpon>SnacksView.xaml</DependentUpon>
       </Compile>
-      <Compile Update="Views\Warehouses\WarehousesViewModel.cs">
+      <Compile Update="Views\StamData\Snacks\SnacksVm.Inventory.cs">
+        <DependentUpon>SnacksView.xaml</DependentUpon>
+      </Compile>
+      <Compile Update="Views\StamData\Snacks\SnacksVm.UnitSizes.cs">
+        <DependentUpon>SnacksView.xaml</DependentUpon>
+      </Compile>
+      <Compile Update="Views\StamData\Warehouses\WarehousesViewModel.cs">
         <DependentUpon>WarehousesView.xaml</DependentUpon>
-      </Compile>
-      <Compile Update="Views\Snacks\SnacksVm.UnitSizes.cs">
-        <DependentUpon>SnacksView.xaml</DependentUpon>
-      </Compile>
-      <Compile Update="Views\Snacks\SnacksVm.Inventory.cs">
-        <DependentUpon>SnacksView.xaml</DependentUpon>
       </Compile>
     </ItemGroup>
 

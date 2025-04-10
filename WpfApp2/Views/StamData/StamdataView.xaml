@@ -21,8 +21,15 @@
         <WrapPanel Grid.Row="1" Orientation="Horizontal" Margin="10">
             <buttons:SimplifiedNavigationButton
                 Content="Manage Countries"
-                MainButtonClick="ManageCountries_Click"
-                PopupButtonClick="ManageCountriesPopup_Click" />
+                MainButtonClick="Countries_Click" PopupButtonClick="CountriesPopup_Click" />
+
+            <buttons:SimplifiedNavigationButton
+                Content="Manage Snacks"
+                MainButtonClick="Snacks_Click" PopupButtonClick="SnacksPopup_Click" />
+
+            <buttons:SimplifiedNavigationButton
+                Content="Manage Warehouses"
+                MainButtonClick="Warehouses_Click" PopupButtonClick="WarehousesPopup_Click" />
         </WrapPanel>
     </Grid>
 </UserControl>

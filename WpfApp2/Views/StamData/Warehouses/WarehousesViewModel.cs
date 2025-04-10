@@ -7,7 +7,7 @@ using WpfApp2.Data.DataAccess;
 using WpfApp2.Shared.Abstract;
 using WpfApp2.Shared.ExtensionMethods;
 
-namespace WpfApp2.Views.Warehouses;
+namespace WpfApp2.Views.StamData.Warehouses;
 
 public record WarehousesState : BaseState<WarehousesState>
 {

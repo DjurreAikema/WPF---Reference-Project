@@ -1,6 +1,8 @@
 using System.Windows;
 using WpfApp2.Shared.Navigation;
 using WpfApp2.Views.StamData.Countries;
+using WpfApp2.Views.StamData.Snacks;
+using WpfApp2.Views.StamData.Warehouses;
 
 namespace WpfApp2.Views.StamData;
 
@@ -11,7 +13,8 @@ public partial class StamdataView
         InitializeComponent();
     }
 
-    private void ManageCountries_Click(object sender, RoutedEventArgs e)
+    // --- Countries
+    private void Countries_Click(object sender, RoutedEventArgs e)
     {
         // Get the NavigationService from MainWindow
         var mainWindow = (MainWindow) Application.Current.MainWindow;
@@ -21,13 +24,47 @@ public partial class StamdataView
         navigationService.NavigateTo(new CountriesView());
     }
 
-    private void ManageCountriesPopup_Click(object sender, RoutedEventArgs e)
+    private void CountriesPopup_Click(object sender, RoutedEventArgs e)
     {
         // Create a new instance of the CountriesView
         var view = new CountriesView(isStandaloneWindow: true);
 
         // Create and show a new window containing the view
         var window = WindowFactory.CreateWindow(view, "Countries Management", 900, 600);
+        window.Show();
+    }
+
+    // --- Snacks
+    private void Snacks_Click(object sender, RoutedEventArgs e)
+    {
+        var mainWindow = (MainWindow) Application.Current.MainWindow;
+        var navigationService = mainWindow.GetNavigationService();
+
+        navigationService.NavigateTo(new SnacksView());
+    }
+
+    private void SnacksPopup_Click(object sender, RoutedEventArgs e)
+    {
+        var view = new SnacksView(isStandaloneWindow: true);
+
+        var window = WindowFactory.CreateWindow(view, "Snacks Management", 900, 600);
+        window.Show();
+    }
+
+    // --- Warehouses
+    private void Warehouses_Click(object sender, RoutedEventArgs e)
+    {
+        var mainWindow = (MainWindow) Application.Current.MainWindow;
+        var navigationService = mainWindow.GetNavigationService();
+
+        navigationService.NavigateTo(new WarehousesView());
+    }
+
+    private void WarehousesPopup_Click(object sender, RoutedEventArgs e)
+    {
+        var view = new WarehousesView(isStandaloneWindow: true);
+
+        var window = WindowFactory.CreateWindow(view, "Warehouses Management", 900, 600);
         window.Show();
     }
 }

@@ -3,7 +3,7 @@ using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using WpfApp2.Data.Classes;
 
-namespace WpfApp2.Views.Warehouses.FormUI;
+namespace WpfApp2.Views.StamData.Warehouses.FormUI;
 
 public partial class WarehousesComboBox
 {
@@ -61,9 +61,9 @@ public partial class WarehousesComboBox
     // --- Methods
     private void UpdateSelectedFromId()
     {
-        if (SelectedId.HasValue && Warehouses != null && Warehouses.Any())
+        if (SelectedId.HasValue && Warehouses != null && Enumerable.Any<Warehouse>(Warehouses))
         {
-            var warehouse = Warehouses.FirstOrDefault(c => c.Id == SelectedId);
+            var warehouse = Enumerable.FirstOrDefault<Warehouse>(Warehouses, c => c.Id == SelectedId);
             if (warehouse != null) Selected = warehouse;
         }
         else if (!SelectedId.HasValue)

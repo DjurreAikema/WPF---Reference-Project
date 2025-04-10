@@ -2,39 +2,39 @@ using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using WpfApp2.Data.Classes;
 
-namespace WpfApp2.Views.Snacks.UI;
+namespace WpfApp2.Views.StamData.Warehouses.UI;
 
-public partial class SnackDetails
+public partial class WarehouseDetails
 {
     // --- Dependency Properties
     public static readonly DependencyProperty SelectedObsProperty = DependencyProperty.Register(
-        nameof(SelectedObs), typeof(IObservable<Snack?>), typeof(SnackDetails),
+        nameof(SelectedObs), typeof(IObservable<Warehouse?>), typeof(WarehouseDetails),
         new PropertyMetadata(null, (d, _) =>
         {
-            if (d is not SnackDetails c) return;
+            if (d is not WarehouseDetails c) return;
             c.Disposables.Add(c.SelectedObs.Subscribe(obj =>
             {
-                c.Selected = obj != null ? new Snack(obj) : null;
+                c.Selected = obj != null ? new Warehouse(obj) : null;
                 c.OnPropertyChanged(nameof(Selected));
             }));
         }));
 
-    public IObservable<Snack?> SelectedObs
+    public IObservable<Warehouse?> SelectedObs
     {
-        get => (IObservable<Snack?>) GetValue(SelectedObsProperty);
+        get => (IObservable<Warehouse?>) GetValue(SelectedObsProperty);
         set => SetValue(SelectedObsProperty, value);
     }
 
     // --- Events
-    public event Action<Snack>? Saved;
+    public event Action<Warehouse>? Saved;
     public event Action<int>? Deleted;
 
     // --- Internal Properties
-    [ObservableProperty] private Snack? _selected;
+    [ObservableProperty] private Warehouse? _selected;
     [ObservableProperty] private bool _hasId;
 
     // --- Constructor
-    public SnackDetails()
+    public WarehouseDetails()
     {
         InitializeComponent();
     }
@@ -49,5 +49,10 @@ public partial class SnackDetails
     {
         if (Selected == null || Selected.Id is 0 or null) return;
         Deleted?.Invoke(Selected.Id.Value);
+    }
+
+    private void OnCountrySelected(int? countryId)
+    {
+        if (Selected != null) Selected.CountryId = countryId;
     }
 }

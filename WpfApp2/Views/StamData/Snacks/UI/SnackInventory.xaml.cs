@@ -3,7 +3,7 @@ using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using WpfApp2.Data.Classes;
 
-namespace WpfApp2.Views.Snacks.UI;
+namespace WpfApp2.Views.StamData.Snacks.UI;
 
 public class InventoryEntry
 {
@@ -132,7 +132,7 @@ public partial class SnackInventory
             // When selecting an item, also select the corresponding unit size if applicable
             if (HasMultipleUnitSizes && UnitSizes != null)
             {
-                SelectedUnitSize = UnitSizes.FirstOrDefault(u => u.Name == selected.UnitSizeName);
+                SelectedUnitSize = Enumerable.FirstOrDefault<UnitSize>(UnitSizes, u => u.Name == selected.UnitSizeName);
             }
         };
     }
@@ -167,7 +167,7 @@ public partial class SnackInventory
                 string unitSizeName = "Default";
                 if (UnitSizes != null && UnitSizes.Count > 0)
                 {
-                    var unitSize = UnitSizes.FirstOrDefault();
+                    var unitSize = Enumerable.FirstOrDefault<UnitSize>(UnitSizes);
                     if (unitSize != null)
                     {
                         unitSizeName = unitSize.Name;

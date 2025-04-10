@@ -1,11 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using WpfApp2.Shared.Navigation;
 using WpfApp2.Shared.Navigation.UI;
-using WpfApp2.Views;
 using WpfApp2.Views.Debug;
-using WpfApp2.Views.Snacks;
 using WpfApp2.Views.StamData;
-using WpfApp2.Views.Warehouses;
 
 namespace WpfApp2;
 
@@ -34,8 +31,6 @@ public partial class MainWindow
     #region Sidebar navigation
 
     private const string Stamdata = "stamdata";
-    private const string Warehouses = "warehouses";
-    private const string Snacks = "snacks";
     private const string Debug = "debug";
 
     private static ObservableCollection<SidebarItem> InitializeSidebarItems()
@@ -47,18 +42,6 @@ public partial class MainWindow
                 Text = "Stamdata",
                 IconData = NavigationIcons.Database,
                 Destination = Stamdata
-            },
-            new SidebarItem
-            {
-                Text = "Warehouses",
-                IconData = NavigationIcons.Warehouse,
-                Destination = Warehouses
-            },
-            new SidebarItem
-            {
-                Text = "Snacks",
-                IconData = NavigationIcons.Snacks,
-                Destination = Snacks
             },
             new SidebarItem
             {
@@ -75,12 +58,6 @@ public partial class MainWindow
         {
             case Stamdata:
                 _navigationService.NavigateTo(new StamdataView());
-                break;
-            case Warehouses:
-                _navigationService.NavigateTo(new WarehousesView());
-                break;
-            case Snacks:
-                _navigationService.NavigateTo(new SnacksView());
                 break;
             case Debug:
                 _navigationService.NavigateTo(new DebugView());

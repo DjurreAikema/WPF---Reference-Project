@@ -3,7 +3,7 @@ using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using WpfApp2.Data.Classes;
 
-namespace WpfApp2.Views.Snacks.UI;
+namespace WpfApp2.Views.StamData.Snacks.UI;
 
 public partial class SnackUnitSizes
 {

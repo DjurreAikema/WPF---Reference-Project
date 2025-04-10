@@ -1,52 +1,52 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using WpfApp2.Data.Classes;
 using WpfApp2.Shared.ExtensionMethods;
 
-namespace WpfApp2.Views.Snacks;
+namespace WpfApp2.Views.StamData.Snacks;
 
 public partial class SnacksVm
 {
     // --- Track for error recovery
-    private UnitSize? _beforeOperationUnitSize;
+    private Inventory? _beforeOperationInventory;
 
     // --- Sources
-    public readonly Subject<UnitSize> CreateUnitSize = new();
-    public readonly Subject<UnitSize> UpdateUnitSize = new();
-    public readonly Subject<int> DeleteUnitSize = new();
+    public readonly Subject<Inventory> CreateInventory = new();
+    public readonly Subject<Inventory> UpdateInventory = new();
+    public readonly Subject<int> DeleteInventory = new();
 
     // Create
-    private IObservable<UnitSize?> CreatedUnitSizeObs => CreateUnitSize
-        .Do(obj => _beforeOperationUnitSize = new UnitSize(obj))
+    private IObservable<Inventory?> CreatedInventoryObs => CreateInventory
+        .Do(obj => _beforeOperationInventory = new Inventory(obj))
         .ExecuteAsyncOperation(
             _stateSubject,
-            obj => _unitSizeService.AddAsync(obj),
-            _notifications, "Unit size added successfully.", e => $"Error creating unit size: {e.Message}"
+            obj => _inventoryService.AddAsync(obj),
+            _notifications, "Inventory added successfully.", e => $"Error creating inventory: {e.Message}"
         );
 
     // Update
-    private IObservable<UnitSize?> UpdatedUnitSizeObs => UpdateUnitSize
-        .Do(obj => _beforeOperationUnitSize = new UnitSize(obj))
+    private IObservable<Inventory?> UpdatedInventoryObs => UpdateInventory
+        .Do(obj => _beforeOperationInventory = new Inventory(obj))
         .ExecuteAsyncOperation(
             _stateSubject,
-            obj => _unitSizeService.UpdateAsync(obj),
-            _notifications, "Unit size updated successfully.", e => $"Error updating unit size: {e.Message}"
+            obj => _inventoryService.UpdateAsync(obj),
+            _notifications, "Inventory updated successfully.", e => $"Error updating inventory: {e.Message}"
         );
 
-    // Delete
-    private IObservable<UnitSize?> DeletedUnitSizeObs => DeleteUnitSize
+    // Delete inventory
+    private IObservable<Inventory?> DeletedInventoryObs => DeleteInventory
         .ExecuteAsyncOperation(
             _stateSubject,
-            id => _unitSizeService.DeleteAsync(id),
-            _notifications, "Unit size deleted successfully.", e => $"Error deleting unit size: {e.Message}"
+            id => _inventoryService.DeleteAsync(id),
+            _notifications, "Inventory deleted successfully.", e => $"Error deleting inventory: {e.Message}"
         );
 
     // --- Constructor
-    private void UnitSizeVm()
+    private void InventoryVm()
     {
-        // CreatedUnitSize reducer
-        _disposables.Add(CreatedUnitSizeObs
+        // CreatedInventory reducer
+        _disposables.Add(CreatedInventoryObs
             .ObserveOnCurrentSynchronizationContext()
             .Subscribe(obj =>
                 {
@@ -59,8 +59,9 @@ public partial class SnacksVm
                     var currentSnack = _stateSubject.Value.Selected;
                     if (currentSnack == null) return;
 
-                    currentSnack.UnitSizes ??= [];
-                    currentSnack.UnitSizes.Add(obj);
+                    currentSnack.Inventories ??= [];
+                    currentSnack.Inventories.Add(obj);
+                    UpdateTotalQuantity(currentSnack);
 
                     // Update the snack in the overall list
                     var objs = new List<Snack>(_stateSubject.Value.Snacks);
@@ -82,8 +83,8 @@ public partial class SnacksVm
                 }
             ));
 
-        // UpdatedUnitSize reducer
-        _disposables.Add(UpdatedUnitSizeObs
+        // UpdatedInventory reducer
+        _disposables.Add(UpdatedInventoryObs
             .ObserveOnCurrentSynchronizationContext()
             .Subscribe(obj =>
                 {
@@ -94,16 +95,14 @@ public partial class SnacksVm
                     }
 
                     var currentSnack = _stateSubject.Value.Selected;
-                    if (currentSnack?.UnitSizes == null) return;
+                    if (currentSnack?.Inventories == null) return;
 
-                    currentSnack.UnitSizes = currentSnack.UnitSizes == null
-                        ? []
-                        : new ObservableCollection<UnitSize>(currentSnack.UnitSizes);
-
-                    // Find and replace the updated UnitSize
-                    var index = currentSnack.UnitSizes.ToList().FindIndex(u => u.Id == obj.Id);
+                    // Find and replace the updated inventory
+                    var index = currentSnack.Inventories.ToList().FindIndex(i => i.Id == obj.Id);
                     if (index >= 0)
-                        currentSnack.UnitSizes[index] = obj;
+                        currentSnack.Inventories[index] = obj;
+
+                    UpdateTotalQuantity(currentSnack);
 
                     // Update the snack in the overall list
                     var objs = new List<Snack>(_stateSubject.Value.Snacks);
@@ -120,13 +119,13 @@ public partial class SnacksVm
                 },
                 error =>
                 {
-                    Console.WriteLine($"Unhandled error in UpdatedUnitSize reducer: {error.Message}");
+                    Console.WriteLine($"Unhandled error in UpdatedInventory reducer: {error.Message}");
                     _stateSubject.OnNext(_stateSubject.Value with {InProgress = false});
                 }
             ));
 
-        // DeletedUnitSize reducer
-        _disposables.Add(DeletedUnitSizeObs
+        // DeletedInventory reducer
+        _disposables.Add(DeletedInventoryObs
             .ObserveOnCurrentSynchronizationContext()
             .Subscribe(obj =>
                 {
@@ -137,9 +136,10 @@ public partial class SnacksVm
                     }
 
                     var currentSnack = _stateSubject.Value.Selected;
-                    if (currentSnack?.UnitSizes == null) return;
+                    if (currentSnack?.Inventories == null) return;
 
-                    currentSnack.UnitSizes = new ObservableCollection<UnitSize>(currentSnack.UnitSizes.Where(u => u.Id != obj.Id));
+                    currentSnack.Inventories = new ObservableCollection<Inventory>(currentSnack.Inventories.Where(i => i.Id != obj.Id));
+                    UpdateTotalQuantity(currentSnack);
 
                     // Update the snack in the overall list
                     var objs = new List<Snack>(_stateSubject.Value.Snacks);
@@ -156,9 +156,11 @@ public partial class SnacksVm
                 },
                 error =>
                 {
-                    Console.WriteLine($"Unhandled error in DeletedUnitSize reducer: {error.Message}");
+                    Console.WriteLine($"Unhandled error in DeletedInventory reducer: {error.Message}");
                     _stateSubject.OnNext(_stateSubject.Value with {InProgress = false});
                 }
             ));
     }
+
+    private static void UpdateTotalQuantity(Snack snack) => snack.Quantity = snack.Inventories?.Sum(i => i.Quantity) ?? 0;
 }
