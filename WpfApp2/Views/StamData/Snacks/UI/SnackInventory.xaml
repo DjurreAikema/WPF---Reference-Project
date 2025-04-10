@@ -31,12 +31,11 @@
 
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Warehouse" Binding="{Binding Warehouse.Name}" Width="30*" />
-                <DataGridTextColumn Header="Unit Size" Binding="{Binding UnitSizeName}" Width="20*"
+                <DataGridTextColumn Header="Unit Size" Binding="{Binding UnitSizeId}" Width="20*"
                                     Visibility="{Binding HasMultipleUnitSizes,
                                         RelativeSource={RelativeSource AncestorType=ui:SnackInventory},
                                         Converter={StaticResource BoolToVisibilityConverter}}" />
                 <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="15*" />
-                <DataGridTextColumn Header="Last Updated" Binding="{Binding LastUpdated, StringFormat=\{0:MM/dd/yyyy\}}" Width="20*" />
             </DataGrid.Columns>
         </DataGrid>
 
