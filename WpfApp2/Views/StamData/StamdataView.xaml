@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:buttons="clr-namespace:WpfApp2.Shared.UI.Buttons"
+             xmlns:ui="clr-namespace:WpfApp2.Shared.Navigation.UI"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
 
@@ -21,14 +22,17 @@
         <WrapPanel Grid.Row="1" Orientation="Horizontal" Margin="10">
             <buttons:SimplifiedNavigationButton
                 Content="Manage Countries"
+                Icon="{x:Static ui:NavigationIcons.Earth}"
                 MainButtonClick="Countries_Click" PopupButtonClick="CountriesPopup_Click" />
 
             <buttons:SimplifiedNavigationButton
                 Content="Manage Snacks"
+                Icon="{x:Static ui:NavigationIcons.Snacks}"
                 MainButtonClick="Snacks_Click" PopupButtonClick="SnacksPopup_Click" />
 
             <buttons:SimplifiedNavigationButton
                 Content="Manage Warehouses"
+                Icon="{x:Static ui:NavigationIcons.Warehouse}"
                 MainButtonClick="Warehouses_Click" PopupButtonClick="WarehousesPopup_Click" />
         </WrapPanel>
     </Grid>
