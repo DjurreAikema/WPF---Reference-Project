@@ -61,9 +61,9 @@ public partial class WarehousesComboBox
     // --- Methods
     private void UpdateSelectedFromId()
     {
-        if (SelectedId.HasValue && Warehouses != null && Enumerable.Any<Warehouse>(Warehouses))
+        if (SelectedId.HasValue && Warehouses != null && Warehouses.Any())
         {
-            var warehouse = Enumerable.FirstOrDefault<Warehouse>(Warehouses, c => c.Id == SelectedId);
+            var warehouse = Warehouses.FirstOrDefault(c => c.Id == SelectedId);
             if (warehouse != null) Selected = warehouse;
         }
         else if (!SelectedId.HasValue)
