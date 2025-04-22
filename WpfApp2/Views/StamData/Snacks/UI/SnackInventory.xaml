@@ -27,7 +27,7 @@
         <DataGrid Grid.Row="0" Name="Dg" Margin="5"
                   ItemsSource="{Binding InventoryEntries}"
                   AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single"
-                  CanUserResizeColumns="True" CanUserResizeRows="False" CanUserReorderColumns="False">
+                  CanUserResizeColumns="False" CanUserResizeRows="False" CanUserReorderColumns="False">
 
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Warehouse" Binding="{Binding Warehouse.Name}" Width="30*" />
@@ -59,7 +59,7 @@
         </StackPanel>
 
         <!-- Form -->
-        <Grid Grid.Row="2" IsEnabled="{Binding Selected, Converter={StaticResource NullToBoolConverter}}" Margin="5">
+        <Grid Grid.Row="2" IsEnabled="{Binding Selected, Converter={StaticResource NullToBoolConverter}}">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />

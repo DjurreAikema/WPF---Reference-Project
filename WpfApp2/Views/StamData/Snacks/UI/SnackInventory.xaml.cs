@@ -77,9 +77,6 @@ public partial class SnackInventory
     {
         InitializeComponent();
 
-        // Initialize collections
-        InventoryEntries = [];
-
         // Set up grid selection handler
         Dg.SelectionChanged += (_, _) =>
         {
@@ -95,50 +92,9 @@ public partial class SnackInventory
     }
 
     // --- Methods
-    // private void ProcessInventoryData(ObservableCollection<Inventory> inventories)
-    // {
-    //     if (inventories == null || inventories.Count == 0)
-    //     {
-    //         InventoryEntries = [];
-    //         return;
-    //     }
-    //
-    //     var entries = new ObservableCollection<Inventory>();
-    //
-    //     // If we don't have multiple unit sizes, just create entries directly from inventories
-    //     if (!HasMultipleUnitSizes)
-    //     {
-    //         foreach (var inventory in inventories)
-    //         {
-    //             entries.Add(new InventoryEntry(inventory));
-    //         }
-    //     }
-    //     else
-    //     {
-    //         // For multiple unit sizes, we need to connect inventory items with unit sizes
-    //         // This is a simplification - in a real app, you might have a direct relationship in the database
-    //         foreach (var inventory in inventories)
-    //         {
-    //             // For this example, we'll just associate with the first unit size
-    //             // You would need to modify your data model to properly track which inventory belongs to which unit size
-    //             string unitSizeName = "Default";
-    //             if (UnitSizes != null && UnitSizes.Count > 0)
-    //             {
-    //                 var unitSize = Enumerable.FirstOrDefault<UnitSize>(UnitSizes);
-    //                 if (unitSize != null)
-    //                 {
-    //                     unitSizeName = unitSize.Name;
-    //                 }
-    //             }
-    //
-    //             entries.Add(new InventoryEntry(inventory, unitSizeName));
-    //         }
-    //     }
-    //
-    //     InventoryEntries = entries;
-    // }
 
-    // --- UI Event Handlers
+
+    // --- Event Handlers
     private void New_Click(object sender, RoutedEventArgs e)
     {
         if (!SnackId.HasValue) return;
