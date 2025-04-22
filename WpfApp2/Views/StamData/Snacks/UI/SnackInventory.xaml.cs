@@ -9,28 +9,28 @@ public partial class SnackInventory
 {
     // --- Dependency Properties
     public static readonly DependencyProperty InventoryObsProperty = DependencyProperty.Register(
-        nameof(InventoryObs), typeof(IObservable<ObservableCollection<Inventory>>), typeof(SnackInventory),
+        nameof(InventoryObs), typeof(IObservable<IEnumerable<Inventory>>), typeof(SnackInventory),
         new PropertyMetadata(null, (d, _) =>
         {
             if (d is not SnackInventory c) return;
-            c.Disposables.Add(c.InventoryObs.Subscribe(inventories => { c.InventoryEntries = inventories; }));
+            c.Disposables.Add(c.InventoryObs.Subscribe(inventories => { c.InventoryEntries = new ObservableCollection<Inventory>(inventories); }));
         }));
 
-    public IObservable<ObservableCollection<Inventory>> InventoryObs
+    public IObservable<IEnumerable<Inventory>> InventoryObs
     {
-        get => (IObservable<ObservableCollection<Inventory>>) GetValue(InventoryObsProperty);
+        get => (IObservable<IEnumerable<Inventory>>) GetValue(InventoryObsProperty);
         set => SetValue(InventoryObsProperty, value);
     }
 
     public static readonly DependencyProperty UnitSizesObsProperty = DependencyProperty.Register(
-        nameof(UnitSizesObs), typeof(IObservable<ObservableCollection<UnitSize>>), typeof(SnackInventory),
+        nameof(UnitSizesObs), typeof(IObservable<IEnumerable<UnitSize>>), typeof(SnackInventory),
         new PropertyMetadata(null, (d, _) =>
         {
             if (d is not SnackInventory c) return;
             c.Disposables.Add(c.UnitSizesObs.Subscribe(unitSizes =>
             {
-                c.UnitSizes = unitSizes;
-                if (unitSizes != null && unitSizes.Count > 0)
+                c.UnitSizes = new ObservableCollection<UnitSize>(unitSizes);
+                if (unitSizes != null && unitSizes.Any())
                 {
                     c.HasMultipleUnitSizes = true;
                     c.OnPropertyChanged(nameof(HasMultipleUnitSizes));
@@ -38,9 +38,9 @@ public partial class SnackInventory
             }));
         }));
 
-    public IObservable<ObservableCollection<UnitSize>> UnitSizesObs
+    public IObservable<IEnumerable<UnitSize>> UnitSizesObs
     {
-        get => (IObservable<ObservableCollection<UnitSize>>) GetValue(UnitSizesObsProperty);
+        get => (IObservable<IEnumerable<UnitSize>>) GetValue(UnitSizesObsProperty);
         set => SetValue(UnitSizesObsProperty, value);
     }
 
