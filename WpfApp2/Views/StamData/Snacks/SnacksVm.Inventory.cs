@@ -6,8 +6,26 @@ using WpfApp2.Shared.ExtensionMethods;
 
 namespace WpfApp2.Views.StamData.Snacks;
 
+public record SnacksInventoryState
+{
+    public required IEnumerable<Inventory> Inventory { get; init; }
+    public required int? SnackId { get; init; }
+
+    public IEnumerable<UnitSize>? UnitSizes { get; init; }
+    public bool HasMultipleUnitSizes { get; init; }
+}
+
 public partial class SnacksVm
 {
+    // --- Selectors
+    public IObservable<SnacksInventoryState> InventoryStateObs => StateObs.Select(state => new SnacksInventoryState
+    {
+        Inventory = state.Selected?.Inventories?.AsEnumerable() ?? [],
+        SnackId = state.Selected?.Id,
+        UnitSizes = state.Selected?.UnitSizes?.AsEnumerable() ?? [],
+        HasMultipleUnitSizes = state.Selected?.MultipleUnitSizes ?? false
+    });
+
     // --- Track for error recovery
     private Inventory? _beforeOperationInventory;
 

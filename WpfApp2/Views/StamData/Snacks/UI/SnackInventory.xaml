@@ -33,9 +33,7 @@
                 <DataGridTextColumn Header="Warehouse" Binding="{Binding Warehouse.Name}" Width="30*" />
 
                 <DataGridTextColumn Header="Unit Size" Binding="{Binding UnitSize.Name}" Width="20*"
-                                    Visibility="{Binding HasMultipleUnitSizes,
-                                        RelativeSource={RelativeSource AncestorType=ui:SnackInventory},
-                                        Converter={StaticResource BoolToVisibilityConverter}}" />
+                                    Visibility="{Binding HasMultipleUnitSizes, Converter={StaticResource BoolToVisibilityConverter}}" />
 
                 <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="15*" />
             </DataGrid.Columns>
@@ -89,8 +87,7 @@
                       ItemsSource="{Binding UnitSizes}"
                       DisplayMemberPath="Name"
                       SelectedValuePath="Id"
-                      SelectedItem="{Binding SelectedUnitSize}"
-                      SelectionChanged="OnUnitSizeChanged"
+                      SelectedItem="{Binding Selected.UnitSizeId}"
                       Visibility="{Binding HasMultipleUnitSizes, Converter={StaticResource BoolToVisibilityConverter}}" />
 
             <!-- Quantity Field -->

@@ -8,54 +8,25 @@ namespace WpfApp2.Views.StamData.Snacks.UI;
 public partial class SnackInventory
 {
     // --- Dependency Properties
-    public static readonly DependencyProperty InventoryObsProperty = DependencyProperty.Register(
-        nameof(InventoryObs), typeof(IObservable<IEnumerable<Inventory>>), typeof(SnackInventory),
+    public static readonly DependencyProperty InventoryStateObsProperty = DependencyProperty.Register(
+        nameof(InventoryStateObs), typeof(IObservable<SnacksInventoryState>), typeof(SnackInventory),
         new PropertyMetadata(null, (d, _) =>
         {
             if (d is not SnackInventory c) return;
-            c.Disposables.Add(c.InventoryObs.Subscribe(inventories => { c.InventoryEntries = new ObservableCollection<Inventory>(inventories); }));
-        }));
-
-    public IObservable<IEnumerable<Inventory>> InventoryObs
-    {
-        get => (IObservable<IEnumerable<Inventory>>) GetValue(InventoryObsProperty);
-        set => SetValue(InventoryObsProperty, value);
-    }
-
-    public static readonly DependencyProperty UnitSizesObsProperty = DependencyProperty.Register(
-        nameof(UnitSizesObs), typeof(IObservable<IEnumerable<UnitSize>>), typeof(SnackInventory),
-        new PropertyMetadata(null, (d, _) =>
-        {
-            if (d is not SnackInventory c) return;
-            c.Disposables.Add(c.UnitSizesObs.Subscribe(unitSizes =>
+            c.Disposables.Add(c.InventoryStateObs.Subscribe(state =>
             {
-                c.UnitSizes = new ObservableCollection<UnitSize>(unitSizes);
-                if (unitSizes != null && unitSizes.Any())
-                {
-                    c.HasMultipleUnitSizes = true;
-                    c.OnPropertyChanged(nameof(HasMultipleUnitSizes));
-                }
+                c.InventoryEntries = new ObservableCollection<Inventory>(state.Inventory);
+                c.UnitSizes = new ObservableCollection<UnitSize>(state.UnitSizes ?? []);
+                c.HasMultipleUnitSizes = state.HasMultipleUnitSizes;
+                c.SnackId = state.SnackId;
+                c.New();
             }));
         }));
 
-    public IObservable<IEnumerable<UnitSize>> UnitSizesObs
+    public IObservable<SnacksInventoryState> InventoryStateObs
     {
-        get => (IObservable<IEnumerable<UnitSize>>) GetValue(UnitSizesObsProperty);
-        set => SetValue(UnitSizesObsProperty, value);
-    }
-
-    public static readonly DependencyProperty SnackIdObsProperty = DependencyProperty.Register(
-        nameof(SnackIdObs), typeof(IObservable<int?>), typeof(SnackInventory),
-        new PropertyMetadata(null, (d, _) =>
-        {
-            if (d is not SnackInventory c) return;
-            c.Disposables.Add(c.SnackIdObs.Subscribe(id => { c.SnackId = id; }));
-        }));
-
-    public IObservable<int?> SnackIdObs
-    {
-        get => (IObservable<int?>) GetValue(SnackIdObsProperty);
-        set => SetValue(SnackIdObsProperty, value);
+        get => (IObservable<SnacksInventoryState>) GetValue(InventoryStateObsProperty);
+        set => SetValue(InventoryStateObsProperty, value);
     }
 
     // --- Events
@@ -67,10 +38,9 @@ public partial class SnackInventory
     [ObservableProperty] private Inventory? _selected;
 
     [ObservableProperty] private ObservableCollection<UnitSize>? _unitSizes;
-    [ObservableProperty] private UnitSize? _selectedUnitSize;
 
-    [ObservableProperty] private int? _snackId;
     [ObservableProperty] private bool _hasMultipleUnitSizes;
+    [ObservableProperty] private int? _snackId;
 
     // --- Constructor
     public SnackInventory()
@@ -82,36 +52,25 @@ public partial class SnackInventory
         {
             if (Dg.SelectedItem is not Inventory selected) return;
             Selected = selected;
-
-            // When selecting an item, also select the corresponding unit size if applicable
-            if (HasMultipleUnitSizes && UnitSizes != null)
-            {
-                SelectedUnitSize = UnitSizes.FirstOrDefault(u => u.Id == selected.UnitSizeId);
-            }
         };
     }
 
     // --- Methods
-
-
-    // --- Event Handlers
-    private void New_Click(object sender, RoutedEventArgs e)
+    private void New()
     {
         if (!SnackId.HasValue) return;
 
         var newEntry = new Inventory
         {
-            SnackId = SnackId.Value
+            SnackId = SnackId.Value,
+            WarehouseId = null
         };
-
-        // If we have unit sizes and they're selected, associate with the selected unit size
-        if (HasMultipleUnitSizes && SelectedUnitSize != null)
-        {
-            newEntry.UnitSizeId = SelectedUnitSize.Id;
-        }
 
         Selected = newEntry;
     }
+
+    // --- Event Handlers
+    private void New_Click(object sender, RoutedEventArgs e) => New();
 
     private void Save_Click(object sender, RoutedEventArgs e)
     {
@@ -130,11 +89,5 @@ public partial class SnackInventory
     private void OnWarehouseSelected(int? warehouseId)
     {
         if (Selected != null) Selected.WarehouseId = warehouseId ?? 0;
-    }
-
-    private void OnUnitSizeChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-    {
-        if (Selected == null || SelectedUnitSize == null) return;
-        Selected.UnitSizeId = SelectedUnitSize.Id;
     }
 }
