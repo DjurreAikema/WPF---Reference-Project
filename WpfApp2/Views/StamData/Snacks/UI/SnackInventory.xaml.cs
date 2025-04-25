@@ -1,5 +1,7 @@
 using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
 using CommunityToolkit.Mvvm.ComponentModel;
 using WpfApp2.Data.Classes;
 
@@ -19,6 +21,8 @@ public partial class SnackInventory
                 c.UnitSizes = new ObservableCollection<UnitSize>(state.UnitSizes ?? []);
                 c.HasMultipleUnitSizes = state.HasMultipleUnitSizes;
                 c.SnackId = state.SnackId;
+
+                c.UpdateColumns(state.HasMultipleUnitSizes);
                 c.New();
             }));
         }));
@@ -67,6 +71,33 @@ public partial class SnackInventory
         };
 
         Selected = newEntry;
+    }
+
+    private void UpdateColumns(bool hasMultipleUnitSizes)
+    {
+        // First check if we already have the unit size column
+        var unitSizeColumn = Dg.Columns.FirstOrDefault(col =>
+            col is DataGridTextColumn dtc &&
+            dtc.Header as string == "Unit Size");
+
+        if (hasMultipleUnitSizes && unitSizeColumn == null)
+        {
+            // We need to add the column
+            var newColumn = new DataGridTextColumn
+            {
+                Header = "Unit Size",
+                Binding = new Binding("UnitSize.Name"),
+                Width = new DataGridLength(20, DataGridLengthUnitType.Star)
+            };
+
+            // Insert before the Quantity column (assuming it's the last column)
+            Dg.Columns.Insert(Dg.Columns.Count - 1, newColumn);
+        }
+        else if (!hasMultipleUnitSizes && unitSizeColumn != null)
+        {
+            // We need to remove the column
+            Dg.Columns.Remove(unitSizeColumn);
+        }
     }
 
     // --- Event Handlers

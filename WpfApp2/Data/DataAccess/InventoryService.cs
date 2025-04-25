@@ -26,6 +26,7 @@ public class InventoryService
         var inventoryItems = await context.Inventories
             .Where(i => i.SnackId == snackId)
             .Include(i => i.Warehouse)
+            .Include(i => i.UnitSize)
             .ToListAsync();
 
         // Create clean objects without circular references
@@ -40,6 +41,11 @@ public class InventoryService
                 Id = item.Warehouse.Id,
                 Name = item.Warehouse.Name,
                 City = item.Warehouse.City
+            },
+            UnitSize = new UnitSize
+            {
+                Id = item.UnitSize?.Id,
+                Name = item.UnitSize?.Name,
             }
         }).ToList();
     }
