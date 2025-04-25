@@ -44,9 +44,6 @@ public partial class SnacksVm : IDisposable
     // UnitSizes
     public IObservable<List<UnitSize>?> SelectedUnitSizesObs => StateObs.Select(state => state.Selected?.UnitSizes?.ToList() ?? []);
 
-    // Inventory
-    public IObservable<List<Inventory>?> SelectedInventoryObs => StateObs.Select(state => state.Selected?.Inventories?.ToList() ?? []);
-
     // Flags
     public IObservable<SnackFlags> FlagsObs => StateObs.Select(state => new SnackFlags
     {

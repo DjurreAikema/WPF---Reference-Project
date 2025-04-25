@@ -20,6 +20,11 @@ public partial class WarehousesComboBox
         set => SetValue(SelectedIdProperty, value);
     }
 
+    private static void OnSelectedIdChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (d is WarehousesComboBox selector) selector.UpdateSelectedFromId();
+    }
+
     // --- Events
     public event Action<int?>? SelectedEvent;
 
@@ -70,11 +75,6 @@ public partial class WarehousesComboBox
         {
             Selected = null;
         }
-    }
-
-    private static void OnSelectedIdChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        if (d is WarehousesComboBox selector) selector.UpdateSelectedFromId();
     }
 
     private void OnSelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
