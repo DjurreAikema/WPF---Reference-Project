@@ -94,7 +94,7 @@ public class WarehousesViewModel : IDisposable
     {
         _warehouseService = new WarehouseService
         {
-            SimulateFailures = true,
+            SimulateFailures = false,
             FailureProbability = 0.1,
             FailureProbabilityOnLoad = 0.1
         };

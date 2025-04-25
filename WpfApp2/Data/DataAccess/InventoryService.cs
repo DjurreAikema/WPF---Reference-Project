@@ -35,6 +35,7 @@ public class InventoryService
             Id = item.Id,
             SnackId = item.SnackId,
             WarehouseId = item.WarehouseId,
+            UnitSizeId = item.UnitSizeId,
             Quantity = item.Quantity,
             Warehouse = new Warehouse
             {

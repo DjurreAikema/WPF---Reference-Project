@@ -85,8 +85,8 @@
                    Visibility="{Binding HasMultipleUnitSizes, Converter={StaticResource BoolToVisibilityConverter}}" />
             <ComboBox Grid.Row="1" Grid.Column="1" Margin="5"
                       ItemsSource="{Binding UnitSizes}"
-                      DisplayMemberPath="Name" SelectedValuePath="Id"
-                      SelectedItem="{Binding Selected.UnitSize, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                      SelectedValue="{Binding Selected.UnitSizeId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                      SelectedValuePath="Id" DisplayMemberPath="Name"
                       Visibility="{Binding HasMultipleUnitSizes, Converter={StaticResource BoolToVisibilityConverter}}" />
 
             <!-- Quantity Field -->

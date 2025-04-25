@@ -12,9 +12,9 @@ public class Inventory
     public int Quantity { get; set; }
 
     // --- Navigation properties
-    public Snack Snack { get; set; } = null!;
-    public Warehouse Warehouse { get; set; } = null!;
-    public UnitSize? UnitSize { get; set; }
+    public virtual Snack Snack { get; set; } = null!;
+    public virtual Warehouse Warehouse { get; set; } = null!;
+    public virtual UnitSize? UnitSize { get; set; }
 
     // --- Constructors
     public Inventory()
