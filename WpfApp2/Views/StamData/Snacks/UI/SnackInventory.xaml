@@ -31,10 +31,12 @@
 
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Warehouse" Binding="{Binding Warehouse.Name}" Width="30*" />
+
                 <DataGridTextColumn Header="Unit Size" Binding="{Binding UnitSize.Name}" Width="20*"
                                     Visibility="{Binding HasMultipleUnitSizes,
                                         RelativeSource={RelativeSource AncestorType=ui:SnackInventory},
                                         Converter={StaticResource BoolToVisibilityConverter}}" />
+
                 <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="15*" />
             </DataGrid.Columns>
         </DataGrid>
