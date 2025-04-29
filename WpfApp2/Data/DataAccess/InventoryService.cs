@@ -40,8 +40,7 @@ public class InventoryService
             Warehouse = new Warehouse
             {
                 Id = item.Warehouse.Id,
-                Name = item.Warehouse.Name,
-                City = item.Warehouse.City
+                Name = item.Warehouse.Name
             },
             UnitSize = new UnitSize
             {
