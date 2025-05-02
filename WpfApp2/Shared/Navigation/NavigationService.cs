@@ -28,6 +28,16 @@ public class NavigationService
         NavigationChanged?.Invoke(this, EventArgs.Empty);
     }
 
+    public void BaseNavigateTo(UserControl view)
+    {
+        _navigationStack.Clear();
+
+        _contentControl.Content = view;
+        _navigationStack.Push(view);
+
+        NavigationChanged?.Invoke(this, EventArgs.Empty);
+    }
+
     public void NavigateBack()
     {
         if (_navigationStack.Count <= 1) return;
@@ -46,7 +56,7 @@ public class NavigationService
             .Select(GetViewName);
     }
 
-    private string GetViewName(UserControl view)
+    private static string GetViewName(UserControl view)
     {
         // Try to get a display name from the view
         var type = view.GetType();

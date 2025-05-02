@@ -73,16 +73,16 @@ public partial class MainWindow
         switch (destination)
         {
             case Stamdata:
-                _navigationService.NavigateTo(new StamdataView());
+                _navigationService.BaseNavigateTo(new StamdataView());
                 break;
             case InboundOrder:
-                _navigationService.NavigateTo(new InboundOrdersView());
+                _navigationService.BaseNavigateTo(new InboundOrdersView());
                 break;
             case OutboundOrder:
-                _navigationService.NavigateTo(new OutboundOrdersView());
+                _navigationService.BaseNavigateTo(new OutboundOrdersView());
                 break;
             case Debug:
-                _navigationService.NavigateTo(new DebugView());
+                _navigationService.BaseNavigateTo(new DebugView());
                 break;
         }
     }
