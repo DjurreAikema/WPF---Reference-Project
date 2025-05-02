@@ -13,7 +13,7 @@
         <converters:NullToBoolConverter x:Key="NullToBoolConverter" />
     </abstract:ADumbComponent.Resources>
 
-    <Grid DataContext="{Binding  RelativeSource={RelativeSource AncestorType=ui:SnackUnitSizes}}">
+    <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=ui:SnackUnitSizes}}">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />

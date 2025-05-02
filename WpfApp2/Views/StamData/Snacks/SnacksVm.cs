@@ -113,7 +113,7 @@ public partial class SnacksVm : IDisposable
     {
         _snackService = new SnackService
         {
-            SimulateFailures = true,
+            SimulateFailures = false,
             FailureProbability = 0.1,
             FailureProbabilityOnLoad = 0.1
         };
@@ -121,7 +121,7 @@ public partial class SnacksVm : IDisposable
         // --- UnitSize
         _unitSizeService = new UnitSizeService
         {
-            SimulateFailures = true,
+            SimulateFailures = false,
             FailureProbability = 0.1,
             FailureProbabilityOnLoad = 0.1
         };
@@ -130,7 +130,7 @@ public partial class SnacksVm : IDisposable
         // --- Inventory
         _inventoryService = new InventoryService
         {
-            SimulateFailures = true,
+            SimulateFailures = false,
             FailureProbability = 0.1,
             FailureProbabilityOnLoad = 0.1
         };
