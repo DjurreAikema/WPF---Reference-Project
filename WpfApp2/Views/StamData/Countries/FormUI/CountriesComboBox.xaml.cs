@@ -81,7 +81,7 @@ public partial class CountriesComboBox
         if (isControlPressed)
         {
             // Open in a new window if Control is pressed
-            var view = new CountriesView(isStandaloneWindow: true);
+            var view = new CountriesView();
             var window = WindowFactory.CreateWindow(view, "Countries Management", 900, 600);
             window.Show();
         }

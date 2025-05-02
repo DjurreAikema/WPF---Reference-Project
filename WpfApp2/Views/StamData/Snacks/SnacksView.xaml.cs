@@ -1,7 +1,6 @@
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Subjects;
-using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using WpfApp2.Data.Classes;
 
@@ -13,19 +12,14 @@ public partial class SnacksView
     public SnacksVm Vm { get; } = new();
     public Subject<bool> TriggerDispose { get; set; } = new();
     private readonly CompositeDisposable _disposables = new();
-    private bool IsStandaloneWindow { get; set; }
 
     // --- Internal Properties
     [ObservableProperty] private SnackFlags? _flags;
 
     // --- Constructor
-    public SnacksView(bool isStandaloneWindow = false)
+    public SnacksView()
     {
         InitializeComponent();
-        IsStandaloneWindow = isStandaloneWindow;
-
-        // Hide back button if opened as standalone window
-        BackButton.Visibility = IsStandaloneWindow ? Visibility.Collapsed : Visibility.Visible;
 
         _disposables.Add(Vm.FlagsObs.Subscribe(flags => { Flags = flags; }));
 
@@ -79,13 +73,4 @@ public partial class SnacksView
     }
 
     private void OnInventoryDeleted(int id) => Vm.DeleteInventory.OnNext(id);
-
-    // --- Internal
-    private void BackButton_Click(object sender, RoutedEventArgs e)
-    {
-        // Navigate back to Stamdata
-        var mainWindow = (MainWindow) Application.Current.MainWindow;
-        var navigationService = mainWindow.GetNavigationService();
-        navigationService.NavigateBack();
-    }
 }

@@ -15,11 +15,29 @@
 
         <!-- Sidebar -->
         <ui:Sidebar x:Name="MainSidebar" Grid.Column="0"
-                            NavigationRequested="OnNavigationRequested" />
+                    NavigationRequested="OnNavigationRequested" />
 
         <!-- Main Content Area -->
         <Grid Grid.Column="1" Background="White">
-            <ContentControl x:Name="MainContentControl" Margin="10" />
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- Breadcrumb Navigation -->
+            <ui:Breadcrumb Grid.Row="0" Height="40" />
+
+            <!-- Main Content -->
+            <ContentControl x:Name="MainContentControl" Grid.Row="1" Margin="10" />
+
+            <!-- Footer -->
+            <Border Grid.Row="2" Background="#F0F0F0" Height="30">
+                <TextBlock Text="Inventory Management System - © 2025"
+                           HorizontalAlignment="Right" VerticalAlignment="Center"
+                           Margin="10,0" Foreground="Gray" />
+            </Border>
         </Grid>
     </Grid>
 </Window>

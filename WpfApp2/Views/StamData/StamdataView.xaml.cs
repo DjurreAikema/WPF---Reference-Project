@@ -27,7 +27,7 @@ public partial class StamdataView
     private void CountriesPopup_Click(object sender, RoutedEventArgs e)
     {
         // Create a new instance of the CountriesView
-        var view = new CountriesView(isStandaloneWindow: true);
+        var view = new CountriesView();
 
         // Create and show a new window containing the view
         var window = WindowFactory.CreateWindow(view, "Countries Management", 900, 600);
@@ -45,8 +45,7 @@ public partial class StamdataView
 
     private void SnacksPopup_Click(object sender, RoutedEventArgs e)
     {
-        var view = new SnacksView(isStandaloneWindow: true);
-
+        var view = new SnacksView();
         var window = WindowFactory.CreateWindow(view, "Snacks Management", 900, 600);
         window.Show();
     }
@@ -62,8 +61,7 @@ public partial class StamdataView
 
     private void WarehousesPopup_Click(object sender, RoutedEventArgs e)
     {
-        var view = new WarehousesView(isStandaloneWindow: true);
-
+        var view = new WarehousesView();
         var window = WindowFactory.CreateWindow(view, "Warehouses Management", 900, 600);
         window.Show();
     }

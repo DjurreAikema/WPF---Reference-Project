@@ -13,7 +13,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <!-- Header -->
@@ -42,18 +41,6 @@
                                   Saved="OnCountrySaved"
                                   Deleted="OnCountryDeleted" />
         </Grid>
-
-        <!-- Footer -->
-        <StackPanel Grid.Row="2"
-                    Orientation="Horizontal"
-                    HorizontalAlignment="Right"
-                    Margin="10">
-
-            <Button x:Name="BackButton"
-                    Content="Back to Stamdata"
-                    Click="BackButton_Click"
-                    Padding="10,5" />
-        </StackPanel>
 
         <!-- Loading Spinner -->
         <ui:ObsLoadingSpinner Grid.Row="0" Grid.RowSpan="3" Panel.ZIndex="100"

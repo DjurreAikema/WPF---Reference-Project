@@ -1,6 +1,5 @@
 using System.Reactive;
 using System.Reactive.Subjects;
-using System.Windows;
 using WpfApp2.Data.Classes;
 
 namespace WpfApp2.Views.StamData.Warehouses;
@@ -9,15 +8,10 @@ public partial class WarehousesView
 {
     public WarehousesViewModel Vm { get; } = new();
     public Subject<bool> TriggerDispose { get; set; } = new();
-    private bool IsStandaloneWindow { get; set; }
 
-    public WarehousesView(bool isStandaloneWindow = false)
+    public WarehousesView()
     {
         InitializeComponent();
-        IsStandaloneWindow = isStandaloneWindow;
-
-        // Hide back button if opened as standalone window
-        BackButton.Visibility = IsStandaloneWindow ? Visibility.Collapsed : Visibility.Visible;
 
         // Dispose of all subscriptions when the window is closed
         Unloaded += (_, _) =>
@@ -46,13 +40,4 @@ public partial class WarehousesView
     }
 
     private void OnDeleted(int id) => Vm.Delete.OnNext(id);
-
-    // --- Internal
-    private void BackButton_Click(object sender, RoutedEventArgs e)
-    {
-        // Navigate back to Stamdata
-        var mainWindow = (MainWindow) Application.Current.MainWindow;
-        var navigationService = mainWindow.GetNavigationService();
-        navigationService.NavigateBack();
-    }
 }
