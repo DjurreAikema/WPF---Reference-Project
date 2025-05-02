@@ -20,7 +20,7 @@
                 ToolTip="Go Back" Style="{StaticResource PrimaryButton}" />
 
         <!-- Breadcrumb Path Display -->
-        <ItemsControl Grid.Column="1"
+        <ItemsControl Grid.Column="1" x:Name="BreadcrumbItems"
                       ItemsSource="{Binding NavigationPath}"
                       Margin="5,0,0,0">
 
@@ -33,14 +33,11 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding}"
-                                   VerticalAlignment="Center"
-                                   Margin="0,0,0,0" />
+                        <TextBlock x:Name="Separator" Text=" > "
+                                   VerticalAlignment="Center" Margin="5,0" Foreground="Gray" />
 
-                        <TextBlock Text=" > "
-                                   VerticalAlignment="Center"
-                                   Margin="5,0"
-                                   Foreground="Gray" />
+                        <TextBlock Text="{Binding}"
+                                   VerticalAlignment="Center" Margin="0,0,0,0" />
                     </StackPanel>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
