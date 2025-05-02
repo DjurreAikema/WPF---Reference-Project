@@ -9,12 +9,20 @@
                          d:DesignHeight="50" d:DesignWidth="300">
 
     <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:CountriesComboBox}}">
-        <ComboBox ItemsSource="{Binding Countries}"
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <ComboBox Grid.Column="0" ItemsSource="{Binding Countries}"
                   SelectedItem="{Binding Selected, Mode=TwoWay}"
-                  DisplayMemberPath="Name"
-                  SelectedValuePath="Id"
+                  DisplayMemberPath="Name" SelectedValuePath="Id"
                   SelectionChanged="OnSelectionChanged"
                   IsEnabled="{Binding IsEnabled}" />
+
+        <Button Grid.Column="1" Content="+" Click="AddButton_Click"
+                Width="30" Margin="5,0,0,0"
+                ToolTip="Add New Country" Style="{StaticResource PrimaryButton}" />
     </Grid>
 
 </abstract:ADumbComponent>

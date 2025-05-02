@@ -1,7 +1,9 @@
 using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using WpfApp2.Data.Classes;
+using WpfApp2.Shared.Navigation;
 
 namespace WpfApp2.Views.StamData.Countries.FormUI;
 
@@ -69,6 +71,28 @@ public partial class CountriesComboBox
         else if (!SelectedId.HasValue)
         {
             Selected = null;
+        }
+    }
+
+    private void AddButton_Click(object sender, RoutedEventArgs e)
+    {
+        var isControlPressed = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
+
+        if (isControlPressed)
+        {
+            // Open in a new window if Control is pressed
+            var view = new CountriesView(isStandaloneWindow: true);
+            var window = WindowFactory.CreateWindow(view, "Countries Management", 900, 600);
+            window.Show();
+        }
+        else
+        {
+            // Navigate in the main content area if Control is not pressed
+            var mainWindow = (MainWindow) Application.Current.MainWindow;
+            var navigationService = mainWindow.GetNavigationService();
+
+            var countriesView = new CountriesView();
+            navigationService.NavigateTo(countriesView);
         }
     }
 
