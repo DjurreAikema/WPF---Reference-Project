@@ -6,7 +6,7 @@ namespace WpfApp2.Views.StamData.Countries;
 
 public partial class CountriesView
 {
-    public CountriesViewModel Vm => CountriesService.Instance;
+    public CountriesViewModel Vm { get; } = new();
     public Subject<bool> TriggerDispose { get; set; } = new();
 
     public CountriesView()
@@ -16,6 +16,7 @@ public partial class CountriesView
         // Dispose of all subscriptions when the window is closed
         Unloaded += (_, _) =>
         {
+            Vm.Dispose();
             TriggerDispose.OnNext(true);
         };
     }
