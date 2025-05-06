@@ -1,3 +1,5 @@
+using WpfApp2.Shared.Debugging.Extensions;
+
 namespace WpfApp2.Views.StamData.Warehouses;
 
 /// <summary>
@@ -6,8 +8,8 @@ namespace WpfApp2.Views.StamData.Warehouses;
 /// </summary>
 public class WarehousesService
 {
-    private static readonly Lazy<WarehousesViewModel> _instance =
-        new Lazy<WarehousesViewModel>(() => new WarehousesViewModel());
+    private static readonly Lazy<WarehousesViewModel> _instance = new(() => new WarehousesViewModel()
+        .RegisterWithTracker(isSingleton: true));
 
     /// <summary>
     /// Gets the singleton instance of the WarehousesViewModel.

@@ -1,10 +1,9 @@
 using System.Windows;
-using System.Windows.Controls;
 using WpfApp2.Shared.Debugging;
 
 namespace WpfApp2.Views.Debug.VmTracking;
 
-public partial class VmTrackingView : UserControl
+public partial class VmTrackingView
 {
     // --- Constructor
     public VmTrackingView()
@@ -20,6 +19,9 @@ public partial class VmTrackingView : UserControl
     {
         var stats = ViewModelTracker.Instance.GetAllStats();
         VmStatsListView.ItemsSource = stats;
+
+        var instances = ViewModelTracker.Instance.GetAllInstances();
+        VmInstancesListView.ItemsSource = instances;
     }
 
     private void ToggleTracking_Click(object sender, RoutedEventArgs e)
