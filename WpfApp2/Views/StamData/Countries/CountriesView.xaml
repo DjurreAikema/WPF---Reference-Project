@@ -43,11 +43,11 @@
         </Grid>
 
         <!-- Loading Spinner -->
-        <ui:ObsLoadingSpinner Grid.Row="0" Grid.RowSpan="3" Panel.ZIndex="100"
+        <ui:ObsLoadingSpinner Grid.Row="0" Grid.RowSpan="2" Panel.ZIndex="100"
                               IsLoadingObs="{Binding Vm.LoadingObs}" />
 
         <!-- Notification Control -->
-        <ui:NotificationControl Grid.Row="0" Grid.RowSpan="3" Panel.ZIndex="100"
+        <ui:NotificationControl Grid.Row="0" Grid.RowSpan="2" Panel.ZIndex="100"
                                 NotificationsObs="{Binding Vm.NotificationsObs}" />
     </Grid>
 </UserControl>

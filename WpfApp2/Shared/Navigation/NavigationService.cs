@@ -1,4 +1,5 @@
 using System.Windows.Controls;
+using WpfApp2.Shared.Navigation.Interfaces;
 
 namespace WpfApp2.Shared.Navigation;
 
@@ -20,20 +21,49 @@ public class NavigationService
     }
 
     // --- Methods
+    private void NotifyNavigatedFrom(UserControl view, bool isInStack)
+    {
+        if (view is INavigationAware navigationAware)
+        {
+            navigationAware.OnNavigatedFrom(isInStack);
+        }
+    }
+
+    private void NotifyNavigatedTo(UserControl view)
+    {
+        if (view is INavigationAware navigationAware)
+        {
+            navigationAware.OnNavigatedTo();
+        }
+    }
+
     public void NavigateTo(UserControl view)
     {
+        if (_navigationStack.Count > 0)
+        {
+            var currentView = _navigationStack.Peek();
+            NotifyNavigatedFrom(currentView, true);
+        }
+
         _contentControl.Content = view;
         _navigationStack.Push(view);
+        NotifyNavigatedTo(view);
 
         NavigationChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public void BaseNavigateTo(UserControl view)
     {
-        _navigationStack.Clear();
+        // Notify all views in stack that they're being removed
+        foreach (var oldView in _navigationStack)
+        {
+            NotifyNavigatedFrom(oldView, false);
+        }
 
+        _navigationStack.Clear();
         _contentControl.Content = view;
         _navigationStack.Push(view);
+        NotifyNavigatedTo(view);
 
         NavigationChanged?.Invoke(this, EventArgs.Empty);
     }
@@ -42,9 +72,12 @@ public class NavigationService
     {
         if (_navigationStack.Count <= 1) return;
 
-        _navigationStack.Pop();
+        var currentView = _navigationStack.Pop();
+        NotifyNavigatedFrom(currentView, false);
+
         var previous = _navigationStack.Peek();
         _contentControl.Content = previous;
+        NotifyNavigatedTo(previous);
 
         NavigationChanged?.Invoke(this, EventArgs.Empty);
     }
@@ -56,6 +89,7 @@ public class NavigationService
             .Select(GetViewName);
     }
 
+    // --- Helpers
     private static string GetViewName(UserControl view)
     {
         // Try to get a display name from the view

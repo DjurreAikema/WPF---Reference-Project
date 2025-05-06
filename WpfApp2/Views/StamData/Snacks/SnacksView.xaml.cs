@@ -1,20 +1,44 @@
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Subjects;
+using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using WpfApp2.Data.Classes;
+using WpfApp2.Shared.Navigation.Interfaces;
 
 namespace WpfApp2.Views.StamData.Snacks;
 
 [ObservableObject]
-public partial class SnacksView
+public partial class SnacksView : INavigationAware
 {
-    public SnacksVm Vm { get; } = new();
+    public SnacksVm Vm { get; set; } = new();
     public Subject<bool> TriggerDispose { get; set; } = new();
-    private readonly CompositeDisposable _disposables = new();
+    private CompositeDisposable _disposables = new();
 
     // --- Internal Properties
+    private bool _shouldDispose;
     [ObservableProperty] private SnackFlags? _flags;
+
+    // --- Navigation
+    public void OnNavigatedTo()
+    {
+        if (!_shouldDispose) return;
+
+        Vm = new SnacksVm();
+        _disposables = new CompositeDisposable();
+        _disposables.Add(Vm.FlagsObs.Subscribe(flags => { Flags = flags; }));
+        _shouldDispose = false;
+    }
+
+    public void OnNavigatedFrom(bool isInStack)
+    {
+        _shouldDispose = !isInStack;
+        if (!_shouldDispose) return;
+
+        Vm.Dispose();
+        _disposables.Dispose();
+        TriggerDispose.OnNext(true);
+    }
 
     // --- Constructor
     public SnacksView()
@@ -26,6 +50,9 @@ public partial class SnacksView
         // Dispose of all subscriptions when the window is closed
         Unloaded += (_, _) =>
         {
+            if (Application.Current.MainWindow == null || !_shouldDispose)
+                return;
+
             Vm.Dispose();
             _disposables.Dispose();
             TriggerDispose.OnNext(true);

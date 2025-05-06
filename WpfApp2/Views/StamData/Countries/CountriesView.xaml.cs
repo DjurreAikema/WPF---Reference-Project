@@ -1,13 +1,36 @@
 using System.Reactive;
 using System.Reactive.Subjects;
+using System.Windows;
 using WpfApp2.Data.Classes;
+using WpfApp2.Shared.Navigation.Interfaces;
 
 namespace WpfApp2.Views.StamData.Countries;
 
-public partial class CountriesView
+public partial class CountriesView : INavigationAware
 {
-    public CountriesViewModel Vm { get; } = new();
+    public CountriesViewModel Vm { get; set; } = new();
     public Subject<bool> TriggerDispose { get; set; } = new();
+
+    // --- Internal Properties
+    private bool _shouldDispose;
+
+    // --- Navigation
+    public void OnNavigatedTo()
+    {
+        if (!_shouldDispose) return;
+
+        Vm = new CountriesViewModel();
+        _shouldDispose = false;
+    }
+
+    public void OnNavigatedFrom(bool isInStack)
+    {
+        _shouldDispose = !isInStack;
+        if (!_shouldDispose) return;
+
+        Vm.Dispose();
+        TriggerDispose.OnNext(true);
+    }
 
     public CountriesView()
     {
@@ -16,6 +39,9 @@ public partial class CountriesView
         // Dispose of all subscriptions when the window is closed
         Unloaded += (_, _) =>
         {
+            if (Application.Current.MainWindow == null || !_shouldDispose)
+                return;
+
             Vm.Dispose();
             TriggerDispose.OnNext(true);
         };

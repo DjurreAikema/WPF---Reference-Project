@@ -84,7 +84,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Views\StamData\Countries\CountriesViewModel.cs">
+      <Compile Update="Views\StamData\Countries\CountriesVm.cs">
         <DependentUpon>CountriesView.xaml</DependentUpon>
       </Compile>
       <Compile Update="Views\StamData\Snacks\SnacksVm.cs">
@@ -96,7 +96,7 @@
       <Compile Update="Views\StamData\Snacks\SnacksVm.UnitSizes.cs">
         <DependentUpon>SnacksView.xaml</DependentUpon>
       </Compile>
-      <Compile Update="Views\StamData\Warehouses\WarehousesViewModel.cs">
+      <Compile Update="Views\StamData\Warehouses\WarehousesVm.cs">
         <DependentUpon>WarehousesView.xaml</DependentUpon>
       </Compile>
     </ItemGroup>
