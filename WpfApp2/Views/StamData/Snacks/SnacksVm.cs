@@ -5,6 +5,7 @@ using System.Reactive.Subjects;
 using WpfApp2.Data.Classes;
 using WpfApp2.Data.DataAccess;
 using WpfApp2.Shared.Abstract;
+using WpfApp2.Shared.Debugging.Extensions;
 using WpfApp2.Shared.ExtensionMethods;
 
 namespace WpfApp2.Views.StamData.Snacks;
@@ -111,6 +112,8 @@ public partial class SnacksVm : IDisposable
     // --- Reducers
     public SnacksVm()
     {
+        this.RegisterWithTracker();
+
         _snackService = new SnackService
         {
             SimulateFailures = false,
@@ -273,5 +276,9 @@ public partial class SnacksVm : IDisposable
     }
 
     // --- Dispose
-    public void Dispose() => _disposables.Dispose();
+    public void Dispose()
+    {
+        this.UnregisterFromTracker();
+        _disposables.Dispose();
+    }
 }

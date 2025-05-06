@@ -5,6 +5,7 @@ using System.Reactive.Subjects;
 using WpfApp2.Data.Classes;
 using WpfApp2.Data.DataAccess;
 using WpfApp2.Shared.Abstract;
+using WpfApp2.Shared.Debugging.Extensions;
 using WpfApp2.Shared.ExtensionMethods;
 
 namespace WpfApp2.Views.StamData.Warehouses;
@@ -92,6 +93,8 @@ public class WarehousesViewModel : IDisposable
     // --- Reducers
     public WarehousesViewModel()
     {
+        this.RegisterWithTracker();
+
         _warehouseService = new WarehouseService
         {
             SimulateFailures = false,
@@ -236,5 +239,9 @@ public class WarehousesViewModel : IDisposable
     }
 
     // --- Dispose
-    public void Dispose() => _disposables.Dispose();
+    public void Dispose()
+    {
+        this.UnregisterFromTracker();
+        _disposables.Dispose();
+    }
 }

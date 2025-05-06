@@ -5,6 +5,7 @@ using System.Reactive.Subjects;
 using WpfApp2.Data.Classes;
 using WpfApp2.Data.DataAccess;
 using WpfApp2.Shared.Abstract;
+using WpfApp2.Shared.Debugging.Extensions;
 using WpfApp2.Shared.ExtensionMethods;
 
 namespace WpfApp2.Views.StamData.Countries;
@@ -84,6 +85,8 @@ public class CountriesViewModel : IDisposable
     // --- Reducers
     public CountriesViewModel()
     {
+        this.RegisterWithTracker();
+
         _countryService = new CountryService
         {
             SimulateFailures = false,
@@ -221,5 +224,9 @@ public class CountriesViewModel : IDisposable
     }
 
     // --- Dispose
-    public void Dispose() => _disposables.Dispose();
+    public void Dispose()
+    {
+        this.UnregisterFromTracker();
+        _disposables.Dispose();
+    }
 }
