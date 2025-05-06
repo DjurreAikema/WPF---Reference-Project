@@ -2,6 +2,8 @@ using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using WpfApp2.Data;
 using WpfApp2.Shared.Debugging;
+using WpfApp2.Shared.Navigation;
+using WpfApp2.Views.Debug.VmTracking;
 
 namespace WpfApp2.Views.Debug;
 
@@ -11,9 +13,6 @@ public partial class DebugView
     public DebugView()
     {
         InitializeComponent();
-
-        RefreshVmStats_Click(null, null);
-        UpdateTrackingUI();
     }
 
     // --- Methods
@@ -46,27 +45,20 @@ public partial class DebugView
         ResultBorder.Visibility = Visibility.Visible;
     }
 
-    private void RefreshVmStats_Click(object? sender, RoutedEventArgs? e)
+    // --- Buttons
+    private void VmTracking_Click(object sender, RoutedEventArgs e)
     {
-        var stats = ViewModelTracker.Instance.GetAllStats();
-        VmStatsListView.ItemsSource = stats;
+        var mainWindow = (MainWindow) Application.Current.MainWindow;
+        var navigationService = mainWindow.GetNavigationService();
+
+        navigationService.NavigateTo(new VmTrackingView());
     }
 
-    private void ToggleTracking_Click(object sender, RoutedEventArgs e)
+    private void VmTrackingPopup_Click(object sender, RoutedEventArgs e)
     {
-        ViewModelTracker.Instance.IsEnabled = !ViewModelTracker.Instance.IsEnabled;
-        UpdateTrackingUI();
-    }
+        var view = new VmTrackingView();
 
-    private void UpdateTrackingUI()
-    {
-        var isEnabled = ViewModelTracker.Instance.IsEnabled;
-
-        TrackingStatusText.Text = isEnabled ? "ON" : "OFF";
-        TrackingStatusText.Foreground = isEnabled
-            ? System.Windows.Media.Brushes.Green
-            : System.Windows.Media.Brushes.Red;
-
-        ToggleTrackingButton.Content = isEnabled ? "Turn Off" : "Turn On";
+        var window = WindowFactory.CreateWindow(view, "ViewModel Tracking", 900, 600);
+        window.Show();
     }
 }

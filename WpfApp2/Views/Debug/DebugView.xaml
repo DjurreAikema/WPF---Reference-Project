@@ -3,6 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:buttons="clr-namespace:WpfApp2.Shared.UI.Buttons"
+             xmlns:ui="clr-namespace:WpfApp2.Shared.Navigation.UI"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="800">
 
@@ -40,40 +42,12 @@
                 </GroupBox>
 
                 <!-- View Model Tracking Section -->
-                <GroupBox Header="View Model Tracking" Padding="10" Margin="0,20,0,0">
-                    <StackPanel>
-                        <Grid Margin="0,0,0,10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock Grid.Column="0" Text="View Model Tracking is "
-                                       VerticalAlignment="Center" />
-
-                            <TextBlock Grid.Column="1" x:Name="TrackingStatusText" Text="ON"
-                                       FontWeight="Bold" Foreground="Green" VerticalAlignment="Center" Margin="5,0" />
-
-                            <Button Grid.Column="2" x:Name="ToggleTrackingButton" Content="Turn Off" Click="ToggleTracking_Click"
-                                    Style="{StaticResource PrimaryButton}" Width="80" />
-                        </Grid>
-
-                        <Button Content="Refresh Statistics" Click="RefreshVmStats_Click"
-                                Style="{StaticResource PrimaryButton}" Width="150" HorizontalAlignment="Left" Margin="0,10,0,10" />
-
-                        <ListView x:Name="VmStatsListView" Height="200" Margin="0,5">
-                            <ListView.View>
-                                <GridView>
-                                    <GridViewColumn Header="View Model Type" Width="250" DisplayMemberBinding="{Binding TypeName}" />
-                                    <GridViewColumn Header="Current Count" Width="120" DisplayMemberBinding="{Binding CurrentCount}" />
-                                    <GridViewColumn Header="Total Created" Width="120" DisplayMemberBinding="{Binding TotalCreated}" />
-                                    <GridViewColumn Header="Total Closed" Width="120" DisplayMemberBinding="{Binding TotalClosed}" />
-                                </GridView>
-                            </ListView.View>
-                        </ListView>
-                    </StackPanel>
-                </GroupBox>
+                <WrapPanel Orientation="Horizontal" Margin="10">
+                    <buttons:SimplifiedNavigationButton
+                        Content="ViewModel Tracking"
+                        Icon="{x:Static ui:NavigationIcons.Database}"
+                        MainButtonClick="VmTracking_Click" PopupButtonClick="VmTrackingPopup_Click" />
+                </WrapPanel>
             </StackPanel>
         </ScrollViewer>
     </Grid>
