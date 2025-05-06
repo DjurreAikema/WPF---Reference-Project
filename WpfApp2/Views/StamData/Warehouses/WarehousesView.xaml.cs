@@ -2,13 +2,14 @@ using System.Reactive;
 using System.Reactive.Subjects;
 using System.Windows;
 using WpfApp2.Data.Classes;
+using WpfApp2.Shared.Debugging.Extensions;
 using WpfApp2.Shared.Navigation.Interfaces;
 
 namespace WpfApp2.Views.StamData.Warehouses;
 
 public partial class WarehousesView : INavigationAware
 {
-    public WarehousesViewModel Vm { get; set; } = new();
+    public WarehousesViewModel Vm { get; set; } = new WarehousesViewModel().RegisterWithTracker();
     public Subject<bool> TriggerDispose { get; set; } = new();
 
     // --- Internal Properties
@@ -19,7 +20,7 @@ public partial class WarehousesView : INavigationAware
     {
         if (!_shouldDispose) return;
 
-        Vm = new WarehousesViewModel();
+        Vm = new WarehousesViewModel().RegisterWithTracker();;
         _shouldDispose = false;
     }
 

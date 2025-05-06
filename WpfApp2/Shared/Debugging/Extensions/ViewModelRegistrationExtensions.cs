@@ -15,6 +15,8 @@ public static class ViewModelRegistrationExtensions
     /// </summary>
     public static T RegisterWithTracker<T>(this T viewModel, bool isSingleton = false) where T : class
     {
+        if (VmIds.TryGetValue(viewModel, out var existingId)) return viewModel;
+
         var id = ViewModelTracker.Instance.RegisterViewModel(viewModel, isSingleton);
         if (!string.IsNullOrEmpty(id)) VmIds.Add(viewModel, id);
 

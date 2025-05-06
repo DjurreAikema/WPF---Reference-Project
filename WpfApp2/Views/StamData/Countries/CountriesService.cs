@@ -8,8 +8,8 @@ namespace WpfApp2.Views.StamData.Countries;
 /// </summary>
 public static class CountriesService
 {
-    private static readonly Lazy<CountriesViewModel> _instance = new(() => new CountriesViewModel()
-        .RegisterWithTracker(isSingleton: true));
+    private static readonly Lazy<CountriesViewModel> _instance = new(() =>
+        new CountriesViewModel().RegisterWithTracker(isSingleton: true));
 
     /// <summary>
     /// Gets the singleton instance of the CountriesViewModel.

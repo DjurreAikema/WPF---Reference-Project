@@ -112,8 +112,6 @@ public partial class SnacksVm : IDisposable
     // --- Reducers
     public SnacksVm()
     {
-        this.RegisterWithTracker();
-
         _snackService = new SnackService
         {
             SimulateFailures = false,

@@ -2,13 +2,14 @@ using System.Reactive;
 using System.Reactive.Subjects;
 using System.Windows;
 using WpfApp2.Data.Classes;
+using WpfApp2.Shared.Debugging.Extensions;
 using WpfApp2.Shared.Navigation.Interfaces;
 
 namespace WpfApp2.Views.StamData.Countries;
 
 public partial class CountriesView : INavigationAware
 {
-    public CountriesViewModel Vm { get; set; } = new();
+    public CountriesViewModel Vm { get; set; } = new CountriesViewModel().RegisterWithTracker();
     public Subject<bool> TriggerDispose { get; set; } = new();
 
     // --- Internal Properties
@@ -19,7 +20,7 @@ public partial class CountriesView : INavigationAware
     {
         if (!_shouldDispose) return;
 
-        Vm = new CountriesViewModel();
+        Vm = new CountriesViewModel().RegisterWithTracker();
         _shouldDispose = false;
     }
 

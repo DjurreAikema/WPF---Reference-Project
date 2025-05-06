@@ -93,8 +93,6 @@ public class WarehousesViewModel : IDisposable
     // --- Reducers
     public WarehousesViewModel()
     {
-        this.RegisterWithTracker();
-
         _warehouseService = new WarehouseService
         {
             SimulateFailures = false,

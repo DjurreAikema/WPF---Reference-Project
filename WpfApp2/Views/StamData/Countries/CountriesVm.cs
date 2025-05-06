@@ -85,8 +85,6 @@ public class CountriesViewModel : IDisposable
     // --- Reducers
     public CountriesViewModel()
     {
-        this.RegisterWithTracker();
-
         _countryService = new CountryService
         {
             SimulateFailures = false,
