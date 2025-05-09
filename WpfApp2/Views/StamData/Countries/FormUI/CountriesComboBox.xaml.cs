@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using WpfApp2.Data.Classes;
+using WpfApp2.Data.Classes.Stamdata;
 using WpfApp2.Shared.Navigation;
 
 namespace WpfApp2.Views.StamData.Countries.FormUI;

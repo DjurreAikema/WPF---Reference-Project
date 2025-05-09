@@ -1,4 +1,4 @@
-﻿namespace WpfApp2.Data.Classes;
+﻿namespace WpfApp2.Data.Classes.System;
 
 public class NotificationMessage(string text, bool isSuccess)
 {

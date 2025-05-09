@@ -4,6 +4,7 @@ using System.Reactive.Subjects;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using WpfApp2.Data.Classes;
+using WpfApp2.Data.Classes.Stamdata;
 using WpfApp2.Shared.Debugging.Extensions;
 using WpfApp2.Shared.Navigation.Interfaces;
 

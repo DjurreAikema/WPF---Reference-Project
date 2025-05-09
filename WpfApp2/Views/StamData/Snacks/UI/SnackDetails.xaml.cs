@@ -1,6 +1,7 @@
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using WpfApp2.Data.Classes;
+using WpfApp2.Data.Classes.Stamdata;
 
 namespace WpfApp2.Views.StamData.Snacks.UI;
 

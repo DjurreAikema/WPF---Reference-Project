@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace WpfApp2.Data.Classes;
+namespace WpfApp2.Data.Classes.Stamdata;
 
 public class Inventory
 {

@@ -1,6 +1,7 @@
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using WpfApp2.Data.Classes;
+using WpfApp2.Data.Classes.System;
 using WpfApp2.Shared.Abstract;
 
 namespace WpfApp2.Shared.ExtensionMethods;

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace WpfApp2.Data.Classes;
+namespace WpfApp2.Data.Classes.Orders;
 
 public class OutboundOrder
 {

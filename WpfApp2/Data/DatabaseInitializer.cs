@@ -2,6 +2,7 @@ using System.IO;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using WpfApp2.Data.Classes;
+using WpfApp2.Data.Classes.Stamdata;
 
 namespace WpfApp2.Data;
 
