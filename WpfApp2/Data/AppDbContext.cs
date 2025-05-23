@@ -86,10 +86,10 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Snack>().ToTable("Snacks");
         modelBuilder.Entity<UnitSize>().ToTable("UnitSizes");
         modelBuilder.Entity<Inventory>().ToTable("Inventories");
-        modelBuilder.Entity<Inventory>().ToTable("Suppliers");
-        modelBuilder.Entity<Inventory>().ToTable("InboundOrders");
-        modelBuilder.Entity<Inventory>().ToTable("InboundOrderLines");
-        modelBuilder.Entity<Inventory>().ToTable("InboundReceipts");
-        modelBuilder.Entity<Inventory>().ToTable("InboundReceiptLines");
+        modelBuilder.Entity<Supplier>().ToTable("Suppliers");
+        modelBuilder.Entity<InboundOrder>().ToTable("InboundOrders");
+        modelBuilder.Entity<InboundOrderLine>().ToTable("InboundOrderLines");
+        modelBuilder.Entity<InboundReceipt>().ToTable("InboundReceipts");
+        modelBuilder.Entity<InboundReceiptLine>().ToTable("InboundReceiptLines");
     }
 }
