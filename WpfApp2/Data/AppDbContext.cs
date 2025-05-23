@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using WpfApp2.Data.Classes;
 using WpfApp2.Data.Classes.Orders;
 using WpfApp2.Data.Classes.Stamdata;
 
@@ -79,6 +78,34 @@ public class AppDbContext : DbContext
             .HasOne(rl => rl.Receipt)
             .WithMany(r => r.ReceiptLines)
             .HasForeignKey(rl => rl.InboundReceiptId);
+
+        // InboundOrderLine relationships
+        modelBuilder.Entity<InboundOrderLine>()
+            .HasOne(ol => ol.Snack)
+            .WithMany()
+            .HasForeignKey(ol => ol.SnackId);
+
+        modelBuilder.Entity<InboundOrderLine>()
+            .HasOne(ol => ol.UnitSize)
+            .WithMany()
+            .HasForeignKey(ol => ol.UnitSizeId);
+
+        // InboundReceipt relationships
+        modelBuilder.Entity<InboundReceipt>()
+            .HasOne(r => r.Order)
+            .WithMany(o => o.Receipts)
+            .HasForeignKey(r => r.InboundOrderId);
+
+        modelBuilder.Entity<InboundReceipt>()
+            .HasOne(r => r.Warehouse)
+            .WithMany()
+            .HasForeignKey(r => r.WarehouseId);
+
+        // InboundReceiptLine -> InboundOrderLine relationship
+        modelBuilder.Entity<InboundReceiptLine>()
+            .HasOne(rl => rl.OrderLine)
+            .WithMany()
+            .HasForeignKey(rl => rl.InboundOrderLineId);
 
         // Configure table names
         modelBuilder.Entity<Country>().ToTable("Countries");
