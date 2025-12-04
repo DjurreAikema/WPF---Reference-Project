@@ -1,7 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
-using WpfApp2.Data.Classes;
 using WpfApp2.Data.Classes.Stamdata;
 
 namespace WpfApp2.Views.StamData.Warehouses.UI;
@@ -14,7 +13,10 @@ public partial class WarehousesList
         new PropertyMetadata(null, (d, _) =>
         {
             if (d is not WarehousesList c) return;
-            c.Disposables.Add(c.WarehousesObs.Subscribe(warehouses => { c.Warehouses = new ObservableCollection<Warehouse>(warehouses); }));
+            c.Disposables.Add(c.WarehousesObs.Subscribe(warehouses =>
+            {
+                c.Warehouses = new ObservableCollection<Warehouse>(warehouses);
+            }));
         }));
 
     public IObservable<IEnumerable<Warehouse>> WarehousesObs

@@ -1,7 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
-using WpfApp2.Data.Classes;
 using WpfApp2.Data.Classes.Stamdata;
 
 namespace WpfApp2.Views.StamData.Countries.UI;
@@ -14,7 +13,10 @@ public partial class CountriesList
         new PropertyMetadata(null, (d, _) =>
         {
             if (d is not CountriesList c) return;
-            c.Disposables.Add(c.CountriesObs.Subscribe(countries => { c.Countries = new ObservableCollection<Country>(countries); }));
+            c.Disposables.Add(c.CountriesObs.Subscribe(countries =>
+            {
+                c.Countries = new ObservableCollection<Country>(countries);
+            }));
         }));
 
     public IObservable<IEnumerable<Country>> CountriesObs

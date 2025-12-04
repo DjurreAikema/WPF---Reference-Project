@@ -2,7 +2,6 @@ using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using WpfApp2.Data.Classes;
 using WpfApp2.Data.Classes.Stamdata;
 using WpfApp2.Data.Classes.System;
 using WpfApp2.Data.DataAccess;
@@ -45,7 +44,8 @@ public partial class SnacksVm : IDisposable
     public IObservable<bool> LoadingObs => StateObs.Select(state => state.Loading);
 
     // UnitSizes
-    public IObservable<List<UnitSize>?> SelectedUnitSizesObs => StateObs.Select(state => state.Selected?.UnitSizes?.ToList() ?? []);
+    public IObservable<List<UnitSize>?> SelectedUnitSizesObs =>
+        StateObs.Select(state => state.Selected?.UnitSizes?.ToList() ?? []);
 
     // Flags
     public IObservable<SnackFlags> FlagsObs => StateObs.Select(state => new SnackFlags

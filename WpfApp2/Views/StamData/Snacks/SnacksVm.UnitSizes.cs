@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using WpfApp2.Data.Classes;
 using WpfApp2.Data.Classes.Stamdata;
 using WpfApp2.Shared.ExtensionMethods;
 
@@ -140,7 +139,8 @@ public partial class SnacksVm
                     var currentSnack = _stateSubject.Value.Selected;
                     if (currentSnack?.UnitSizes == null) return;
 
-                    currentSnack.UnitSizes = new ObservableCollection<UnitSize>(currentSnack.UnitSizes.Where(u => u.Id != obj.Id));
+                    currentSnack.UnitSizes =
+                        new ObservableCollection<UnitSize>(currentSnack.UnitSizes.Where(u => u.Id != obj.Id));
 
                     // Update the snack in the overall list
                     var objs = new List<Snack>(_stateSubject.Value.Snacks);

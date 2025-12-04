@@ -1,7 +1,6 @@
 using System.Reactive;
 using System.Reactive.Subjects;
 using System.Windows;
-using WpfApp2.Data.Classes;
 using WpfApp2.Data.Classes.Stamdata;
 using WpfApp2.Shared.Debugging.Extensions;
 using WpfApp2.Shared.Navigation.Interfaces;
@@ -21,7 +20,7 @@ public partial class WarehousesView : INavigationAware
     {
         if (!_shouldDispose) return;
 
-        Vm = new WarehousesViewModel().RegisterWithTracker();;
+        Vm = new WarehousesViewModel().RegisterWithTracker();
         _shouldDispose = false;
     }
 

@@ -1,7 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using WpfApp2.Data.Classes;
 using WpfApp2.Data.Classes.Stamdata;
 using WpfApp2.Shared.ExtensionMethods;
 
@@ -157,7 +156,8 @@ public partial class SnacksVm
                     var currentSnack = _stateSubject.Value.Selected;
                     if (currentSnack?.Inventories == null) return;
 
-                    currentSnack.Inventories = new ObservableCollection<Inventory>(currentSnack.Inventories.Where(i => i.Id != obj.Id));
+                    currentSnack.Inventories =
+                        new ObservableCollection<Inventory>(currentSnack.Inventories.Where(i => i.Id != obj.Id));
                     UpdateTotalQuantity(currentSnack);
 
                     // Update the snack in the overall list
@@ -181,5 +181,6 @@ public partial class SnacksVm
             ));
     }
 
-    private static void UpdateTotalQuantity(Snack snack) => snack.Quantity = snack.Inventories?.Sum(i => i.Quantity) ?? 0;
+    private static void UpdateTotalQuantity(Snack snack) =>
+        snack.Quantity = snack.Inventories?.Sum(i => i.Quantity) ?? 0;
 }

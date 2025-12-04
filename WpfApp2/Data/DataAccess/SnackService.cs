@@ -1,6 +1,5 @@
 using System.Collections.ObjectModel;
 using Microsoft.EntityFrameworkCore;
-using WpfApp2.Data.Classes;
 using WpfApp2.Data.Classes.Stamdata;
 
 namespace WpfApp2.Data.DataAccess;
@@ -49,7 +48,8 @@ public class SnackService
         // UnitSizes
         snack.UnitSizes = new ObservableCollection<UnitSize>(await _unitSizeService.GetByParentIdAsync(snack.Id.Value));
         // Inventory
-        snack.Inventories = new ObservableCollection<Inventory>(await _inventoryService.GetBySnackIdAsync(snack.Id.Value));
+        snack.Inventories =
+            new ObservableCollection<Inventory>(await _inventoryService.GetBySnackIdAsync(snack.Id.Value));
 
         return snack;
     }

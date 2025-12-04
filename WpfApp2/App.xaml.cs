@@ -39,7 +39,8 @@ public partial class App : Application
             DatabaseInitializer.InitializeDatabase();
 
             // Only seed data if database is completely empty
-            if (!context.Countries.Any() && !context.Warehouses.Any() && !context.Snacks.Any() && !context.Inventories.Any())
+            if (!context.Countries.Any() && !context.Warehouses.Any() && !context.Snacks.Any() &&
+                !context.Inventories.Any())
             {
                 DatabaseInitializer.SeedData(context);
             }

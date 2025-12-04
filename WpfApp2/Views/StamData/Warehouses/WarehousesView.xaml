@@ -27,19 +27,19 @@
 
             <!-- List Component -->
             <ui1:WarehousesList Grid.Column="0"
-                                  TriggerDispose="{Binding TriggerDispose}"
-                                  WarehousesObs="{Binding Vm.WarehousesObs}"
-                                  Selected="OnSelected"
-                                  Add="OnAdd"
-                                  Reload="OnReload" />
+                                TriggerDispose="{Binding TriggerDispose}"
+                                WarehousesObs="{Binding Vm.WarehousesObs}"
+                                Selected="OnSelected"
+                                Add="OnAdd"
+                                Reload="OnReload" />
 
             <!-- Details Component -->
             <TabControl Grid.Column="1" Margin="5">
                 <TabItem Header="Details">
                     <ui1:WarehouseDetails TriggerDispose="{Binding TriggerDispose}"
-                                            SelectedObs="{Binding Vm.SelectedObs}"
-                                            Saved="OnSaved"
-                                            Deleted="OnDeleted" />
+                                          SelectedObs="{Binding Vm.SelectedObs}"
+                                          Saved="OnSaved"
+                                          Deleted="OnDeleted" />
                 </TabItem>
 
                 <TabItem Header="Inventory">

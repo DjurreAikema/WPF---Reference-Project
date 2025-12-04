@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using WpfApp2.Data.Classes;
 using WpfApp2.Data.Classes.Stamdata;
 
 namespace WpfApp2.Data.DataAccess;
@@ -21,7 +20,7 @@ public class CountryService
     public async Task<List<Country>> GetAllAsync()
     {
         if (SimulateFailures && RandomGenerator.NextDouble() < FailureProbabilityOnLoad)
-            throw new Exception("Simulated database failure during GetAllCountrysAsync");
+            throw new Exception("Simulated database failure during GetAllCountriesAsync");
 
         await using var context = CreateDbContext();
         return await context.Countries.ToListAsync();

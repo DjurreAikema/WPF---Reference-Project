@@ -1,6 +1,5 @@
 using System.Collections.ObjectModel;
 using Microsoft.EntityFrameworkCore;
-using WpfApp2.Data.Classes;
 using WpfApp2.Data.Classes.Stamdata;
 
 namespace WpfApp2.Data.DataAccess;

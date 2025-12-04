@@ -3,7 +3,6 @@ using System.Reactive.Disposables;
 using System.Reactive.Subjects;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
-using WpfApp2.Data.Classes;
 using WpfApp2.Data.Classes.Stamdata;
 using WpfApp2.Shared.Debugging.Extensions;
 using WpfApp2.Shared.Navigation.Interfaces;
@@ -26,7 +25,7 @@ public partial class SnacksView : INavigationAware
     {
         if (!_shouldDispose) return;
 
-        Vm = new SnacksVm().RegisterWithTracker();;
+        Vm = new SnacksVm().RegisterWithTracker();
         _disposables = new CompositeDisposable();
         _disposables.Add(Vm.FlagsObs.Subscribe(flags => { Flags = flags; }));
         _shouldDispose = false;

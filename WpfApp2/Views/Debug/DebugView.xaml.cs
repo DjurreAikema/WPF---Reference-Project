@@ -1,7 +1,6 @@
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using WpfApp2.Data;
-using WpfApp2.Shared.Debugging;
 using WpfApp2.Shared.Navigation;
 using WpfApp2.Views.Debug.VmTracking;
 
