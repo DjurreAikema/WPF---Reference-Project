@@ -10,39 +10,61 @@
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <Style x:Key="Spinner" TargetType="{x:Type Path}">
-            <Setter Property="SnapsToDevicePixels" Value="True" />
-            <Setter Property="Fill" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
-            <Setter Property="Width" Value="12" />
-            <Setter Property="Height" Value="12" />
-            <Setter Property="Stretch" Value="Fill" />
-            <Setter Property="Data"
-                    Value="F1 M 43.68,-0.8L 41.76,-0.8C 41.08,-0.8 40.44,-0.44 40.12,0.24L 37.92,4.64C 37.6,5.32 37.6,6.08 37.92,6.76L 40.12,11.16C 40.44,11.84 41.08,12.2 41.76,12.2L 43.68,12.2C 44.36,12.2 45,11.84 45.32,11.16L 47.52,6.76C 47.84,6.08 47.84,5.32 47.52,4.64L 45.32,0.24C 45,0.44 44.36,-0.8 43.68,-0.8 Z " />
-            <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
-            <Setter Property="RenderTransform">
-                <Setter.Value>
-                    <RotateTransform Angle="0" />
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <EventTrigger RoutedEvent="ContentControl.Loaded">
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <DoubleAnimation Storyboard.TargetProperty="(Shape.RenderTransform).(RotateTransform.Angle)" From="0" To="360" Duration="0:0:1"
-                                             RepeatBehavior="Forever" />
-                        </Storyboard>
-                    </BeginStoryboard>
-                </EventTrigger>
-            </Style.Triggers>
-        </Style>
+
+        <Storyboard x:Key="SpinnerAnimation" RepeatBehavior="Forever">
+            <DoubleAnimation Storyboard.TargetName="SpinnerRing"
+                             Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                             From="0" To="360"
+                             Duration="0:0:1.2"
+                             EasingFunction="{x:Null}" />
+        </Storyboard>
     </UserControl.Resources>
 
     <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=ui:ObsLoadingSpinner}}"
           Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+
+        <!-- Semi-transparent black overlay -->
         <Grid.Background>
             <SolidColorBrush Color="Black" Opacity="0.5" />
         </Grid.Background>
-        <Path Style="{StaticResource Spinner}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+        <!-- Spinner container -->
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid.Triggers>
+                <EventTrigger RoutedEvent="Loaded">
+                    <BeginStoryboard Storyboard="{StaticResource SpinnerAnimation}" />
+                </EventTrigger>
+            </Grid.Triggers>
+
+            <!-- Outer ring -->
+            <Ellipse Width="50" Height="50"
+                     Stroke="#20FFFFFF"
+                     StrokeThickness="3"
+                     Opacity="0.3" />
+
+            <!-- Animated spinner ring with gradient -->
+            <Ellipse x:Name="SpinnerRing"
+                     Width="50" Height="50"
+                     RenderTransformOrigin="0.5,0.5">
+                <Ellipse.RenderTransform>
+                    <RotateTransform Angle="0" />
+                </Ellipse.RenderTransform>
+                <Ellipse.Stroke>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#007bff" Offset="0" />
+                        <GradientStop Color="#0056b3" Offset="0.5" />
+                        <GradientStop Color="Transparent" Offset="1" />
+                    </LinearGradientBrush>
+                </Ellipse.Stroke>
+                <Ellipse.StrokeThickness>3</Ellipse.StrokeThickness>
+                <Ellipse.Effect>
+                    <DropShadowEffect Color="#007bff"
+                                      BlurRadius="8"
+                                      ShadowDepth="0"
+                                      Opacity="0.6" />
+                </Ellipse.Effect>
+            </Ellipse>
+        </Grid>
     </Grid>
 
 </abstract:ADumbComponent>
