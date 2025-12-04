@@ -3,6 +3,7 @@ using System.Reactive.Subjects;
 using System.Windows;
 using WpfApp2.Data.Classes.Stamdata;
 using WpfApp2.Shared.Debugging.Extensions;
+using WpfApp2.Shared.ExtensionMethods;
 using WpfApp2.Shared.Navigation.Interfaces;
 
 namespace WpfApp2.Views.StamData.Countries;
@@ -49,7 +50,11 @@ public partial class CountriesView : INavigationAware
     }
 
     // --- List
-    private void OnCountrySelected(object obj) => Vm.SelectedChanged.OnNext((Country) obj);
+    private void OnCountrySelected(object obj)
+    {
+        var country = obj.SafeCast<Country>();
+        if (country != null) Vm.SelectedChanged.OnNext(country);
+    }
 
     private void OnAddCountry() => Vm.SelectedChanged.OnNext(new Country());
 

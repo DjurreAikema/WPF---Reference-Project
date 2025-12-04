@@ -3,6 +3,7 @@ using System.Reactive.Subjects;
 using System.Windows;
 using WpfApp2.Data.Classes.Stamdata;
 using WpfApp2.Shared.Debugging.Extensions;
+using WpfApp2.Shared.ExtensionMethods;
 using WpfApp2.Shared.Navigation.Interfaces;
 
 namespace WpfApp2.Views.StamData.Warehouses;
@@ -49,7 +50,11 @@ public partial class WarehousesView : INavigationAware
     }
 
     // --- List
-    private void OnWarehouseSelected(object obj) => Vm.SelectedChanged.OnNext((Warehouse) obj);
+    private void OnWarehouseSelected(object obj)
+    {
+        var warehouse = obj.SafeCast<Warehouse>();
+        if (warehouse != null) Vm.SelectedChanged.OnNext(warehouse);
+    }
 
     private void OnAddWarehouse() => Vm.SelectedChanged.OnNext(new Warehouse());
 

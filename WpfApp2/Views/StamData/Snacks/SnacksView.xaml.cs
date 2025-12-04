@@ -5,6 +5,7 @@ using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using WpfApp2.Data.Classes.Stamdata;
 using WpfApp2.Shared.Debugging.Extensions;
+using WpfApp2.Shared.ExtensionMethods;
 using WpfApp2.Shared.Navigation.Interfaces;
 
 namespace WpfApp2.Views.StamData.Snacks;
@@ -61,7 +62,11 @@ public partial class SnacksView : INavigationAware
     }
 
     // --- List
-    private void OnSnackSelected(object obj) => Vm.SelectedChanged.OnNext((Snack) obj);
+    private void OnSnackSelected(object obj)
+    {
+        var snack = obj.SafeCast<Snack>();
+        if (snack != null) Vm.SelectedChanged.OnNext(snack);
+    }
 
     private void OnAddSnack() => Vm.SelectedChanged.OnNext(new Snack());
 
