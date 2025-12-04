@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using WpfApp2.Shared.Abstract;
 
 namespace WpfApp2.Shared.UI.Stamdata;
@@ -108,6 +109,26 @@ public class StamdataListBase : ADumbComponent
         {
             Margin = new Thickness(5),
             View = gridView
+        };
+
+        _listView.PreviewKeyDown += (_, e) =>
+        {
+            if (e.Key != Key.Down && e.Key != Key.Up) return;
+
+            var currentIndex = _listView.SelectedIndex;
+
+            var newIndex = e.Key switch
+            {
+                Key.Down when currentIndex < _listView.Items.Count - 1 => currentIndex + 1,
+                Key.Up when currentIndex > 0 => currentIndex - 1,
+                _ => currentIndex
+            };
+
+            if (newIndex == currentIndex) return;
+
+            _listView.SelectedIndex = newIndex;
+            _listView.ScrollIntoView(_listView.Items[newIndex]!);
+            e.Handled = true;
         };
 
         _listView.SetBinding(ItemsControl.ItemsSourceProperty,
