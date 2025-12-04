@@ -8,9 +8,6 @@ using WpfApp2.Views.StamData;
 
 namespace WpfApp2;
 
-/// <summary>
-/// Interaction logic for MainWindow.xaml
-/// </summary>
 public partial class MainWindow
 {
     private readonly NavigationService _navigationService;
@@ -29,9 +26,6 @@ public partial class MainWindow
     public NavigationService GetNavigationService() => _navigationService;
 
     // --- Sidebar navigation
-
-    #region Sidebar navigation
-
     private const string Stamdata = "stamdata";
     private const string InboundOrder = "inboundOrder";
     private const string OutboundOrder = "outboundOrder";
@@ -86,6 +80,4 @@ public partial class MainWindow
                 break;
         }
     }
-
-    #endregion
 }
