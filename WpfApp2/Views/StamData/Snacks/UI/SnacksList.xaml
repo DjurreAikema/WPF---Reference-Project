@@ -4,8 +4,10 @@
                            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                            xmlns:stamdata="clr-namespace:WpfApp2.Shared.UI.Stamdata"
+                           xmlns:stamdata1="clr-namespace:WpfApp2.Data.Classes.Stamdata"
                            mc:Ignorable="d"
-                           d:DesignHeight="450" d:DesignWidth="300">
+                           d:DesignHeight="450" d:DesignWidth="300"
+                           d:DataContext="{d:DesignInstance stamdata1:Snack, IsDesignTimeCreatable=True}">
 
     <stamdata:StamdataListBase.Columns>
         <GridViewColumn Header="Name" Width="Auto"
