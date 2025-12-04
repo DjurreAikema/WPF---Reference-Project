@@ -61,11 +61,11 @@ public partial class SnacksView : INavigationAware
     }
 
     // --- List
-    private void OnSelected(Snack obj) => Vm.SelectedChanged.OnNext(obj);
+    private void OnSnackSelected(object obj) => Vm.SelectedChanged.OnNext((Snack) obj);
 
-    private void OnAdd() => Vm.SelectedChanged.OnNext(new Snack());
+    private void OnAddSnack() => Vm.SelectedChanged.OnNext(new Snack());
 
-    private void OnReload() => Vm.Reload.OnNext(Unit.Default);
+    private void OnRefreshSnacks() => Vm.Reload.OnNext(Unit.Default);
 
     // --- Details
     private void OnSaved(Snack obj)

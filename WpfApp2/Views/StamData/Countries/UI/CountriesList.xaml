@@ -1,42 +1,15 @@
-<abstract:ADumbComponent x:Class="WpfApp2.Views.StamData.Countries.UI.CountriesList"
-                         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                         xmlns:local="clr-namespace:WpfApp2.Views.StamData.Countries.UI"
-                         xmlns:abstract="clr-namespace:WpfApp2.Shared.Abstract"
-                         mc:Ignorable="d"
-                         d:DesignHeight="450" d:DesignWidth="300">
+<stamdata:StamdataListBase x:Class="WpfApp2.Views.StamData.Countries.UI.CountriesList"
+                           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                           xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                           xmlns:stamdata="clr-namespace:WpfApp2.Shared.UI.Stamdata"
+                           mc:Ignorable="d"
+                           d:DesignHeight="450" d:DesignWidth="300">
 
-    <Grid DataContext="{Binding  RelativeSource={RelativeSource AncestorType=local:CountriesList}}">
+    <stamdata:StamdataListBase.Columns>
+        <GridViewColumn Header="Name" Width="Auto"
+                        DisplayMemberBinding="{Binding Name}" />
+    </stamdata:StamdataListBase.Columns>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-
-        <!-- Toolbar -->
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5">
-            <Button Content="New County"
-                    Click="New_Click"
-                    Margin="0,0,5,0"
-                    Style="{StaticResource PrimaryButton}" />
-
-            <Button Content="Refresh"
-                    Click="Refresh_Click"
-                    Style="{StaticResource PrimaryButton}" />
-        </StackPanel>
-
-        <!-- List -->
-        <ListView Grid.Row="1" x:Name="ListView"
-                  Margin="5"
-                  ItemsSource="{Binding Countries}">
-
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" />
-                </GridView>
-            </ListView.View>
-        </ListView>
-    </Grid>
-</abstract:ADumbComponent>
+</stamdata:StamdataListBase>

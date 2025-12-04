@@ -28,10 +28,10 @@
             <!-- List Component -->
             <ui1:WarehousesList Grid.Column="0"
                                 TriggerDispose="{Binding TriggerDispose}"
-                                WarehousesObs="{Binding Vm.WarehousesObs}"
-                                Selected="OnSelected"
-                                Add="OnAdd"
-                                Reload="OnReload" />
+                                ItemsObs="{Binding Vm.WarehousesObs}"
+                                Selected="OnWarehouseSelected"
+                                Add="OnAddWarehouse"
+                                Refresh="OnRefreshWarehouses" />
 
             <!-- Details Component -->
             <TabControl Grid.Column="1" Margin="5">

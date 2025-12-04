@@ -49,11 +49,11 @@ public partial class WarehousesView : INavigationAware
     }
 
     // --- List
-    private void OnSelected(Warehouse obj) => Vm.SelectedChanged.OnNext(obj);
+    private void OnWarehouseSelected(object obj) => Vm.SelectedChanged.OnNext((Warehouse) obj);
 
-    private void OnAdd() => Vm.SelectedChanged.OnNext(new Warehouse());
+    private void OnAddWarehouse() => Vm.SelectedChanged.OnNext(new Warehouse());
 
-    private void OnReload() => Vm.Reload.OnNext(Unit.Default);
+    private void OnRefreshWarehouses() => Vm.Reload.OnNext(Unit.Default);
 
     // --- Details
     private void OnSaved(Warehouse obj)

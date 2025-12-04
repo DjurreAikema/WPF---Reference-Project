@@ -29,10 +29,10 @@
             <!-- List Component -->
             <local:CountriesList Grid.Column="0"
                                  TriggerDispose="{Binding TriggerDispose}"
-                                 CountriesObs="{Binding Vm.CountriesObs}"
+                                 ItemsObs="{Binding Vm.CountriesObs}"
                                  Selected="OnCountrySelected"
                                  Add="OnAddCountry"
-                                 Reload="OnReloadCountries" />
+                                 Refresh="OnRefreshCountries" />
 
             <!-- Details Component -->
             <local:CountryDetails Grid.Column="1"

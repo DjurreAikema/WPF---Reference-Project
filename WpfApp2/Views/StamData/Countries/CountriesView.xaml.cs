@@ -49,11 +49,11 @@ public partial class CountriesView : INavigationAware
     }
 
     // --- List
-    private void OnCountrySelected(Country obj) => Vm.SelectedChanged.OnNext(obj);
+    private void OnCountrySelected(object obj) => Vm.SelectedChanged.OnNext((Country) obj);
 
     private void OnAddCountry() => Vm.SelectedChanged.OnNext(new Country());
 
-    private void OnReloadCountries() => Vm.Reload.OnNext(Unit.Default);
+    private void OnRefreshCountries() => Vm.Reload.OnNext(Unit.Default);
 
     // --- Details
     private void OnCountrySaved(Country obj)

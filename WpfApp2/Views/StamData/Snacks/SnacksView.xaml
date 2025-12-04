@@ -34,10 +34,10 @@
             <!-- List Component -->
             <ui2:SnacksList Grid.Column="0"
                             TriggerDispose="{Binding TriggerDispose}"
-                            ListObs="{Binding Vm.SnacksObs}"
-                            Selected="OnSelected"
-                            Add="OnAdd"
-                            Reload="OnReload" />
+                            ItemsObs="{Binding Vm.SnacksObs}"
+                            Selected="OnSnackSelected"
+                            Add="OnAddSnack"
+                            Refresh="OnRefreshSnacks" />
 
             <TabControl Grid.Column="1" Margin="5">
                 <TabItem Header="Details">
